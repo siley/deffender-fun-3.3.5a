@@ -1207,7 +1207,7 @@ public:
 		if (!plTarget)
 			plTarget = pl;
 
-		TC_LOG_DEBUG(LOG_FILTER_GENERAL, handler->GetTrinityString(LANG_ADDITEM), itemId, count);
+		//TC_LOG_DEBUG(LOG_FILTER_GENERAL, handler->GetTrinityString(LANG_ADDITEM), itemId, count);
 
 		ItemTemplate const *pProto = sObjectMgr->GetItemTemplate(itemId);
 		if (!pProto)

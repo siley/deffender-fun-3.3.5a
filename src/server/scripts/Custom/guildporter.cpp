@@ -49,14 +49,14 @@ public:
 		if (player->GetGuildId() == 0)
 		{
 			//if player has no guild
-			_creature->MonsterWhisper(MSG_NOTINGUILD, player->GetGUID());
+			_creature->MonsterWhisper(MSG_NOTINGUILD, player, true);
 			return;
 		}
 
 		if (!player->getAttackers().empty())
 		{
 			//if player in combat
-			_creature->MonsterSay(MSG_INCOMBAT, LANG_UNIVERSAL, player->GetGUID());
+			_creature->MonsterWhisper(MSG_INCOMBAT, player, true);
 			return;
 		}
 
@@ -69,7 +69,7 @@ public:
 			player->TeleportTo(map, x, y, z, 0.0f);
 		}
 		else
-			_creature->MonsterWhisper(MSG_NOGUILDHOUSE, player->GetGUID());
+			_creature->MonsterWhisper(MSG_NOGUILDHOUSE, player, true);
 	}
 
 	bool OnGossipSelect(Player *player, Creature *_creature, uint32 sender, uint32 action)
@@ -88,7 +88,7 @@ public:
 
 		case ACTION_HOUSE:
 			player->CLOSE_GOSSIP_MENU();
-			_creature->MonsterWhisper(MSG_GUILD, player->GetGUID());
+			_creature->MonsterWhisper(MSG_GUILD, player, true);
 			break;
 		}
 		return true;
