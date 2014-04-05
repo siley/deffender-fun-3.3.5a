@@ -36,7 +36,7 @@ public:
         if(player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
-            npc->MonsterWhisper("Jsi v combatu!", player->GetGUID());
+			npc->MonsterWhisper("Jsi v combatu!", player, true);
             return true;
         }
 
@@ -52,7 +52,7 @@ public:
         if(player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
-            npc->MonsterWhisper("Jsi v combatu!", player->GetGUID());
+			npc->MonsterWhisper("Jsi v combatu!", player, true);
             return true;
         }
 
@@ -71,7 +71,7 @@ public:
             {
                 player->CLOSE_GOSSIP_MENU();
                 player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-                npc->MonsterWhisper(VIP_NPC_TEXT_FACTIONCHANGE, player->GetGUID());
+				npc->MonsterWhisper(VIP_NPC_TEXT_FACTIONCHANGE, player, true);
                 return true;
             }
             break;
@@ -88,7 +88,7 @@ public:
         }
 
         player->CLOSE_GOSSIP_MENU();
-        npc->MonsterWhisper(VIP_NPC_TEXT_MONEYERR, player->GetGUID());
+		npc->MonsterWhisper(VIP_NPC_TEXT_MONEYERR, player, true);
 
         return true;
     }
