@@ -566,8 +566,7 @@ class spell_dk_death_grip : public SpellScriptLoader
                 {
 					if (target->IsImmunedToSpell(sSpellMgr->GetSpellInfo(49576)))
 					{
-						if (target->GetTypeId() == TYPEID_PLAYER)
-							target->ApplySpellImmune(0, IMMUNITY_ID, 49576, false);
+						target->ApplySpellImmune(0, IMMUNITY_ID, 49576, false);
 					}
 					else
 					{

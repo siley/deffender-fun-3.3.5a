@@ -6657,7 +6657,10 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
         if (m_spellInfo->SpellIconID == 2723 && GetSpellInfo()->SpellFamilyFlags[0] & 0x02000000)
         {
             m_targets.GetUnitTarget()->ApplySpellImmune(0,IMMUNITY_ID, 49576, true);
-            m_targets.GetUnitTarget()->CastSpell(m_caster,49560,true);
+            if (m_targets.GetUnitTarget()->GetTypeId() == TYPEID_PLAYER)
+                m_targets.GetUnitTarget()->CastSpell(m_caster,49576,true);
+
+
             return;
         }
         else
