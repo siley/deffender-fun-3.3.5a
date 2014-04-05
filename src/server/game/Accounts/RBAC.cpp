@@ -129,7 +129,7 @@ RBACCommandResult RBACData::DenyPermission(uint32 permissionId, int32 realmId /*
 
 void RBACData::SavePermission(uint32 permission, bool granted, int32 realmId)
 {
-    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_RBAC_ACCOUNT_PERMISSION);
+    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_INS_FUN_ACCOUNT_PERMISSION);
     stmt->setUInt32(0, GetId());
     stmt->setUInt32(1, permission);
     stmt->setBool(2, granted);
@@ -155,7 +155,7 @@ RBACCommandResult RBACData::RevokePermission(uint32 permissionId, int32 realmId 
     {
         TC_LOG_TRACE("rbac", "RBACData::RevokePermission [Id: %u Name: %s] (Permission %u, RealmId %d). Ok and DB updated",
                        GetId(), GetName().c_str(), permissionId, realmId);
-        PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_RBAC_ACCOUNT_PERMISSION);
+        PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_DEL_FUN_ACCOUNT_PERMISSION);
         stmt->setUInt32(0, GetId());
         stmt->setUInt32(1, permissionId);
         stmt->setInt32(2, realmId);
@@ -176,7 +176,7 @@ void RBACData::LoadFromDB()
 
     TC_LOG_DEBUG("rbac", "RBACData::LoadFromDB [Id: %u Name: %s]: Loading permissions", GetId(), GetName().c_str());
     // Load account permissions (granted and denied) that affect current realm
-    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_RBAC_ACCOUNT_PERMISSIONS);
+    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_FUN_ACCOUNT_PERMISSIONS);
     stmt->setUInt32(0, GetId());
     stmt->setInt32(1, GetRealmId());
 

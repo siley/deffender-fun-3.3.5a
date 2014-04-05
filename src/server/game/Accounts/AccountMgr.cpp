@@ -397,10 +397,10 @@ void AccountMgr::LoadRBAC()
     uint32 count3 = 0;
 
     TC_LOG_DEBUG("rbac", "AccountMgr::LoadRBAC: Loading permissions");
-    QueryResult result = LoginDatabase.Query("SELECT id, name FROM rbac_permissions");
+    QueryResult result = LoginDatabase.Query("SELECT id, name FROM fun_permissions");
     if (!result)
     {
-        TC_LOG_INFO("server.loading", ">> Loaded 0 account permission definitions. DB table `rbac_permissions` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 account permission definitions. DB table `fun_permissions` is empty.");
         return;
     }
 
@@ -414,10 +414,10 @@ void AccountMgr::LoadRBAC()
     while (result->NextRow());
 
     TC_LOG_DEBUG("rbac", "AccountMgr::LoadRBAC: Loading linked permissions");
-    result = LoginDatabase.Query("SELECT id, linkedId FROM rbac_linked_permissions ORDER BY id ASC");
+    result = LoginDatabase.Query("SELECT id, linkedId FROM fun_linked_permissions ORDER BY id ASC");
     if (!result)
     {
-        TC_LOG_INFO("server.loading", ">> Loaded 0 linked permissions. DB table `rbac_linked_permissions` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 linked permissions. DB table `fun_linked_permissions` is empty.");
         return;
     }
 
@@ -446,10 +446,10 @@ void AccountMgr::LoadRBAC()
     while (result->NextRow());
 
     TC_LOG_DEBUG("rbac", "AccountMgr::LoadRBAC: Loading default permissions");
-    result = LoginDatabase.Query("SELECT secId, permissionId FROM rbac_default_permissions ORDER BY secId ASC");
+    result = LoginDatabase.Query("SELECT secId, permissionId FROM fun_default_permissions ORDER BY secId ASC");
     if (!result)
     {
-        TC_LOG_INFO("server.loading", ">> Loaded 0 default permission definitions. DB table `rbac_default_permissions` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 default permission definitions. DB table `fun_default_permissions` is empty.");
         return;
     }
 
