@@ -348,6 +348,10 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     //  For loading and deleting expired auctions at startup
     PrepareStatement(CHAR_SEL_EXPIRED_AUCTIONS, "SELECT id, auctioneerguid, itemguid, itemEntry, count, itemowner, buyoutprice, time, buyguid, lastbid, startbid, deposit FROM auctionhouse ah INNER JOIN item_instance ii ON ii.guid = ah.itemguid WHERE ah.time <= ?", CONNECTION_SYNCH);
 
+	//Custom
+	PrepareStatement(CHAR_ITEM, "INSERT INTO logy_item_get (guid, player, account, item, item_guid, state, position, target) VALUES (?, ?,?, ?, ?, ?, ?, ?)", CONNECTION_ASYNC);
+	PrepareStatement(CHAR_GM, "INSERT INTO logy_gm (player, account, command, position, selected) VALUES (?, ?, ?, ?, ?)", CONNECTION_ASYNC);
+
     // LFG Data
     PrepareStatement(CHAR_INS_LFG_DATA, "INSERT INTO lfg_data (guid, dungeon, state) VALUES (?, ?, ?)", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_LFG_DATA, "DELETE FROM lfg_data WHERE guid = ?", CONNECTION_ASYNC);

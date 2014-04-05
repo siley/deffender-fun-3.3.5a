@@ -534,6 +534,10 @@ enum CharacterDatabaseStatements
     CHAR_DEL_ITEMCONTAINER_MONEY,
     CHAR_INS_ITEMCONTAINER_MONEY,
 
+	// Custom
+     CHAR_ITEM,
+     CHAR_GM,
+
     MAX_CHARACTERDATABASE_STATEMENTS
 };
 
