@@ -37,7 +37,6 @@ public:
     {
         static ChatCommand accountSetSecTable[] =
         {
-            { "regmail",        rbac::RBAC_PERM_COMMAND_ACCOUNT_SET_SEC_REGMAIL, true,  &HandleAccountSetRegEmailCommand,  "", NULL },
             { "email",          rbac::RBAC_PERM_COMMAND_ACCOUNT_SET_SEC_EMAIL,   true,  &HandleAccountSetEmailCommand,     "", NULL },
             { NULL,             0,                                         false, NULL,                              "", NULL }
         };
@@ -126,7 +125,7 @@ public:
         if (!accountName || !password)
             return false;
 
-        AccountOpResult result = sAccountMgr->CreateAccount(std::string(accountName), std::string(password), email);
+        AccountOpResult result = sAccountMgr->CreateAccount(std::string(accountName), std::string(password));
         switch (result)
         {
             case AOR_OK:
@@ -846,82 +845,6 @@ public:
             case AOR_OK:
                 handler->SendSysMessage(LANG_COMMAND_EMAIL);
                 TC_LOG_INFO("entities.player.character", "ChangeEmail: Account %s [Id: %u] had it's email changed to %s.",
-                    accountName.c_str(), targetAccountId, email);
-                break;
-            case AOR_NAME_NOT_EXIST:
-                handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
-                handler->SetSentErrorMessage(true);
-                return false;
-            case AOR_EMAIL_TOO_LONG:
-                handler->SendSysMessage(LANG_EMAIL_TOO_LONG);
-                handler->SetSentErrorMessage(true);
-                return false;
-            default:
-                handler->SendSysMessage(LANG_COMMAND_NOTCHANGEEMAIL);
-                handler->SetSentErrorMessage(true);
-                return false;
-        }
-
-        return true;
-    }
-
-    /// Change registration email for account
-    static bool HandleAccountSetRegEmailCommand(ChatHandler* handler, char const* args)
-    {
-        if (!*args)
-            return false;
-
-        //- We do not want anything short of console to use this by default.
-        //- So we force that.
-        if (handler->GetSession())
-            return false;
-
-        ///- Get the command line arguments
-        char* account = strtok((char*)args, " ");
-        char* email = strtok(NULL, " ");
-        char* emailConfirmation = strtok(NULL, " ");
-
-        if (!account || !email || !emailConfirmation)
-        {
-            handler->SendSysMessage(LANG_CMD_SYNTAX);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
-
-        std::string accountName = account;
-        if (!AccountMgr::normalizeString(accountName))
-        {
-            handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
-
-        uint32 targetAccountId = AccountMgr::GetId(accountName);
-        if (!targetAccountId)
-        {
-            handler->PSendSysMessage(LANG_ACCOUNT_NOT_EXIST, accountName.c_str());
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
-
-        /// can set email only for target with less security
-        /// This also restricts setting handler's own email.
-        if (handler->HasLowerSecurityAccount(NULL, targetAccountId, true))
-            return false;
-
-        if (strcmp(email, emailConfirmation) != 0)
-        {
-            handler->SendSysMessage(LANG_NEW_EMAILS_NOT_MATCH);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
-
-        AccountOpResult result = AccountMgr::ChangeRegEmail(targetAccountId, email);
-        switch (result)
-        {
-            case AOR_OK:
-                handler->SendSysMessage(LANG_COMMAND_EMAIL);
-                TC_LOG_INFO("entities.player.character", "ChangeRegEmail: Account %s [Id: %u] had it's Registration Email changed to %s.",
                     accountName.c_str(), targetAccountId, email);
                 break;
             case AOR_NAME_NOT_EXIST:
