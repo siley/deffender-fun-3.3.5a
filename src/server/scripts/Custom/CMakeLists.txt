@@ -12,6 +12,7 @@ set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
   Custom/dynamic_teleporter.cpp
   Custom/vip_npc.cpp
+  Custom/guildporter.cpp
 )
 
 message("  -> Prepared: Custom")

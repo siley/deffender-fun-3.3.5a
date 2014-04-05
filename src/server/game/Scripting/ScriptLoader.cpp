@@ -1438,6 +1438,7 @@ void AddBattlegroundScripts()
 /* This is where custom scripts' loading functions should be declared. */
 void AddSC_npc_dynamic_teleporter();
 void AddSC_NPC_vip();
+void AddSC_guildporter();
 #endif
 
 void AddCustomScripts()
@@ -1446,5 +1447,6 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
 	AddSC_npc_dynamic_teleporter();
 	AddSC_NPC_vip();
+	AddSC_guildporter();
 #endif
 }
