@@ -6653,7 +6653,16 @@ void Spell::DoAllEffectOnLaunchTarget(TargetInfo& targetInfo, float* multiplier)
         unit = m_caster->GetGUID() == targetInfo.targetGUID ? m_caster : ObjectAccessor::GetUnit(*m_caster, targetInfo.targetGUID);
     // In case spell reflect from target, do all effect on caster (if hit)
     else if (targetInfo.missCondition == SPELL_MISS_REFLECT && targetInfo.reflectResult == SPELL_MISS_NONE)
-        unit = m_caster;
+    {
+        if (m_spellInfo->SpellIconID == 2723 && GetSpellInfo()->SpellFamilyFlags[0] & 0x02000000)
+        {
+            m_targets.GetUnitTarget()->ApplySpellImmune(0,IMMUNITY_ID, 49576, true);
+            m_targets.GetUnitTarget()->CastSpell(m_caster,49560,true);
+            return;
+        }
+        else
+            unit = m_caster;
+    }
     if (!unit)
         return;
 

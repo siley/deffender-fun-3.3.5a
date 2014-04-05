@@ -564,8 +564,19 @@ class spell_dk_death_grip : public SpellScriptLoader
                 Position const* pos = GetExplTargetDest();
                 if (Unit* target = GetHitUnit())
                 {
-                    if (!target->HasAuraType(SPELL_AURA_DEFLECT_SPELLS)) // Deterrence
-                        target->CastSpell(pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), damage, true);
+					if (target->IsImmunedToSpell(sSpellMgr->GetSpellInfo(49576)))
+					{
+						if (target->GetTypeId() == TYPEID_PLAYER)
+							target->ApplySpellImmune(0, IMMUNITY_ID, 49576, false);
+					}
+					else
+					{
+						if (!target->HasAuraType(SPELL_AURA_DEFLECT_SPELLS)) // Deterrence
+						{
+							target->CastSpell(pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), damage, true);
+							target->CastStop();
+						}
+					}
                 }
             }
 

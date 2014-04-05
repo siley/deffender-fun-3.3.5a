@@ -3095,6 +3095,9 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->ProcCharges = 2;
                 spellInfo->StackAmount = 0;
                 break;
+			case 49575:
+                spellInfo->Effects[0].MiscValueB = 70;
+                break;
             case 28200: // Ascendance (Talisman of Ascendance trinket)
                 spellInfo->ProcCharges = 6;
                 break;
