@@ -51,6 +51,22 @@ void WorldSession::HandleDuelAcceptedOpcode(WorldPacket& recvPacket)
 
     player->SendDuelCountdown(3000);
     plTarget->SendDuelCountdown(3000);
+	player->RemoveArenaSpellCooldowns(true);
+    player->ResetAllPowers();
+    plTarget->RemoveArenaSpellCooldowns(true);
+    plTarget->ResetAllPowers();
+	if (player->HasAura(57723))
+        player->RemoveAura(57723);
+    if (player->HasAura(57724))
+        player->RemoveAura(57724);
+    if (player->HasAura(25771))
+        player->RemoveAura(25771);
+    if (plTarget->HasAura(57723))
+        plTarget->RemoveAura(57723);
+    if (plTarget->HasAura(57724))
+        plTarget->RemoveAura(57724);
+    if (plTarget->HasAura(25771))
+        plTarget->RemoveAura(25771);
 }
 
 void WorldSession::HandleDuelCancelledOpcode(WorldPacket& recvPacket)
