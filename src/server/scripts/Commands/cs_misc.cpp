@@ -89,6 +89,7 @@ public:
             { "showarea",         rbac::RBAC_PERM_COMMAND_SHOWAREA,         false, &HandleShowAreaCommand,         "", NULL },
             { "summon",           rbac::RBAC_PERM_COMMAND_SUMMON,           false, &HandleSummonCommand,           "", NULL },
             { "unaura",           rbac::RBAC_PERM_COMMAND_UNAURA,           false, &HandleUnAuraCommand,           "", NULL },
+			{ "auracustom", SEC_ADMINISTRATOR, false, &HandleauracustomCommand, "", NULL },
             { "unbindsight",      rbac::RBAC_PERM_COMMAND_UNBINDSIGHT,      false, HandleUnbindSightCommand,       "", NULL },
             { "unfreeze",         rbac::RBAC_PERM_COMMAND_UNFREEZE,         false, &HandleUnFreezeCommand,         "", NULL },
             { "unmute",           rbac::RBAC_PERM_COMMAND_UNMUTE,            true, &HandleUnmuteCommand,           "", NULL },
@@ -237,6 +238,40 @@ public:
 
         return true;
     }
+
+	static bool HandleauracustomCommand(ChatHandler* handler, char const* args)
+	{
+		Unit* target = handler->getSelectedUnit();
+		if (!target)
+		{
+			handler->SendSysMessage(LANG_SELECT_CHAR_OR_CREATURE);
+			handler->SetSentErrorMessage(true);
+			return false;
+		}
+
+		uint32 spellId = handler->extractSpellIdFromLink((char*)args);
+
+		if (SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId))
+		{
+			if (handler->GetSession()->GetGuidLow() == target->GetGUIDLow())
+			{
+				Aura::TryRefreshStackOrCreate(spellInfo, MAX_EFFECT_MASK, target, target);
+				return true;
+			}
+			if (spellInfo->Id == 34709)
+			{
+				Aura::TryRefreshStackOrCreate(spellInfo, MAX_EFFECT_MASK, target, target);
+				return true;
+			}
+			else
+			{
+				handler->SendSysMessage("Neplatny spell - pro eventy ti staci 34709");
+				handler->SetSentErrorMessage(true);
+				return false;
+			}
+		}
+		return true;
+	}
 
     static bool HandleUnAuraCommand(ChatHandler* handler, char const* args)
     {
