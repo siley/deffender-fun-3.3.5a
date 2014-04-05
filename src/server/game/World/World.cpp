@@ -80,6 +80,7 @@
 #include "CalendarMgr.h"
 #include "BattlefieldMgr.h"
 #include "TransportMgr.h"
+#include "DynamicTeleportMgr.h" // WLK - DYNAMIC TELEPORTER
 
 ACE_Atomic_Op<ACE_Thread_Mutex, bool> World::m_stopEvent = false;
 uint8 World::m_ExitCode = SHUTDOWN_EXIT_CODE;
@@ -1291,6 +1292,9 @@ void World::SetInitialWorldSettings()
 
     ///- Init highest guids before any table loading to prevent using not initialized guids in some code.
     sObjectMgr->SetHighestGuids();
+
+	// WLK - DYNAMIC TELEPORTER
+    sDynamicTeleportMgr->Init();
 
     ///- Check the existence of the map files for all races' startup areas.
     if (!MapManager::ExistMapAndVMap(0, -6240.32f, 331.033f)

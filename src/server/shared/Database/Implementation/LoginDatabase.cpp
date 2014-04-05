@@ -99,6 +99,6 @@ void LoginDatabaseConnection::DoPrepareStatements()
     PrepareStatement(LOGIN_SEL_ACCOUNT_ACCESS_BY_ID, "SELECT gmlevel, RealmID FROM account_access WHERE id = ? and (RealmID = ? OR RealmID = -1) ORDER BY gmlevel desc", CONNECTION_SYNCH);
 
     PrepareStatement(LOGIN_SEL_FUN_ACCOUNT_PERMISSIONS, "SELECT permissionId, granted FROM fun_account_permissions WHERE accountId = ? AND (realmId = ? OR realmId = -1) ORDER BY permissionId, realmId", CONNECTION_SYNCH);
-    PrepareStatement(LOGIN_INS_FUN_ACCOUNT_PERMISSION, "INSERT INTO fun_account_permissions (accountId, permissionId, granted, realmId) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE granted = VALUES(granted)", CONNECTION_ASYNC);
-    PrepareStatement(LOGIN_DEL_FUN_ACCOUNT_PERMISSION, "DELETE FROM fun_account_permissions WHERE accountId = ? AND permissionId = ? AND (realmId = ? OR realmId = -1)", CONNECTION_ASYNC)
+	PrepareStatement(LOGIN_INS_FUN_ACCOUNT_PERMISSION, "INSERT INTO fun_account_permissions (accountId, permissionId, granted, realmId) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE granted = VALUES(granted)", CONNECTION_ASYNC);
+	PrepareStatement(LOGIN_DEL_FUN_ACCOUNT_PERMISSION, "DELETE FROM fun_account_permissions WHERE accountId = ? AND permissionId = ? AND (realmId = ? OR realmId = -1)", CONNECTION_ASYNC);
 }
