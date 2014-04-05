@@ -58,11 +58,12 @@ class AccountMgr
         ~AccountMgr();
 
     public:
-        AccountOpResult CreateAccount(std::string username, std::string password);
+        AccountOpResult CreateAccount(std::string username, std::string password, std::string email);
         static AccountOpResult DeleteAccount(uint32 accountId);
         static AccountOpResult ChangeUsername(uint32 accountId, std::string newUsername, std::string newPassword);
         static AccountOpResult ChangePassword(uint32 accountId, std::string newPassword);
         static AccountOpResult ChangeEmail(uint32 accountId, std::string newEmail);
+        static AccountOpResult ChangeRegEmail(uint32 accountId, std::string newEmail);
         static bool CheckPassword(uint32 accountId, std::string password);
         static bool CheckEmail(uint32 accountId, std::string newEmail);
 

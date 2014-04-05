@@ -32,13 +32,14 @@ AccountMgr::~AccountMgr()
     ClearRBAC();
 }
 
-AccountOpResult AccountMgr::CreateAccount(std::string username, std::string password)
+AccountOpResult AccountMgr::CreateAccount(std::string username, std::string password, std::string email = "")
 {
     if (utf8length(username) > MAX_ACCOUNT_STR)
         return AOR_NAME_TOO_LONG;                           // username's too long
 
     normalizeString(username);
     normalizeString(password);
+    normalizeString(email);
 
     if (GetId(username))
         return AOR_NAME_ALREADY_EXIST;                       // username does already exist
@@ -47,6 +48,8 @@ AccountOpResult AccountMgr::CreateAccount(std::string username, std::string pass
 
     stmt->setString(0, username);
     stmt->setString(1, CalculateShaPassHash(username, password));
+    stmt->setString(2, email);
+    stmt->setString(3, email);
 
     LoginDatabase.DirectExecute(stmt); // Enforce saving, otherwise AddGroup can fail
 
@@ -203,6 +206,29 @@ AccountOpResult AccountMgr::ChangeEmail(uint32 accountId, std::string newEmail)
     normalizeString(newEmail);
 
     PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_EMAIL);
+
+    stmt->setString(0, newEmail);
+    stmt->setUInt32(1, accountId);
+
+    LoginDatabase.Execute(stmt);
+
+    return AOR_OK;
+}
+
+AccountOpResult AccountMgr::ChangeRegEmail(uint32 accountId, std::string newEmail)
+{
+    std::string username;
+
+    if (!GetName(accountId, username))
+        return AOR_NAME_NOT_EXIST;                          // account doesn't exist
+
+    if (utf8length(newEmail) > MAX_EMAIL_STR)
+        return AOR_EMAIL_TOO_LONG;
+
+    normalizeString(username);
+    normalizeString(newEmail);
+
+    PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_UPD_REG_EMAIL);
 
     stmt->setString(0, newEmail);
     stmt->setUInt32(1, accountId);

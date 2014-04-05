@@ -169,6 +169,7 @@ enum RBACPermissions
     RBAC_PERM_COMMAND_ACCOUNT_EMAIL                          = 263,
     RBAC_PERM_COMMAND_ACCOUNT_SET_SEC                        = 264,
     RBAC_PERM_COMMAND_ACCOUNT_SET_SEC_EMAIL                  = 265,
+    RBAC_PERM_COMMAND_ACCOUNT_SET_SEC_REGMAIL                = 266,
     RBAC_PERM_COMMAND_CAST                                   = 267,
     RBAC_PERM_COMMAND_CAST_BACK                              = 268,
     RBAC_PERM_COMMAND_CAST_DIST                              = 269,

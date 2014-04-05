@@ -1408,6 +1408,7 @@ public:
          * * Account: %s (id: %u), GM Level: %u      - V.    LANG_PINFO_ACC_ACCOUNT
          * * Last Login: %u (Failed Logins: %u)      - VI.   LANG_PINFO_ACC_LASTLOGIN
          * * Uses OS: %s - Latency: %u ms            - VII.  LANG_PINFO_ACC_OS
+         * * Registration Email: %s - Email: %s      - VIII. LANG_PINFO_ACC_REGMAILS
          * * Last IP: %u (Locked: %s)                - IX.   LANG_PINFO_ACC_IP
          * * Level: %u (%u/%u XP (%u XP left)        - X.    LANG_PINFO_CHR_LEVEL
          * * Race: %s %s, Class %s                   - XI.   LANG_PINFO_CHR_RACE
@@ -1433,6 +1434,7 @@ public:
         uint32 accId                  = 0;
         uint32 lowguid                = GUID_LOPART(targetGuid);
         std::string eMail             = handler->GetTrinityString(LANG_ERROR);
+        std::string regMail           = handler->GetTrinityString(LANG_ERROR);
         uint32 security               = 0;
         std::string lastIp            = handler->GetTrinityString(LANG_ERROR);
         uint8 locked                  = 0;
@@ -1553,6 +1555,7 @@ public:
                (!handler->GetSession() || handler->GetSession()->GetSecurity() >= AccountTypes(security)))
             {
                 eMail     = fields[2].GetString();
+                regMail   = fields[3].GetString();
                 lastIp    = fields[4].GetString();
                 lastLogin = fields[5].GetString();
 
@@ -1672,6 +1675,9 @@ public:
 
         // Output VII. LANG_PINFO_ACC_OS
         handler->PSendSysMessage(LANG_PINFO_ACC_OS, OS.c_str(), latency);
+
+        // Output VIII. LANG_PINFO_ACC_REGMAILS
+        handler->PSendSysMessage(LANG_PINFO_ACC_REGMAILS, regMail.c_str(), eMail.c_str());
 
         // Output IX. LANG_PINFO_ACC_IP
         handler->PSendSysMessage(LANG_PINFO_ACC_IP, lastIp.c_str(), locked ? "Yes" : "No");

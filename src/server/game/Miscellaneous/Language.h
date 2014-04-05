@@ -798,6 +798,7 @@ enum TrinityStrings
     LANG_PINFO_ACC_ACCOUNT              = 714,
     LANG_PINFO_ACC_LASTLOGIN            = 716,
     LANG_PINFO_ACC_OS                   = 749,
+    LANG_PINFO_ACC_REGMAILS             = 879,
     LANG_PINFO_ACC_IP                   = 752,
     LANG_PINFO_CHR_LEVEL_LOW            = 843,
     LANG_PINFO_CHR_RACE                 = 844,
