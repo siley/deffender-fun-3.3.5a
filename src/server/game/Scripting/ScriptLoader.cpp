@@ -1439,6 +1439,8 @@ void AddBattlegroundScripts()
 void AddSC_npc_dynamic_teleporter();
 void AddSC_NPC_vip();
 void AddSC_guildporter();
+void AddSC_arena_top_teams();
+void AddSC_ArenaWatcher();
 #endif
 
 void AddCustomScripts()
@@ -1448,5 +1450,7 @@ void AddCustomScripts()
 	AddSC_npc_dynamic_teleporter();
 	AddSC_NPC_vip();
 	AddSC_guildporter();
+	AddSC_arena_top_teams();
+	AddSC_ArenaWatcher();
 #endif
 }

@@ -13,6 +13,8 @@ set(scripts_STAT_SRCS
   Custom/dynamic_teleporter.cpp
   Custom/vip_npc.cpp
   Custom/guildporter.cpp
+  Custom/npc_arena_spectator.cpp
+  Custom/npc_arena_teams.cpp
 )
 
 message("  -> Prepared: Custom")
