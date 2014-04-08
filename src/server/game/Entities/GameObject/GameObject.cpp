@@ -284,7 +284,7 @@ bool GameObject::Create(uint32 guidlow, uint32 name_id, Map* map, uint32 phaseMa
 
     // Initialize loot duplicate count depending on raid difficulty
     if (map->Is25ManRaid())
-        loot.maxDuplicates = 3;
+        loot.maxDuplicates = 1;
 
     return true;
 }
