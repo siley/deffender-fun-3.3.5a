@@ -1442,6 +1442,7 @@ void AddSC_guildporter();
 void AddSC_arena_top_teams();
 void AddSC_ArenaWatcher();
 void AddSC_BountyHunter();
+void AddSC_npc_argent_ring_restorer();
 #endif
 
 void AddCustomScripts()
@@ -1454,5 +1455,6 @@ void AddCustomScripts()
 	AddSC_arena_top_teams();
 	AddSC_ArenaWatcher();
 	AddSC_BountyHunter();
+	AddSC_npc_argent_ring_restorer();
 #endif
 }

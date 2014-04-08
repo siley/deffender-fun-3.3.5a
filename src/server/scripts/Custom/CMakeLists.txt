@@ -16,6 +16,7 @@ set(scripts_STAT_SRCS
   Custom/npc_arena_spectator.cpp
   Custom/npc_arena_teams.cpp
   Custom/BountyHunter.cpp
+  Custom/npc_ashen_ring_restorer.cpp
 )
 
 message("  -> Prepared: Custom")
