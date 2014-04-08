@@ -1441,6 +1441,7 @@ void AddSC_NPC_vip();
 void AddSC_guildporter();
 void AddSC_arena_top_teams();
 void AddSC_ArenaWatcher();
+void AddSC_BountyHunter();
 #endif
 
 void AddCustomScripts()
@@ -1452,5 +1453,6 @@ void AddCustomScripts()
 	AddSC_guildporter();
 	AddSC_arena_top_teams();
 	AddSC_ArenaWatcher();
+	AddSC_BountyHunter();
 #endif
 }

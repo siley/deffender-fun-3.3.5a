@@ -15,6 +15,7 @@ set(scripts_STAT_SRCS
   Custom/guildporter.cpp
   Custom/npc_arena_spectator.cpp
   Custom/npc_arena_teams.cpp
+  Custom/BountyHunter.cpp
 )
 
 message("  -> Prepared: Custom")

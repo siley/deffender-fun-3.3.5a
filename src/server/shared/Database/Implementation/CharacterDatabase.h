@@ -537,6 +537,7 @@ enum CharacterDatabaseStatements
 	// Custom
      CHAR_ITEM,
      CHAR_GM,
+	 CHAR_DEL_BOUNTY,
 
     MAX_CHARACTERDATABASE_STATEMENTS
 };
