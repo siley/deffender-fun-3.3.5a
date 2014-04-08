@@ -260,7 +260,7 @@ void WorldSession::HandleGroupDeclineOpcode(WorldPacket & /*recvData*/)
     Player* leader = ObjectAccessor::FindPlayer(group->GetLeaderGUID());
 
     // uninvite, group can be deleted
-    GetPlayer()->UninviteFromGroup();
+	GetPlayer()->UninviteFromGroup(group);
 
     if (!leader || !leader->GetSession())
         return;
@@ -313,7 +313,7 @@ void WorldSession::HandleGroupUninviteGuidOpcode(WorldPacket& recvData)
 
     if (Player* player = grp->GetInvited(guid))
     {
-        player->UninviteFromGroup();
+        player->UninviteFromGroup(grp);
         return;
     }
 
@@ -358,7 +358,7 @@ void WorldSession::HandleGroupUninviteOpcode(WorldPacket& recvData)
 
     if (Player* player = grp->GetInvited(membername))
     {
-        player->UninviteFromGroup();
+        player->UninviteFromGroup(grp);
         return;
     }
 
