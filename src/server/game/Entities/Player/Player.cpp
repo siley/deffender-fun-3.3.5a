@@ -897,6 +897,10 @@ Player::Player(WorldSession* session): Unit(true)
     _activeCheats = CHEAT_NONE;
     m_achievementMgr = new AchievementMgr(this);
     m_reputationMgr = new ReputationMgr(this);
+
+	// Arena Crystal
+	m_clicked = false;
+	timeDiff = 0;
 }
 
 Player::~Player()

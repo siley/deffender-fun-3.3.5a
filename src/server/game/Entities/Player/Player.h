@@ -2303,6 +2303,8 @@ class Player : public Unit, public GridObject<Player>
 
         std::string GetMapAreaAndZoneString();
         std::string GetCoordsMapAreaAndZoneString();
+		bool m_clicked;
+		int32 timeDiff;
 
     protected:
         // Gamemaster whisper whitelist
