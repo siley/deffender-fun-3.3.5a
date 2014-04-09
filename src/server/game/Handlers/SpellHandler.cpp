@@ -568,6 +568,34 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPacket& recvData)
     if (!unit)
         return;
 
+	if (unit->ToCreature())
+    {
+        CreatureOutfitContainer* outfits = sObjectMgr->GetCreatureOutfitMap();
+        CreatureOutfitContainer::const_iterator it = outfits->find(unit->GetEntry());
+        if (it != outfits->end())
+        {
+            WorldPacket data(SMSG_MIRRORIMAGE_DATA, 68);
+            data << uint64(guid);
+            data << uint32(unit->GetDisplayId());   // displayId
+            data << uint8(it->second.race);         // race
+            data << uint8(it->second.gender);       // gender
+            data << uint8(1);                       // class
+            data << uint8(it->second.skin);         // skin
+            data << uint8(it->second.face);         // face
+            data << uint8(it->second.hair);         // hair
+            data << uint8(it->second.haircolor);    // haircolor
+            data << uint8(it->second.facialhair);   // facialhair
+            data << uint32(0);                      // guildId
+
+            // item displays
+            for (uint32 i = 0; i < MAX_CREATURE_OUTFIT_DISPLAYS; ++i)
+                data << uint32(it->second.outfit[i]);
+
+            SendPacket(&data);
+            return;
+        }
+    }
+
     if (!unit->HasAuraType(SPELL_AURA_CLONE_CASTER))
         return;
 
