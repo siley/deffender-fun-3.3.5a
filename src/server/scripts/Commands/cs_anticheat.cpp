@@ -75,7 +75,7 @@ public:
 
 		while (char* line = handler->LineFromMessage(pos))
 		{
-			handler->FillSystemMessageData(&data, line);
+			handler->BuildChatPacket(data, CHAT_MSG_SYSTEM, LANG_UNIVERSAL, NULL, NULL, line);
 			pTarget->GetSession()->SendPacket(&data);
 		}
 

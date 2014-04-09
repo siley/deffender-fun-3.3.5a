@@ -524,7 +524,7 @@ public:
 
 	static bool HandleReloadCreatureTemplateOutfitsCommand(ChatHandler* handler, const char* /*args*/)
     {
-        TC_LOG_INFO(LOG_FILTER_GENERAL, "Loading Creature Outfits... (`creature_template_outfits`)");
+		TC_LOG_INFO("misc", "Loading Creature Outfits... (`creature_template_outfits`)");
         sObjectMgr->LoadCreatureOutfits();
         handler->SendGlobalGMSysMessage("DB table `creature_template_outfits` reloaded.");
         return true;
