@@ -1449,6 +1449,7 @@ void AddSC_BountyHunter();
 void AddSC_npc_argent_ring_restorer();
 void AddSC_command_mmr();
 void AddSC_object_arena_crystal();
+void AddSC_CPWS_Transmogrification();
 #endif
 
 void AddCustomScripts()
@@ -1464,5 +1465,6 @@ void AddCustomScripts()
 	AddSC_npc_argent_ring_restorer();
 	AddSC_command_mmr();
 	AddSC_object_arena_crystal();
+	AddSC_CPWS_Transmogrification();
 #endif
 }

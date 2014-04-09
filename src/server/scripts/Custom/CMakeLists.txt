@@ -19,6 +19,9 @@ set(scripts_STAT_SRCS
   Custom/npc_ashen_ring_restorer.cpp
   Custom/object_arena_crystal.cpp
   Custom/command_mmr.cpp
+  Custom/Transmogrification.h
+	Custom/Transmogrification.cpp
+	Custom/Transmogrifier.cpp
 )
 
 message("  -> Prepared: Custom")
