@@ -352,7 +352,7 @@ class boss_sindragosa : public CreatureScript
                         events.ScheduleEvent(EVENT_LAND, 30000);
                         break;
                     case POINT_LAND:
-                        events.ScheduleEvent(EVENT_LAND_GROUND, 1);
+						events.ScheduleEvent(EVENT_LAND_GROUND, 5 * IN_MILLISECONDS);
                         break;
                     case POINT_LAND_GROUND:
                     {
@@ -1058,6 +1058,12 @@ class spell_sindragosa_s_fury : public SpellScriptLoader
             void HandleDummy(SpellEffIndex effIndex)
             {
                 PreventHitDefaultEffect(effIndex);
+
+				// Hack - Beaconed players shouldn't get gripped with this
+
+				if (Unit* unit = GetHitUnit())
+					if (unit->HasAura(SPELL_FROST_BEACON))
+						return;
 
                 if (!GetHitUnit()->IsAlive() || !_targetCount)
                     return;
