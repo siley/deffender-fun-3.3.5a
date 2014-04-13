@@ -1,0 +1,1 @@
+insert into `trinity_string` values('11004','*Censure*',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
