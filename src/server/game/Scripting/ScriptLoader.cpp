@@ -1480,7 +1480,6 @@ void AddCustomScripts()
 	AddSC_TW_boss_black_knight();
 	AddSC_TW_boss_argent_challenge();
 	AddSC_TW_trial_of_the_champion();
-	AddSC_TW_trial_of_the_champion();
 	AddSC_TW_boss_thorim();
 	AddSC_TW_boss_mimiron();
 #endif
