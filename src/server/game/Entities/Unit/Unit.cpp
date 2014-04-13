@@ -7573,10 +7573,28 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 damage, Aura* triggeredByAura, Sp
                     CastCustomSpell(this, 67545, &bp0, NULL, NULL, true, NULL, triggeredByAura->GetEffect(EFFECT_0), GetGUID());
                     return true;
                 }
-            }
-            break;
+				case 11119: // Ignite
+				case 11120:
+				case 12846:
+				case 12847:
+				case 12848:
+				{
+				  // dont proc Ignite on Molten Armor crits.
+				  if (procSpell && procSpell->SpellIconID == 2307 && procSpell->SpellVisual[0] == 0)
+						  *handled = true;
+						  break;
+				}
+				default:
+					break;
+			}
+			// Molten Armor
+			if (dummySpell->SpellIconID == 2307 && dummySpell->SpellVisual[0] == 7757)
+			if (procEx & PROC_EX_ABSORB && damage <= 0) // dont proc if damage is fully absorbed.
+				*handled = true;
+             break;
         }
-        case SPELLFAMILY_DEATHKNIGHT:
+
+		case SPELLFAMILY_DEATHKNIGHT:
         {
             // Blood of the North
             // Reaping
