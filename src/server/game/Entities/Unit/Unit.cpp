@@ -10314,10 +10314,19 @@ uint32 Unit::SpellDamageBonusTaken(Unit* caster, SpellInfo const* spellProto, ui
     // Mod damage from spell mechanic
     if (uint32 mechanicMask = spellProto->GetAllEffectsMechanicMask())
     {
+		int32 dmgBonusDisease = 0;
         AuraEffectList const& mDamageDoneMechanic = GetAuraEffectsByType(SPELL_AURA_MOD_MECHANIC_DAMAGE_TAKEN_PERCENT);
         for (AuraEffectList::const_iterator i = mDamageDoneMechanic.begin(); i != mDamageDoneMechanic.end(); ++i)
-            if (mechanicMask & uint32(1<<((*i)->GetMiscValue())))
-                AddPct(TakenTotalMod, (*i)->GetAmount());
+        if (mechanicMask & uint32(1 << ((*i)->GetMiscValue())))
+		{
+			if ((*i)->GetSpellInfo()->Id != 65142)
+				AddPct(TakenTotalMod, (*i)->GetAmount());
+			else if ((*i)->GetAmount() > dmgBonusDisease)
+				dmgBonusDisease = (*i)->GetAmount();
+		}
+
+		if (dmgBonusDisease != 0)
+			AddPct(TakenTotalMod, dmgBonusDisease);
     }
 
     int32 TakenAdvertisedBenefit = SpellBaseDamageBonusTaken(spellProto->GetSchoolMask());
