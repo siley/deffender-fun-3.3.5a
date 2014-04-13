@@ -3662,6 +3662,15 @@ void SpellMgr::LoadSpellInfoCorrections()
                 break;
             // ENDOF ISLE OF CONQUEST SPELLS
             //
+			case 1822: // Rake 
+			case 1823:
+			case 1824:
+			case 9904:
+			case 27003:
+			case 48573:
+			case 48574:
+				spellInfo->AttributesCu |= SPELL_ATTR0_CU_IGNORE_ARMOR;
+				break;
             default:
                 break;
         }
