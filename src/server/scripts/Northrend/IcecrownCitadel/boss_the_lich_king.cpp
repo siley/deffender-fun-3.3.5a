@@ -958,7 +958,7 @@ class boss_the_lich_king : public CreatureScript
                             break;
                         case EVENT_HARVEST_SOUL:
                             Talk(SAY_LK_HARVEST_SOUL);
-                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, SpellTargetSelector(me, SPELL_HARVEST_SOUL)))
+                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, SpellTargetSelector(me, SPELL_HARVEST_SOUL)))
                                 DoCast(target, SPELL_HARVEST_SOUL);
                             events.ScheduleEvent(EVENT_HARVEST_SOUL, 75000, 0, PHASE_THREE);
                             break;
@@ -2010,6 +2010,12 @@ class spell_the_lich_king_infest : public SpellScriptLoader
 
             void OnPeriodic(AuraEffect const* /*aurEff*/)
             {
+				if (GetUnitOwner()->HasAura(SPELL_HARVEST_SOUL_VALKYR))
+					{
+						PreventDefaultAction();
+						Remove(AURA_REMOVE_BY_ENEMY_SPELL);
+					}
+
                 if (GetUnitOwner()->HealthAbovePct(90))
                 {
                     PreventDefaultAction();
