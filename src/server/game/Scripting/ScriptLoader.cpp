@@ -472,6 +472,7 @@ void AddSC_boss_kologarn();
 void AddSC_boss_assembly_of_iron();
 void AddSC_boss_general_vezax();
 void AddSC_ulduar_teleporter();
+void AddSC_xt_teleporter();
 void AddSC_boss_mimiron();
 void AddSC_boss_hodir();
 void AddSC_boss_freya();
@@ -1314,6 +1315,7 @@ void AddNorthrendScripts()
     AddSC_boss_assembly_of_iron();
     AddSC_boss_kologarn();
     AddSC_ulduar_teleporter();
+	AddSC_xt_teleporter();
     AddSC_boss_mimiron();
     AddSC_boss_hodir();
     AddSC_boss_freya();
@@ -1455,6 +1457,8 @@ void AddSC_TW_boss_grand_champions();
 void AddSC_TW_boss_black_knight();
 void AddSC_TW_boss_argent_challenge();
 void AddSC_TW_trial_of_the_champion();
+void AddSC_TW_boss_thorim();
+void AddSC_TW_boss_mimiron();
 #endif
 
 void AddCustomScripts()
@@ -1476,5 +1480,8 @@ void AddCustomScripts()
 	AddSC_TW_boss_black_knight();
 	AddSC_TW_boss_argent_challenge();
 	AddSC_TW_trial_of_the_champion();
+	AddSC_TW_trial_of_the_champion();
+	AddSC_TW_boss_thorim();
+	AddSC_TW_boss_mimiron();
 #endif
 }
