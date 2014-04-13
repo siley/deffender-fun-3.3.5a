@@ -5661,6 +5661,10 @@ void AuraEffect::HandlePeriodicTriggerSpellAuraTick(Unit* target, Unit* caster) 
                 GetBase()->GetUnitOwner()->CastSpell(target, triggeredSpellInfo, true, 0, this, GetBase()->GetUnitOwner()->GetGUID());
                 return;
             }
+			case 56654:
+            case 58882:
+                caster->CastCustomSpell(caster, 58883, &m_amount, NULL, NULL, true, NULL, this, caster->GetGUID());
+                return;
             // Slime Spray - temporary here until preventing default effect works again
             // added on 9.10.2010
             case 69508:
