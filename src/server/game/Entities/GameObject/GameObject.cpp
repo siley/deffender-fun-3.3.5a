@@ -1900,6 +1900,8 @@ void GameObject::ModifyHealth(int32 change, Unit* attackerOrHealer /*= NULL*/, u
                                                     // change >= 0 triggers SPELL_BUILDING_DAMAGE event
         data << uint32(spellId);
         player->SendDirectMessage(&data);
+		if (Battleground* bg = player->GetBattleground())
+			bg->EventPlayerDamagedGO(player, this, m_goInfo->building.damageEvent);
     }
 
     GameObjectDestructibleState newState = GetDestructibleState();

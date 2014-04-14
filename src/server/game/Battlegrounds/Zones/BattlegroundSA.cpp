@@ -550,7 +550,7 @@ void BattlegroundSA::EventPlayerDamagedGO(Player* /*player*/, GameObject* go, ui
 
     if (eventType == go->GetGOInfo()->building.damagedEvent)
     {
-        uint32 i = getGateIdFromDamagedOrDestroyEventId(eventType);
+		uint32 i = getGateIdFromEventId(eventType);
         GateStatus[i] = BG_SA_GATE_DAMAGED;
         uint32 uws = getWorldStateFromGateId(i);
         if (uws)
@@ -566,7 +566,14 @@ void BattlegroundSA::EventPlayerDamagedGO(Player* /*player*/, GameObject* go, ui
     }
 
     if (eventType == go->GetGOInfo()->building.damageEvent)
-        SendWarningToAll(LANG_BG_SA_IS_UNDER_ATTACK, go->GetGOInfo()->name.c_str());
+        {
+		uint32 i = getGateIdFromEntry(go->GetEntry());
+		if (GateStatus[i] == BG_SA_GATE_OK)
+		{
+			SendWarningToAll(LANG_BG_SA_IS_UNDER_ATTACK, go->GetGOInfo()->name.c_str());
+			GateStatus[i] = BG_SA_GATE_DAMAGE;
+		}
+	}
 }
 
 void BattlegroundSA::HandleKillUnit(Creature* creature, Player* killer)
@@ -620,7 +627,7 @@ void BattlegroundSA::DemolisherStartState(bool start)
 
 void BattlegroundSA::DestroyGate(Player* player, GameObject* go)
 {
-    uint32 i = getGateIdFromDamagedOrDestroyEventId(go->GetGOInfo()->building.destroyedEvent);
+	uint32 i = getGateIdFromEventId(go->GetGOInfo()->building.destroyedEvent);
     if (!GateStatus[i])
         return;
 
@@ -935,6 +942,7 @@ void BattlegroundSA::UpdateDemolisherSpawns()
                                 BG_SA_NpcSpawnlocs[i][2], BG_SA_NpcSpawnlocs[i][3]);
 
                             Demolisher->Respawn();
+							Demolisher->setFaction(BG_SA_Factions[Attackers]);
                             DemoliserRespawnList.erase(i);
                         }
                     }
