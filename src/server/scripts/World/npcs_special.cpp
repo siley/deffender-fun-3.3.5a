@@ -2353,6 +2353,66 @@ public:
     };
 };
 
+class npc_risen_ally : public CreatureScript
+{
+public:
+    npc_risen_ally() : CreatureScript("npc_risen_ally") { }
+
+       CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_risen_allyAI(creature);
+    }
+
+    struct npc_risen_allyAI : ScriptedAI
+    {
+        npc_risen_allyAI(Creature* creature) : ScriptedAI(creature) {}
+
+        void InitializeAI()
+        {
+            me->setPowerType(POWER_ENERGY);
+            me->SetMaxPower(POWER_ENERGY, 100);
+            me->SetPower(POWER_ENERGY, 100);
+            me->SetSheath(SHEATH_STATE_MELEE);
+            me->SetByteFlag(UNIT_FIELD_BYTES_2, 2, UNIT_CAN_BE_ABANDONED);
+            me->SetUInt32Value(UNIT_FIELD_BYTES_0, 2048);
+            me->SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE);
+            me->SetUInt32Value(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_NONE);
+            me->SetFloatValue(UNIT_FIELD_COMBATREACH, 1.5f);
+        }
+
+        void Reset()
+        {
+            me->setPowerType(POWER_ENERGY);
+            me->SetMaxPower(POWER_ENERGY, 100);
+        }
+
+        void IsSummonedBy(Unit* owner)
+        {
+            me->setPowerType(POWER_ENERGY);
+            me->SetMaxPower(POWER_ENERGY, 100);
+            me->SetPower(POWER_ENERGY, 100);
+        }
+
+        void JustDied(Unit* /*killer*/)
+        {
+           if (me->GetOwner())
+              {
+                 me->GetOwner()->RemoveAurasDueToSpell(62218);
+                 me->GetOwner()->RemoveAurasDueToSpell(46619);
+              }
+        }
+
+        void UpdateAI(uint32 diff) OVERRIDE
+        {
+           if (!me->IsCharmed())
+              me->DespawnOrUnsummon();
+
+           if (me->IsInCombat())
+              DoMeleeAttackIfReady();
+        }
+    };
+};
+
 void AddSC_npcs_special()
 {
     new npc_air_force_bots();
@@ -2375,4 +2435,5 @@ void AddSC_npcs_special()
     new npc_experience();
     new npc_firework();
     new npc_spring_rabbit();
+	new npc_risen_ally();
 }

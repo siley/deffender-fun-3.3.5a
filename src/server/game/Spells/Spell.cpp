@@ -5434,7 +5434,7 @@ SpellCastResult Spell::CheckPetCast(Unit* target)
 
     // dead owner (pets still alive when owners ressed?)
     if (Unit* owner = m_caster->GetCharmerOrOwner())
-        if (!owner->IsAlive())
+		if (!owner->IsAlive() && owner->getDeathState() != GHOULED)
             return SPELL_FAILED_CASTER_DEAD;
 
     if (!target && m_targets.GetUnitTarget())
