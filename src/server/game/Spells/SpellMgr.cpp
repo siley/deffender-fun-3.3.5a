@@ -3495,6 +3495,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 71614: // Ice Lock
                 spellInfo->Mechanic = MECHANIC_STUN;
                 break;
+			case 24259: // Spell Lock silence
+			    spellInfo->Speed = 80;
+		        break;
             case 72762: // Defile
                 spellInfo->DurationEntry = sSpellDurationStore.LookupEntry(559); // 53 seconds
                 break;

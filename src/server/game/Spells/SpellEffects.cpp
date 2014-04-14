@@ -685,6 +685,45 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
     // selection by spell family
     switch (m_spellInfo->SpellFamilyName)
     {
+		case SPELLFAMILY_GENERIC:
+			switch (m_spellInfo->Id)
+			{
+				case 58984: //shadowmeld
+				{
+					if (!m_caster)
+						return;
+
+					m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+					m_caster->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
+
+					bool instant_exit = true;
+					if (Player *pCaster = m_caster->ToPlayer()) // if is a creature instant exits combat, else check if someone in party is in combat in visibility distance
+						{
+						uint64 myGUID = pCaster->GetGUID();
+						float visibilityRange = pCaster->GetMap()->GetVisibilityRange();
+						if (Group *pGroup = pCaster->GetGroup())
+						{
+							const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
+							for (Group::member_citerator itr=membersList.begin(); itr!=membersList.end() && instant_exit; ++itr)
+								if (itr->guid != myGUID)
+									if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
+										if (GroupMember->IsInCombat() && pCaster->GetMap()==GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
+											instant_exit = false;
+						}
+
+						pCaster->SendAttackSwingCancelAttack();
+						}
+					if (!m_caster->GetInstanceScript() || !m_caster->GetInstanceScript()->IsEncounterInProgress()) //Don't leave combat if you are in combat with a boss
+						{
+						if (!instant_exit)
+							m_caster->getHostileRefManager().deleteReferences(); // exit combat after 6 seconds
+						else 
+							m_caster->CombatStop(); // isn't necessary to call AttackStop because is just called in CombatStop
+					}
+					return;
+				}
+			}
+			break;
         case SPELLFAMILY_PALADIN:
             switch (m_spellInfo->Id)
             {
@@ -1127,7 +1166,7 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
     TC_LOG_DEBUG("spells", "Spell::EffectTeleportUnits - teleport unit to %u %f %f %f %f\n", mapid, x, y, z, orientation);
 
     if (unitTarget->GetTypeId() == TYPEID_PLAYER)
-        unitTarget->ToPlayer()->TeleportTo(mapid, x, y, z, orientation, unitTarget == m_caster ? TELE_TO_SPELL : 0);
+		unitTarget->ToPlayer()->TeleportTo(mapid, x, y, z, orientation, unitTarget == m_caster ? TELE_TO_SPELL | TELE_TO_NOT_LEAVE_COMBAT : 0);
     else if (mapid == unitTarget->GetMapId())
         unitTarget->NearTeleportTo(x, y, z, orientation, unitTarget == m_caster);
     else

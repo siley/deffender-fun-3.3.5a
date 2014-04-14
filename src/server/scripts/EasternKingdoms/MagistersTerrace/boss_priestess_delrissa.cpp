@@ -475,7 +475,7 @@ enum RogueSpells
     SPELL_KIDNEY_SHOT       = 27615,
     SPELL_GOUGE             = 12540,
     SPELL_KICK              = 27613,
-    SPELL_VANISH            = 44290,
+    SPELL_VANISH            = 29448,
     SPELL_BACKSTAB          = 15657,
     SPELL_EVISCERATE        = 27611
 };
@@ -526,28 +526,10 @@ public:
             {
                 DoCast(me, SPELL_VANISH);
 
-                Unit* unit = SelectTarget(SELECT_TARGET_RANDOM, 0);
-
-                DoResetThreat();
-
-                if (unit)
-                    me->AddThreat(unit, 1000.0f);
-
                 InVanish = true;
                 Vanish_Timer = 30000;
                 Wait_Timer = 10000;
             } else Vanish_Timer -= diff;
-
-            if (InVanish)
-            {
-                if (Wait_Timer <= diff)
-                {
-                    DoCastVictim(SPELL_BACKSTAB, true);
-                    DoCastVictim(SPELL_KIDNEY_SHOT, true);
-                    me->SetVisible(true);       // ...? Hacklike
-                    InVanish = false;
-                } else Wait_Timer -= diff;
-            }
 
             if (Gouge_Timer <= diff)
             {
@@ -566,6 +548,22 @@ public:
                 DoCastVictim(SPELL_EVISCERATE);
                 Eviscerate_Timer = 4000;
             } else Eviscerate_Timer -= diff;
+
+			if (InVanish)
+			{
+				if (Wait_Timer <= diff)
+				{
+					
+					if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+					{
+						target->CastSpell(target, SPELL_BACKSTAB, true);
+						target->CastSpell(target, SPELL_KIDNEY_SHOT, true);
+					}
+					
+					InVanish = false;
+					
+				} else Wait_Timer -= diff;
+			}
 
             if (!InVanish)
                 DoMeleeAttackIfReady();

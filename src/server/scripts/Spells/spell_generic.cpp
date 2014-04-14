@@ -3432,7 +3432,16 @@ class spell_pvp_trinket_wotf_shared_cd : public SpellScriptLoader
             {
                 // This is only needed because spells cast from spell_linked_spell are triggered by default
                 // Spell::SendSpellCooldown() skips all spells with TRIGGERED_IGNORE_SPELL_AND_CATEGORY_CD
-                GetCaster()->ToPlayer()->AddSpellAndCategoryCooldowns(GetSpellInfo(), GetCastItem() ? GetCastItem()->GetEntry() : 0, GetSpell());
+                // GetCaster()->ToPlayer()->AddSpellAndCategoryCooldowns(GetSpellInfo(), GetCastItem() ? GetCastItem()->GetEntry() : 0, GetSpell());
+				Player* caster = GetCaster()->ToPlayer();
+				SpellInfo const* spellInfo = GetSpellInfo();
+				caster->AddSpellCooldown(spellInfo->Id, 0, time(NULL) + sSpellMgr->GetSpellInfo(SPELL_WILL_OF_THE_FORSAKEN_COOLDOWN_TRIGGER)->GetRecoveryTime() / IN_MILLISECONDS);
+				WorldPacket data(SMSG_SPELL_COOLDOWN, 8+1+4);
+				data << uint64(caster->GetGUID());
+				data << uint8(0);
+				data << uint32(spellInfo->Id);
+				data << uint32(0);
+				caster->GetSession()->SendPacket(&data);
             }
 
             void Register() OVERRIDE
@@ -3787,6 +3796,44 @@ public:
 	}
 };
 
+enum MusicBox
+{
+    SOUND_LAMENT_OF_THE_HIGHBORNE = 15095,
+};
+
+class spell_item_sylvanas_music_box : public SpellScriptLoader
+{
+    public:
+        spell_item_sylvanas_music_box() : SpellScriptLoader("spell_item_sylvanas_music_box") {}
+
+        class spell_item_sylvanas_music_box_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_item_sylvanas_music_box_SpellScript);
+
+            bool Load()
+            {
+                return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+            }
+
+            void HandleScript(SpellEffIndex effIndex)
+            {
+                PreventHitDefaultEffect(effIndex);
+                Player* player = GetCaster()->ToPlayer();
+                player->PlayDirectSound(SOUND_LAMENT_OF_THE_HIGHBORNE, player);
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_item_sylvanas_music_box_SpellScript::HandleScript, EFFECT_0, SPELL_EFFECT_SCRIPT_EFFECT);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_item_sylvanas_music_box_SpellScript();
+        }
+};
+
 void AddSC_generic_spell_scripts()
 {
 	new spell_shadowmeld();
@@ -3871,4 +3918,5 @@ void AddSC_generic_spell_scripts()
     new spell_gen_wg_water();
     new spell_gen_whisper_gulch_yogg_saron_whisper();
     new spell_gen_eject_all_passengers();
+	new spell_item_sylvanas_music_box();
 }
