@@ -465,7 +465,7 @@ class spell_dk_death_coil : public SpellScriptLoader
                 {
                     if (caster->IsFriendlyTo(target))
                     {
-                        int32 bp = int32(damage * 1.5f);
+						int32 bp = int32(damage * 2.25f);
                         caster->CastCustomSpell(target, SPELL_DK_DEATH_COIL_HEAL, &bp, NULL, NULL, true);
                     }
                     else
