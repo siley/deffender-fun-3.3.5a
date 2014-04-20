@@ -1445,8 +1445,6 @@ void AddBattlegroundScripts()
 void AddSC_npc_dynamic_teleporter();
 void AddSC_NPC_vip();
 void AddSC_guildporter();
-void AddSC_arena_top_teams();
-void AddSC_ArenaWatcher();
 void AddSC_BountyHunter();
 void AddSC_npc_argent_ring_restorer();
 void AddSC_command_mmr();
@@ -1468,8 +1466,6 @@ void AddCustomScripts()
 	AddSC_npc_dynamic_teleporter();
 	AddSC_NPC_vip();
 	AddSC_guildporter();
-	AddSC_arena_top_teams();
-	AddSC_ArenaWatcher();
 	AddSC_BountyHunter();
 	AddSC_npc_argent_ring_restorer();
 	AddSC_command_mmr();

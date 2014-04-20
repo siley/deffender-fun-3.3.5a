@@ -513,10 +513,6 @@ void GameObject::Update(uint32 diff)
 
                     if (ok)
                     {
-						if (Player* tmpPlr = ok->ToPlayer())
-							if (tmpPlr->IsSpectator())
-								return;
-
                         // some traps do not have spell but should be triggered
                         if (goInfo->trap.spellId)
                             CastSpell(ok, goInfo->trap.spellId);
@@ -1731,11 +1727,6 @@ void GameObject::Use(Unit* user)
 
 void GameObject::CastSpell(Unit* target, uint32 spellId)
 {
-	if (target)
-        if (Player* tmpPlr = target->ToPlayer())
-            if (tmpPlr->IsSpectator())
-                return;
-
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
     if (!spellInfo)
         return;

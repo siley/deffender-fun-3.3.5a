@@ -4635,10 +4635,6 @@ SpellCastResult Spell::CheckCast(bool strict)
         if (m_spellInfo->Attributes & SPELL_ATTR0_INDOORS_ONLY &&
                 m_caster->GetMap()->IsOutdoors(m_caster->GetPositionX(), m_caster->GetPositionY(), m_caster->GetPositionZ()))
             return SPELL_FAILED_ONLY_INDOORS;
-
-		if (Player *tmpPlayer = m_caster->ToPlayer())
-            if (tmpPlayer->IsSpectator())
-                return SPELL_FAILED_SPELL_UNAVAILABLE;
     }
 
     // only check at first call, Stealth auras are already removed at second call

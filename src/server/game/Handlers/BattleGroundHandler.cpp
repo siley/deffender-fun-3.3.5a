@@ -349,16 +349,6 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket &recvData)
     uint8 action;                                           // enter battle 0x1, leave queue 0x0
 
     recvData >> type >> unk2 >> bgTypeId_ >> unk >> action;
-
-	if (_player->IsSpectator())
-	{
-		if (Battleground* arena = _player->GetBattleground())
-			arena->RemoveSpectator(_player->GetGUID());
-		_player->CancelSpectate();
-		_player->TeleportToBGEntryPoint();
-		return;
-	}
-
     if (!sBattlemasterListStore.LookupEntry(bgTypeId_))
     {
         TC_LOG_DEBUG("bg.battleground", "CMSG_BATTLEFIELD_PORT %s ArenaType: %u, Unk: %u, BgType: %u, Action: %u. Invalid BgType!",
