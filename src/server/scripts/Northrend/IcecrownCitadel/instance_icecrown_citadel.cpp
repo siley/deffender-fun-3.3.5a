@@ -187,7 +187,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                     Map::PlayerList const &players = instance->GetPlayers();
                     if (!players.isEmpty())
                         if (Player* player = players.begin()->GetSource())
-                            TeamInInstance = player->GetTeam();
+							TeamInInstance = ALLIANCE;
                 }
 
                 switch (creature->GetEntry())
