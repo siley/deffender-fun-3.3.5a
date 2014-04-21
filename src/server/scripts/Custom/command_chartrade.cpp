@@ -70,8 +70,8 @@ public:
 				player->setChartradeID(member->GetGUID());
 				member->setChartradeID(playerGuid);
 				player->setChartradePreAccept(true);
-				ChatHandler(player->GetSession()).PSendSysMessage("Chartrade: Prave si zazadal hrace %s o vymenu postav a zaroven si oznacil sebe, ze s vymenou souhlasis. (Prozatim nedojde k vymene, ale pouze se spusti zacatek procesu)", member->GetName());
-				ChatHandler(member->GetSession()).PSendSysMessage("Chartrade: Hrac %s te zada o vymenu postav. Pokud mas o vymenu zajem, tak pouzij prikaz .chartrade accept (Prozatim nedojde k vymene, ale pouze se spusti zacatek procesu)", player->GetName());
+				ChatHandler(player->GetSession()).PSendSysMessage("Chartrade: Prave si zazadal hrace %s o vymenu postav a zaroven si oznacil sebe, ze s vymenou souhlasis. (Prozatim nedojde k vymene, ale pouze se spusti zacatek procesu)", member->GetName().c_str());
+				ChatHandler(member->GetSession()).PSendSysMessage("Chartrade: Hrac %s te zada o vymenu postav. Pokud mas o vymenu zajem, tak pouzij prikaz .chartrade accept (Prozatim nedojde k vymene, ale pouze se spusti zacatek procesu)", player->GetName().c_str());
 			}
 		}
 		else
