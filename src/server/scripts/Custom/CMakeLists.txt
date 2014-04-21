@@ -28,6 +28,7 @@ set(scripts_STAT_SRCS
   Custom/TrialOfTheChampion/TW_trial_of_the_champion.cpp
   Custom/Ulduar/TW_boss_thorim.cpp
   Custom/Ulduar/TW_boss_mimiron.cpp
+  Custom/command_chartrade.cpp
 )
 
 message("  -> Prepared: Custom")
