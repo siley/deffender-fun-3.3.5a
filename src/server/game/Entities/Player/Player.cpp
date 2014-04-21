@@ -26130,9 +26130,11 @@ void Player::ActivateSpec(uint8 spec)
             removeSpell(talentInfo->RankID[rank], true); // removes the talent, and all dependant, learned, and chained spells..
             if (const SpellInfo* _spellEntry = sSpellMgr->GetSpellInfo(talentInfo->RankID[rank]))
                 for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)                  // search through the SpellInfo for valid trigger spells
-                    if (_spellEntry->Effects[i].TriggerSpell > 0 && _spellEntry->Effects[i].Effect == SPELL_EFFECT_LEARN_SPELL)
-                        removeSpell(_spellEntry->Effects[i].TriggerSpell, true); // and remove any spells that the talent teaches
-            // if this talent rank can be found in the PlayerTalentMap, mark the talent as removed so it gets deleted
+                    if (_spellEntry->Effects[i].TriggerSpell > 0 && (_spellEntry->Effects[i].Effect == SPELL_EFFECT_LEARN_SPELL || _spellEntry->Effects[i].Effect == SPELL_EFFECT_TRIGGER_SPELL))
+                    {
+						removeSpell(_spellEntry->Effects[i].TriggerSpell, true); // and remove any spells that the talent teaches
+						RemoveAurasDueToSpell(_spellEntry->Effects[i].TriggerSpell, true);
+                    }
 			// if this talent rank can be found in the PlayerTalentMap, mark the talent as removed so it gets deleted
             //PlayerTalentMap::iterator plrTalent = m_talents[m_activeSpec]->find(talentInfo->RankID[rank]);
             //if (plrTalent != m_talents[m_activeSpec]->end())
