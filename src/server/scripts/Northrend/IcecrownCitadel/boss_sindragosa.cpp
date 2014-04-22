@@ -341,14 +341,12 @@ class boss_sindragosa : public CreatureScript
                         me->SetDisableGravity(false);
                         me->RemoveByteFlag(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND | UNIT_BYTE1_FLAG_HOVER);
                         me->SetHomePosition(SindragosaLandPos);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                         me->SetSpeed(MOVE_FLIGHT, 2.5f);
-
-                        // Sindragosa enters combat as soon as she lands
-                        DoZoneInCombat(me, 100.0f);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
 						// Sindragosa should be in combat here, otherwise EnterEvadeMode and despawn
 						if (!me->IsInCombat())
 							EnterEvadeMode();	
+						
                         break;
                     case POINT_TAKEOFF:
                         events.ScheduleEvent(EVENT_AIR_MOVEMENT, 1);
