@@ -1061,7 +1061,10 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					// also make gargoyle benefit from haste auras, like unholy presence
 					int meleeHaste = ((Player*)m_owner)->GetTotalAuraModifier(SPELL_AURA_MOD_MELEE_HASTE);
 					ApplyCastTimePercentMod(meleeHaste, true);			
-                    SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.5f));
+					float attackPower = 0.0f;
+					attackPower += int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.5f);
+					attackPower += int32(GetOwner()->GetTotalAuraModifier(SPELL_AURA_MOD_ATTACK_POWER));
+					SetBonusDamage(attackPower);
                     SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
                     SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
                     break;
