@@ -1137,6 +1137,8 @@ void Unit::CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* dam
 
     if (!victim)
         return;
+	if (!this)
+		return;
 
     if (!IsAlive() || !victim->IsAlive())
         return;
