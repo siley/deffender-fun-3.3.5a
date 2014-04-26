@@ -173,8 +173,8 @@ Creature::~Creature()
     delete i_AI;
     i_AI = NULL;
 
-    //if (m_uint32Values)
-    //    TC_LOG_ERROR("entities.unit", "Deconstruct Creature Entry = %u", GetEntry());
+    if (m_uint32Values)
+        TC_LOG_ERROR("entities.unit", "Deconstruct Creature Entry = %u", GetEntry());
 }
 
 void Creature::AddToWorld()
