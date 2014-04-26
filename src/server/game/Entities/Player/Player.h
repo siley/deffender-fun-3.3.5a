@@ -306,7 +306,8 @@ struct Areas
 enum RuneCooldowns
 {
     RUNE_BASE_COOLDOWN  = 10000,
-    RUNE_MISS_COOLDOWN  = 1500     // cooldown applied on runes when the spell misses
+    RUNE_MISS_COOLDOWN  = 1500,     // cooldown applied on runes when the spell misses
+	RUNE_GRACE_PERIOD   = 2500,
 };
 
 enum RuneType
@@ -324,6 +325,7 @@ struct RuneInfo
     uint8 CurrentRune;
     uint32 Cooldown;
     AuraEffect const* ConvertAura;
+	time_t timeRuneWentActive;
 };
 
 struct Runes
@@ -2256,12 +2258,14 @@ class Player : public Unit, public GridObject<Player>
         RuneType GetCurrentRune(uint8 index) const { return RuneType(m_runes->runes[index].CurrentRune); }
         uint32 GetRuneCooldown(uint8 index) const { return m_runes->runes[index].Cooldown; }
         uint32 GetRuneBaseCooldown(uint8 index);
+		uint32 GetRuneGraceTime(uint8 index) { return (time(NULL) - m_runes->runes[index].timeRuneWentActive) * IN_MILLISECONDS; }
         bool IsBaseRuneSlotsOnCooldown(RuneType runeType) const;
         RuneType GetLastUsedRune() { return m_runes->lastUsedRune; }
         void SetLastUsedRune(RuneType type) { m_runes->lastUsedRune = type; }
         void SetBaseRune(uint8 index, RuneType baseRune) { m_runes->runes[index].BaseRune = baseRune; }
         void SetCurrentRune(uint8 index, RuneType currentRune) { m_runes->runes[index].CurrentRune = currentRune; }
         void SetRuneCooldown(uint8 index, uint32 cooldown);
+		void SetRuneActiveTime(uint8 index, time_t time) { m_runes->runes[index].timeRuneWentActive = time; }
         void SetRuneConvertAura(uint8 index, AuraEffect const* aura);
         void AddRuneByAuraEffect(uint8 index, RuneType newType, AuraEffect const* aura);
         void RemoveRunesByAuraEffect(AuraEffect const* aura);

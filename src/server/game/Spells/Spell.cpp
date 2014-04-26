@@ -4404,6 +4404,8 @@ void Spell::TakeRunePower(bool didHit)
 
     Player* player = m_caster->ToPlayer();
     m_runesState = player->GetRunesState();                 // store previous state
+	uint32 runeGraceTime;
+	uint32 runeGraceCDReduction;
 
     int32 runeCost[NUM_RUNE_TYPES];                         // blood, frost, unholy, death
 
@@ -4421,7 +4423,9 @@ void Spell::TakeRunePower(bool didHit)
         RuneType rune = player->GetCurrentRune(i);
         if (!player->GetRuneCooldown(i) && runeCost[rune] > 0)
         {
-            player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) : uint32(RUNE_MISS_COOLDOWN));
+			runeGraceTime = player->GetRuneGraceTime(i);
+			runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
+			player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
             player->SetLastUsedRune(rune);
             runeCost[rune]--;
         }
@@ -4437,6 +4441,9 @@ void Spell::TakeRunePower(bool didHit)
             if (!player->GetRuneCooldown(i) && rune == RUNE_DEATH)
             {
                 player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) : uint32(RUNE_MISS_COOLDOWN));
+				runeGraceTime = player->GetRuneGraceTime(i);
+				runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
+				player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
                 player->SetLastUsedRune(rune);
                 runeCost[rune]--;
 
