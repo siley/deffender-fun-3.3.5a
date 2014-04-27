@@ -39,10 +39,10 @@ public:
 			npc->MonsterWhisper("Jsi v combatu!", player, true);
             return true;
         }
-
+		player->ADD_GOSSIP_ITEM_EXTENDED(0, "!! INFO !!", GOSSIP_SENDER_INFO, 0, "!! UPOZORNENI: Migrace vam smaze veskere questy, ktere mate v questlogu !!", 0, false);
         player->ADD_GOSSIP_ITEM( 6, "Zmena frakce (cena 50 000G)",           GOSSIP_SENDER_MAIN, 1);
         player->ADD_GOSSIP_ITEM( 0, "Close",    GOSSIP_SENDER_MAIN, 2);
-		 player->SEND_GOSSIP_MENU(GOSSIP, npc->GetGUID());
+		player->SEND_GOSSIP_MENU(GOSSIP, npc->GetGUID());
 
         return true;
     }
