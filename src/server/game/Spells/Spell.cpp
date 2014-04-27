@@ -3545,6 +3545,10 @@ void Spell::finish(bool ok)
                 break;
             }
         }
+
+		if ((m_spellInfo->GetFirstRankSpell()->Id == 19750 /* Flash of Light*/ || m_spellInfo->GetFirstRankSpell()->Id == 879)/*Exorcism*/ && m_caster->HasAura(59578)) //Art of War
+			found = true;
+
         if (!found && !(m_spellInfo->AttributesEx2 & SPELL_ATTR2_NOT_RESET_AUTO_ACTIONS))
         {
             m_caster->resetAttackTimer(BASE_ATTACK);
