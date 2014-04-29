@@ -206,7 +206,7 @@ public:
             uiMarkedDeathTimer = urand (5000, 7000);
             uiIntroTimer = 15000;
             uiIntroPhase = 0;
-            Phase = IDLE;
+            Phase = INTRO;
         }
 
         void MoveInLineOfSight(Unit* who) OVERRIDE
@@ -611,7 +611,7 @@ public:
         void SpellHitTarget(Unit* target, const SpellInfo* spell) OVERRIDE
         {
             if (target->GetTypeId() == TYPEID_PLAYER && (spell->Id == GHOUL_EXPLODE_DAMAGE || spell->Id == H_GHOUL_EXPLODE_DAMAGE || spell->Id == SPELL_GHOUL_EXPLODE))
-                if (Creature* knight = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_BLACK_KNIGHT)))
+                if (Creature* knight = me->FindNearestCreature(NPC_BLACK_KNIGHT, 200.0f))
                     knight->AI()->SetData(DATA_IVE_HAD_WORSE, false);
         }
     };
@@ -705,7 +705,7 @@ public:
                     break;
                 case 2:
                     me->SetSpeed(MOVE_FLIGHT, 2.0f);
-                    if (Creature* blackknight = Unit::GetCreature(*me, instance->GetData64(DATA_BLACK_KNIGHT)))
+                    if (Creature* blackknight = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_BLACK_KNIGHT)))
                         blackknight->AI()->Talk(SAY_INTRO_1);
                     break;
                 case 3:
@@ -715,7 +715,7 @@ public:
                     break;
                 case 6:
                     me->SetSpeed(MOVE_FLIGHT, 2.0f);
-                    if (Creature* tirion = Unit::GetCreature(*me, instance->GetData64(DATA_HIGHLORD)))
+                    if (Creature* tirion = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_HIGHLORD)))
                         tirion->AI()->Talk(SAY_INTRO_2);
                     break;
                 case 7:
