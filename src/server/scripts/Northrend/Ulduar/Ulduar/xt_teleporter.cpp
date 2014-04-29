@@ -32,7 +32,7 @@ class xt_teleporter : public GameObjectScript
     public:
         xt_teleporter() : GameObjectScript("xt_teleporter") { }
 
-        bool OnGossipSelect(Player* player, GameObject* /*gameObject*/, uint32 sender, uint32 action) OVERRIDE
+        bool OnGossipSelect(Player* player, GameObject* /*gameObject*/, uint32 sender, uint32 action) override
         {
             player->PlayerTalkClass->ClearMenus();
             if (sender != GOSSIP_SENDER_MAIN)
@@ -51,7 +51,7 @@ class xt_teleporter : public GameObjectScript
             return true;
         }
 
-        bool OnGossipHello(Player* player, GameObject* gameObject) OVERRIDE
+        bool OnGossipHello(Player* player, GameObject* gameObject) override
         {      
 			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Teleport to the Antechamber of Ulduar", GOSSIP_SENDER_MAIN, ANTECHAMBER); 
 

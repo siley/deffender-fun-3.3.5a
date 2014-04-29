@@ -151,7 +151,7 @@ public:
 
 		}
 
-		void Register() OVERRIDE
+		void Register() override
 		{
 			OnHit += SpellHitFn(TW_spell_eadric_hoj_SpellScript::HandleOnHit);
 		}
@@ -265,7 +265,7 @@ public:
 			}
 		}
 
-		uint32 GetData(uint32 type) const OVERRIDE
+		uint32 GetData(uint32 type) const override
 		{
 			if (type == DATA_THE_FACEROLLER)
 			return _theFaceRoller;
@@ -521,7 +521,7 @@ public:
 			DoMeleeAttackIfReady();
 		}
 
-		void JustSummoned(Creature* summon) OVERRIDE
+		void JustSummoned(Creature* summon) override
 		{
 			memoryGUID = summon->GetGUID();
 		}
@@ -563,7 +563,7 @@ public:
 			uiWakingNightmare = 7000;
 		}
 
-		void UpdateAI(uint32 uiDiff) OVERRIDE
+		void UpdateAI(uint32 uiDiff) override
 		{
 			if (!UpdateVictim())
 			return;
@@ -601,7 +601,7 @@ public:
 			DoMeleeAttackIfReady();
 		}
 
-		void JustDied(Unit* killer) OVERRIDE
+		void JustDied(Unit* killer) override
 		{
 			if (me->IsSummon())
 			{
@@ -658,7 +658,7 @@ public:
 
 		bool bStarted;
 
-		void Reset() OVERRIDE
+		void Reset() override
 		{
 			uiStrikeTimer = 5000;
 			uiCleaveTimer = 6000;
@@ -678,7 +678,7 @@ public:
 			}
 		}
 
-		void WaypointReached(uint32 uiPoint) OVERRIDE
+		void WaypointReached(uint32 uiPoint) override
 		{
 			if (uiPoint == 0)
 			{
@@ -717,7 +717,7 @@ public:
 			}
 		}
 
-		void SetData(uint32 uiType, uint32 uiData) OVERRIDE
+		void SetData(uint32 uiType, uint32 uiData) override
 		{
 			switch (me->GetEntry())
 			{
@@ -775,7 +775,7 @@ public:
 			uiWaypoint = uiType;
 		}
 
-		void UpdateAI(uint32 uiDiff) OVERRIDE
+		void UpdateAI(uint32 uiDiff) override
 		{
 			npc_escortAI::UpdateAI(uiDiff);
 
@@ -861,7 +861,7 @@ public:
 			DoMeleeAttackIfReady();
 		}
 
-		void JustDied(Unit* killer) OVERRIDE
+		void JustDied(Unit* killer) override
 		{
 			pInstance->SetData(DATA_ARGENT_SOLDIER_DEFEATED, pInstance->GetData(DATA_ARGENT_SOLDIER_DEFEATED) + 1);
 		}
@@ -888,7 +888,7 @@ public:
 	{
 		PrepareAuraScript(TW_spell_gen_reflective_shield_AuraScript);
 
-		bool Validate(SpellInfo const* /*spell*/) OVERRIDE
+		bool Validate(SpellInfo const* /*spell*/) override
 		{
 			if (!sSpellMgr->GetSpellInfo(SPELL_REFLECTIVE_SHIELD_TRIGGERED)) // Is this correct?  I honestly don't know anything about AuraScript, so I took this from class spell_blood_queen_pact_of_the_darkfallen_dmg 
 			return false;
@@ -929,7 +929,7 @@ public:
 		creature_entry = original_entry;
 	}
 
-	bool OnCheck(Player* source, Unit* target) OVERRIDE
+	bool OnCheck(Player* source, Unit* target) override
 	{
 		if (!target)
 		return false;
@@ -952,7 +952,7 @@ public:
 		creature_entry = original_entry;
 	}
 
-	bool OnCheck(Player* source, Unit* target) OVERRIDE
+	bool OnCheck(Player* source, Unit* target) override
 	{
 		if (!target)
 		return false;
@@ -970,7 +970,7 @@ class TW_achievement_toc5_the_faceroller : public AchievementCriteriaScript
 public:
 	TW_achievement_toc5_the_faceroller(const char* name) : AchievementCriteriaScript(name) {}
 
-	bool OnCheck(Player* /*source*/, Unit* target) OVERRIDE
+	bool OnCheck(Player* /*source*/, Unit* target) override
 	{
 		if (target && target->GetMap()->ToInstanceMap()->IsHeroic())
 		return target->GetAI()->GetData(DATA_THE_FACEROLLER);
