@@ -1049,24 +1049,45 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
                         SetCreateMana(28 + 10*petlevel);
                         SetCreateHealth(28 + 30*petlevel);
                     }
-					if (Player *owner = m_owner->ToPlayer()) // get 100% of owning player's physical (melee) haste
-					{
-						float bonus = owner->GetRatingBonusValue(CR_HASTE_MELEE);
-						bonus += owner->GetTotalAuraModifier(SPELL_AURA_MOD_MELEE_HASTE) + owner->GetTotalAuraModifier(SPELL_AURA_MOD_MELEE_RANGED_HASTE);
-						ApplyCastTimePercentMod(bonus, true);
-					}
-					
-					// also make gargoyle benefit from haste auras, like unholy presence
-					int meleeHaste = ((Player*)m_owner)->GetTotalAuraModifier(SPELL_AURA_MOD_MELEE_HASTE);
-					ApplyCastTimePercentMod(meleeHaste, true);			
-					float attackPower = 0.0f;
-					attackPower += int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.5f);
-					attackPower += int32(GetOwner()->GetTotalAuraModifier(SPELL_AURA_MOD_ATTACK_POWER));
-					SetBonusDamage(attackPower);
+					// Impurity
+                    float impurityMod = 1.0f;
+                    if (Player* owner = m_owner->ToPlayer())
+                    {
+                        PlayerSpellMap playerSpells = owner->GetSpellMap();
+                        for (PlayerSpellMap::const_iterator itr = playerSpells.begin(); itr != playerSpells.end(); ++itr)
+                        {
+                           if (itr->second->state == PLAYERSPELL_REMOVED || itr->second->disabled)
+                                continue;
+                            switch (itr->first)
+                            {
+                                case 49220:
+                                case 49633:
+                                case 49635:
+                                case 49636:
+                                case 49638:
+                                {
+                                    if (const SpellEntry* proto=sSpellStore.LookupEntry(itr->first))
+                                        AddPct(impurityMod,proto->EffectBasePoints[0]);
+                                }
+                                break;
+                            }
+                        }
+
+						// Convert DK haste and hit into the gargoyle's haste/hit                     
+						float ownerHaste = ((Player*)m_owner)->GetRatingBonusValue(CR_HASTE_MELEE);
+						ApplyPercentModFloatValue(UNIT_MOD_CAST_SPEED, ownerHaste, false);
+						m_modSpellHitChance = m_owner->m_modSpellHitChance;
+						m_modMeleeHitChance = m_owner->m_modMeleeHitChance;
+
+                        // also make gargoyle benefit from haste auras, like unholy presence
+                        int meleeHaste = owner->GetTotalAuraModifier(SPELL_AURA_MOD_MELEE_HASTE);
+                        ApplyCastTimePercentMod(meleeHaste, true);
+                    }
+                    SetBonusDamage(int32(m_owner->GetTotalAttackPowerValue(BASE_ATTACK) * 0.7f * impurityMod));
                     SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
                     SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
                     break;
-                }
+				}
                 case 28017: // Bloodworms
                 {
                     SetCreateHealth(4 * petlevel);
