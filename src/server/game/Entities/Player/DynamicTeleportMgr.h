@@ -32,8 +32,8 @@ struct TeleportLoc
     float position_o;
 };
 
-typedef UNORDERED_MAP<uint32, TeleportData> TeleportDataMap;
-typedef UNORDERED_MAP<uint32, TeleportLoc>  TeleportLocMap;
+typedef std::unordered_map<uint32, TeleportData> TeleportDataMap;
+typedef std::unordered_map<uint32, TeleportLoc>  TeleportLocMap;
 
 class DynamicTeleportMgr
 {
