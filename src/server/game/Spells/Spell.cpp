@@ -3021,7 +3021,12 @@ void Spell::cancel()
 void Spell::cast(bool skipCheck)
 {
     // update pointers base at GUIDs to prevent access to non-existed already object
-    UpdatePointers();
+    if (!UpdatePointers())
+    {
+        // cancel the spell if UpdatePointers() returned false, something wrong happened there
+        cancel();
+        return;
+    }
 
     // cancel at lost explicit target during cast
     if (m_targets.GetObjectTargetGUID() && !m_targets.GetObjectTarget())
@@ -3271,7 +3276,12 @@ void Spell::handle_immediate()
 
 uint64 Spell::handle_delayed(uint64 t_offset)
 {
-    UpdatePointers();
+    if (!UpdatePointers())
+    {
+        // finish the spell if UpdatePointers() returned false, something wrong happened there
+        finish(false);
+        return 0;
+    }
 
     if (m_caster->GetTypeId() == TYPEID_PLAYER)
         m_caster->ToPlayer()->SetSpellModTakingSpell(this, true);
@@ -3423,7 +3433,12 @@ void Spell::SendSpellCooldown()
 void Spell::update(uint32 difftime)
 {
     // update pointers based at it's GUIDs
-    UpdatePointers();
+    if (!UpdatePointers())
+    {
+        // cancel the spell if UpdatePointers() returned false, something wrong happened there
+        cancel();
+        return;
+    }
 
     if (m_targets.GetUnitTargetGUID() && !m_targets.GetUnitTarget())
     {
@@ -4257,6 +4272,7 @@ void Spell::TakeCastItem()
             m_targets.SetItemTarget(NULL);
 
         m_CastItem = NULL;
+        m_castItemGUID = 0;
     }
 }
 
@@ -4508,6 +4524,7 @@ void Spell::TakeReagents()
             }
 
             m_CastItem = NULL;
+            m_castItemGUID = 0;
         }
 
         // if GetItemTarget is also spell reagent
@@ -6323,7 +6340,7 @@ void Spell::DelayedChannel()
     SendChannelUpdate(m_timer);
 }
 
-void Spell::UpdatePointers()
+bool Spell::UpdatePointers()
 {
     if (m_originalCasterGUID == m_caster->GetGUID())
         m_originalCaster = m_caster;
@@ -6335,13 +6352,18 @@ void Spell::UpdatePointers()
     }
 
     if (m_castItemGUID && m_caster->GetTypeId() == TYPEID_PLAYER)
+    {
         m_CastItem = m_caster->ToPlayer()->GetItemByGuid(m_castItemGUID);
+        // cast item not found, somehow the item is no longer where we expected
+        if (!m_CastItem)
+            return false;
+    }
 
     m_targets.Update(m_caster);
 
     // further actions done only for dest targets
     if (!m_targets.HasDst())
-        return;
+        return true;
 
     // cache last transport
     WorldObject* transport = NULL;
@@ -6362,6 +6384,8 @@ void Spell::UpdatePointers()
             dest._position.RelocateOffset(dest._transportOffset);
         }
     }
+
+    return true;
 }
 
 CurrentSpellTypes Spell::GetCurrentContainer() const
