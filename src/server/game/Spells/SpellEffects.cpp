@@ -3152,14 +3152,14 @@ void Spell::EffectTaunt(SpellEffIndex /*effIndex*/)
 
     // this effect use before aura Taunt apply for prevent taunt already attacking target
     // for spell as marked "non effective at already attacking target"
-    if (!unitTarget || !unitTarget->CanHaveThreatList()
+	if (!unitTarget || !unitTarget->CanHaveThreatList() && !unitTarget->IsPet()
         || unitTarget->GetVictim() == m_caster)
     {
         SendCastResult(SPELL_FAILED_DONT_REPORT);
         return;
     }
 
-    if (m_spellInfo->Id == 62124)
+	if (m_spellInfo->Id == 62124 && !unitTarget->ToCreature()->HasReactState(REACT_PASSIVE))
         m_caster->CastSpell(unitTarget, 67485, true);
 
     // Also use this effect to set the taunter's threat to the taunted creature's highest value

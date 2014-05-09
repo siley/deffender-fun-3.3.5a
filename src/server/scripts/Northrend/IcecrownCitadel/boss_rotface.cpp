@@ -871,6 +871,10 @@ class spell_rotface_vile_gas_trigger : public SpellScriptLoader
 
                 std::list<WorldObject*> ranged, melee;
                 std::list<WorldObject*>::iterator itr = targets.begin();
+
+				if ((*itr)->ToCreature())
+					return;
+
                 while (itr != targets.end() && (*itr)->GetDistance(GetCaster()) < 5.0f)
                 {
                     melee.push_back((*itr)->ToUnit());
