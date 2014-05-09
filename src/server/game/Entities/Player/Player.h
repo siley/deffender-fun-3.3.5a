@@ -1169,21 +1169,6 @@ class Player : public Unit, public GridObject<Player>
         RestType GetRestType() const { return rest_type; }
         void SetRestType(RestType n_r_type) { rest_type = n_r_type; }
 
-		// chartrade
-		bool chartrade;
-		bool chartrade_preaccept;
-		uint64 chartrade_id;
-		bool chartrade_potvrzeni;
-
-		bool getChartradeStatus() { return chartrade; }
-		void setChartradeStatus(bool stat) { chartrade = stat; }
-		bool getChartradePreAccept() { return chartrade_preaccept; }
-		void setChartradePreAccept(bool stat) { chartrade_preaccept = stat; }
-		uint64 getChartradeID() { return chartrade_id; }
-		void setChartradeID(uint64 ch_id) { chartrade_id = ch_id; }
-		bool getChartradePotvrzeni() { return chartrade_potvrzeni; }
-		void setChartradePotvrzeni(bool stat) { chartrade_potvrzeni = stat; }
-
         uint32 GetInnPosMapId() const { return inn_pos_mapid; }
         float GetInnPosX() const { return inn_pos_x; }
         float GetInnPosY() const { return inn_pos_y; }

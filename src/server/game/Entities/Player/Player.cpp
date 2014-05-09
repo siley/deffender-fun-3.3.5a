@@ -892,17 +892,6 @@ Player::Player(WorldSession* session): Unit(true)
 	// Arena Crystal
 	m_clicked = false;
 	timeDiff = 0;
-
-	// chartrade
-    chartrade = false;
-    chartrade_preaccept = false;
-    chartrade_id = 0;
-    chartrade_potvrzeni = false;
-    if (HasAura(9454))
-    {
-        TeleportTo(530, -1870.091675f, 5437.583984f, -7.768305f, 5.452976f); //shattrath
-        RemoveAura(9454);
-    }
 }
 
 Player::~Player()
@@ -19231,10 +19220,6 @@ bool Player::_LoadHomeBind(PreparedQueryResult result)
 
 void Player::SaveToDB(bool create /*=false*/)
 {
-	//chartrade
-    if (chartrade_potvrzeni)
-        return;
-
     // delay auto save at any saves (manual, in code, or autosave)
     m_nextSave = sWorld->getIntConfig(CONFIG_INTERVAL_SAVE);
 
