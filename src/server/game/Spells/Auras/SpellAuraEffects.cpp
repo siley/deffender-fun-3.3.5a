@@ -669,7 +669,11 @@ void AuraEffect::HandleEffect(AuraApplication * aurApp, uint8 mode, bool apply)
     if (apply)
         GetBase()->CallScriptAfterEffectApplyHandlers(this, aurApp, (AuraEffectHandleModes)mode);
     else
-        GetBase()->CallScriptAfterEffectRemoveHandlers(this, aurApp, (AuraEffectHandleModes)mode);
+		if (aurApp->GetTarget()->IsInWorld())
+			GetBase()->CallScriptAfterEffectRemoveHandlers(this, aurApp, (AuraEffectHandleModes)mode);
+		else 
+			return;
+
 }
 
 void AuraEffect::HandleEffect(Unit* target, uint8 mode, bool apply)
