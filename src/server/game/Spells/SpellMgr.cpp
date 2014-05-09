@@ -3176,6 +3176,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 48420:
                 spellInfo->Stances = 1 << (FORM_CAT - 1);
                 break;
+			case 52212: // Death Knight: Death and Decay trigger spell
+				spellInfo->AttributesEx6 |= SPELL_ATTR6_CAN_TARGET_INVISIBLE;
+				break;
             case 48421:
                 spellInfo->Stances = 1 << (FORM_MOONKIN - 1);
                 break;
