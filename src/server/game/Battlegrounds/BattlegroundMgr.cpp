@@ -897,6 +897,9 @@ void BattlegroundMgr::BuildBattlegroundListPacket(WorldPacket* data, uint64 guid
 
 void BattlegroundMgr::SendToBattleground(Player* player, uint32 instanceId, BattlegroundTypeId bgTypeId)
 {
+	if (!player)
+		return;
+
     if (Battleground* bg = GetBattleground(instanceId, bgTypeId))
     {
         float x, y, z, O;
