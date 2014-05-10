@@ -751,10 +751,10 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
         AchievementCriteriaEntry const* achievementCriteria = (*i);
         AchievementEntry const* achievement = sAchievementMgr->GetAchievement(achievementCriteria->referredAchievement);
         if (!achievement)
-            continue;
+			return;
 
         if (!CanUpdateCriteria(achievementCriteria, achievement))
-            continue;
+			return;
 
         switch (type)
         {
