@@ -483,6 +483,20 @@ class boss_twilight_halion : public CreatureScript
                 me->SetHealth(halion->GetHealth());
                 me->SetPhaseMask(0x20, true);
                 me->SetReactState(REACT_AGGRESSIVE);
+                //start custom code
+                if (!IsHeroic())
+                    {
+                    if (Creature* orbc = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_ORB_CARRIER)))
+                        {
+                        Vehicle* vehicle = orbc->GetVehicleKit();
+                        if (vehicle->GetPassenger(SEAT_EAST))
+                            {
+                            vehicle->GetPassenger(SEAT_EAST)->SetPhaseMask(82, true);
+                            vehicle->GetPassenger(SEAT_WEST)->SetPhaseMask(82, true);
+                            }
+                        }
+                    }
+				//end custom code
             }
 
             void EnterCombat(Unit* who) override
@@ -578,6 +592,17 @@ class boss_twilight_halion : public CreatureScript
                         break;
                 }
             }
+
+            //start custom code
+            void UpdateAI(uint32 diff) override
+                {
+                events.Update(diff);
+                
+                while (uint32 eventId = events.ExecuteEvent())
+                    ExecuteEvent(eventId);
+                generic_halionAI::UpdateAI(diff);
+                }
+			//end custom code
 
         private:
             EventMap events;
@@ -1091,8 +1116,24 @@ class npc_meteor_strike : public CreatureScript
                     if (Creature* flame = me->SummonCreature(NPC_METEOR_STRIKE_FLAME, pos, TEMPSUMMON_TIMED_DESPAWN, 25000))
                     {
                         if (Creature* controller = ObjectAccessor::GetCreature(*me, _instance->GetData64(DATA_HALION_CONTROLLER)))
+                            //start custom code
+                            {
+                            if (IsHeroic() && Is25ManRaid())
+                                {
+                                int lEmberCount = 0;
+                                if (urand(0, 2) == 1 && lEmberCount < 10)
+                                    {
+                                    if (Creature* lEmber = flame->SummonCreature(40683, flame->GetPositionX(), flame->GetPositionY(), flame->GetPositionZ()))
+                                        {
+                                        lEmberCount += 1;
+                                        DoZoneInCombat(lEmber, 100);
+                                        }
+                                    }
+                                
+                                }
                             controller->AI()->JustSummoned(flame);
-
+                            }
+						//end custom code
                         flame->CastSpell(flame, SPELL_METEOR_STRIKE_FIRE_AURA_2, true);
                         ++_spawnCount;
                     }
