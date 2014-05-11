@@ -641,7 +641,7 @@ class TW_npc_argent_soldier : public CreatureScript
             uiMindTimer = 70000;
             uiSsmiteTimer = 6000;
             uiLightTimer = 3000;
-   	        uiFlurryTimer = 6000;
+               uiFlurryTimer = 6000;
             uiFinalTimer = 30000;
             uiDivineTimer = 70000;
             
@@ -768,14 +768,14 @@ class TW_npc_argent_soldier : public CreatureScript
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM,0))
                     DoCast(target,SPELL_CLEAVE);
                 uiStrikeTimer = 25000;
-            } else uiStrikeTimer -= uiDiff;	
+            } else uiStrikeTimer -= uiDiff;    
 
             if (uiPummelTimer <= uiDiff)
             {
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM,0))
                     DoCast(target,SPELL_PUMMEL);
                 uiPummelTimer = 35000;
-            } else uiPummelTimer -= uiDiff;	
+            } else uiPummelTimer -= uiDiff;    
 
             if (uiPainTimer <= uiDiff)
             {

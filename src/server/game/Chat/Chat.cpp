@@ -366,19 +366,19 @@ bool ChatHandler::ExecuteCommandInTable(ChatCommand* table, const char* text, st
                     (player->GetSelectedUnit()) ? player->GetSelectedUnit()->GetName().c_str() : "",
                     GUID_LOPART(guid));
 
-				// Database Logging
-				uint64 sel_guid = player->GetTarget();
-				PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_GM);
-				stmt->setString(0, player->GetName());
-				stmt->setUInt32(1, m_session->GetAccountId());
-				stmt->setString(2, fullcmd.c_str());
-				char position[96];
-				sprintf(position, "X: %f Y: %f Z: %f Map: %u", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetMapId());
-				stmt->setString(3, position);
-				char selection[96];
-				sprintf(selection, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (player->GetSelectedUnit()) ? player->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
-				stmt->setString(4, selection);
-				CharacterDatabase.Execute(stmt);
+                // Database Logging
+                uint64 sel_guid = player->GetTarget();
+                PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_GM);
+                stmt->setString(0, player->GetName());
+                stmt->setUInt32(1, m_session->GetAccountId());
+                stmt->setString(2, fullcmd.c_str());
+                char position[96];
+                sprintf(position, "X: %f Y: %f Z: %f Map: %u", player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetMapId());
+                stmt->setString(3, position);
+                char selection[96];
+                sprintf(selection, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (player->GetSelectedUnit()) ? player->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
+                stmt->setString(4, selection);
+                CharacterDatabase.Execute(stmt);
             }
         }
         // some commands have custom error messages. Don't send the default one in these cases.

@@ -708,7 +708,7 @@ void AddScripts()
     AddSpellScripts();
     AddSC_SmartSCripts();
     AddCommandScripts();
-	sAnticheatMgr->StartScripts();
+    sAnticheatMgr->StartScripts();
 #ifdef SCRIPTS
     AddWorldScripts();
     AddEasternKingdomsScripts();
@@ -753,7 +753,7 @@ void AddSpellScripts()
 
 void AddCommandScripts()
 {
-	AddSC_anticheat_commandscript();
+    AddSC_anticheat_commandscript();
     AddSC_account_commandscript();
     AddSC_achievement_commandscript();
     AddSC_arena_commandscript();
@@ -1315,7 +1315,7 @@ void AddNorthrendScripts()
     AddSC_boss_assembly_of_iron();
     AddSC_boss_kologarn();
     AddSC_ulduar_teleporter();
-	AddSC_xt_teleporter();
+    AddSC_xt_teleporter();
     AddSC_boss_mimiron();
     AddSC_boss_hodir();
     AddSC_boss_freya();
@@ -1463,20 +1463,20 @@ void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
-	AddSC_npc_dynamic_teleporter();
-	AddSC_NPC_vip();
-	AddSC_guildporter();
-	AddSC_BountyHunter();
-	AddSC_npc_argent_ring_restorer();
-	AddSC_command_mmr();
-	AddSC_object_arena_crystal();
-	AddSC_CPWS_Transmogrification();
-	AddSC_TW_instance_trial_of_the_champion();
-	AddSC_TW_boss_grand_champions();
-	AddSC_TW_boss_black_knight();
-	AddSC_TW_boss_argent_challenge();
-	AddSC_TW_trial_of_the_champion();
-	AddSC_TW_boss_thorim();
-	AddSC_TW_boss_mimiron();
+    AddSC_npc_dynamic_teleporter();
+    AddSC_NPC_vip();
+    AddSC_guildporter();
+    AddSC_BountyHunter();
+    AddSC_npc_argent_ring_restorer();
+    AddSC_command_mmr();
+    AddSC_object_arena_crystal();
+    AddSC_CPWS_Transmogrification();
+    AddSC_TW_instance_trial_of_the_champion();
+    AddSC_TW_boss_grand_champions();
+    AddSC_TW_boss_black_knight();
+    AddSC_TW_boss_argent_challenge();
+    AddSC_TW_trial_of_the_champion();
+    AddSC_TW_boss_thorim();
+    AddSC_TW_boss_mimiron();
 #endif
 }

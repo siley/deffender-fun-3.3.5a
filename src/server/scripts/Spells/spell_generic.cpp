@@ -3433,15 +3433,15 @@ class spell_pvp_trinket_wotf_shared_cd : public SpellScriptLoader
                 // This is only needed because spells cast from spell_linked_spell are triggered by default
                 // Spell::SendSpellCooldown() skips all spells with TRIGGERED_IGNORE_SPELL_AND_CATEGORY_CD
                 // GetCaster()->ToPlayer()->AddSpellAndCategoryCooldowns(GetSpellInfo(), GetCastItem() ? GetCastItem()->GetEntry() : 0, GetSpell());
-				Player* caster = GetCaster()->ToPlayer();
-				SpellInfo const* spellInfo = GetSpellInfo();
-				caster->AddSpellCooldown(spellInfo->Id, 0, time(NULL) + sSpellMgr->GetSpellInfo(SPELL_WILL_OF_THE_FORSAKEN_COOLDOWN_TRIGGER)->GetRecoveryTime() / IN_MILLISECONDS);
-				WorldPacket data(SMSG_SPELL_COOLDOWN, 8+1+4);
-				data << uint64(caster->GetGUID());
-				data << uint8(0);
-				data << uint32(spellInfo->Id);
-				data << uint32(0);
-				caster->GetSession()->SendPacket(&data);
+                Player* caster = GetCaster()->ToPlayer();
+                SpellInfo const* spellInfo = GetSpellInfo();
+                caster->AddSpellCooldown(spellInfo->Id, 0, time(NULL) + sSpellMgr->GetSpellInfo(SPELL_WILL_OF_THE_FORSAKEN_COOLDOWN_TRIGGER)->GetRecoveryTime() / IN_MILLISECONDS);
+                WorldPacket data(SMSG_SPELL_COOLDOWN, 8+1+4);
+                data << uint64(caster->GetGUID());
+                data << uint8(0);
+                data << uint32(spellInfo->Id);
+                data << uint32(0);
+                caster->GetSession()->SendPacket(&data);
             }
 
             void Register() override
@@ -3554,7 +3554,7 @@ class spell_gen_upper_deck_create_foam_sword : public SpellScriptLoader
 
 enum VehicleScaling
 {
-	SPELL_GEAR_SCALING      = 66668,
+    SPELL_GEAR_SCALING      = 66668,
     SPELL_SOTA_DEMO_SCALING = 65636
 };
 
@@ -3585,7 +3585,7 @@ class spell_gen_vehicle_scaling : public SpellScriptLoader
                         factor = 1.0f;
                         baseItemLevel = 205;
                         break;
-					case SPELL_SOTA_DEMO_SCALING:
+                    case SPELL_SOTA_DEMO_SCALING:
                         factor = 1.0f;
                         baseItemLevel = 230; // based of ~185k hp for ~270 item lvl
                         break;
@@ -3748,57 +3748,57 @@ class spell_gen_eject_all_passengers : public SpellScriptLoader
 class spell_shadowmeld : public SpellScriptLoader
 {
 public:
-	spell_shadowmeld() : SpellScriptLoader("spell_shadowmeld") {}
+    spell_shadowmeld() : SpellScriptLoader("spell_shadowmeld") {}
 
-	class spell_shadowmeld_SpellScript : public SpellScript
-	{
-		PrepareSpellScript(spell_shadowmeld_SpellScript);
+    class spell_shadowmeld_SpellScript : public SpellScript
+    {
+        PrepareSpellScript(spell_shadowmeld_SpellScript);
 
-		void HandleDummy(SpellEffIndex /*effIndex*/)
-		{
-			Unit *caster = GetCaster();
-			if (!caster)
-				return;
+        void HandleDummy(SpellEffIndex /*effIndex*/)
+        {
+            Unit *caster = GetCaster();
+            if (!caster)
+                return;
 
-			caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
-			caster->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
+            caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+            caster->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
 
-			bool instant_exit = true;
-			if (Player *pCaster = caster->ToPlayer()) // if is a creature instant exits combat, else check if someone in party is in combat in visibility distance
-			{
-				uint64 myGUID = pCaster->GetGUID();
-				float visibilityRange = pCaster->GetMap()->GetVisibilityRange();
-				if (Group *pGroup = pCaster->GetGroup())
-				{
-					const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
-					for (Group::member_citerator itr = membersList.begin(); itr != membersList.end() && instant_exit; ++itr)
-					if (itr->guid != myGUID)
-					if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
-					if (GroupMember->IsInCombat() && pCaster->GetMap() == GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
-						instant_exit = false;
-				}
+            bool instant_exit = true;
+            if (Player *pCaster = caster->ToPlayer()) // if is a creature instant exits combat, else check if someone in party is in combat in visibility distance
+            {
+                uint64 myGUID = pCaster->GetGUID();
+                float visibilityRange = pCaster->GetMap()->GetVisibilityRange();
+                if (Group *pGroup = pCaster->GetGroup())
+                {
+                    const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
+                    for (Group::member_citerator itr = membersList.begin(); itr != membersList.end() && instant_exit; ++itr)
+                    if (itr->guid != myGUID)
+                    if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
+                    if (GroupMember->IsInCombat() && pCaster->GetMap() == GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
+                        instant_exit = false;
+                }
 
-				pCaster->SendAttackSwingCancelAttack();
-			}
+                pCaster->SendAttackSwingCancelAttack();
+            }
 
-			if (!caster->GetInstanceScript() || !caster->GetInstanceScript()->IsEncounterInProgress()) //Don't leave combat if you are in combat with a boss
-			{
-				if (!instant_exit)
-					caster->getHostileRefManager().deleteReferences(); // exit combat after 6 seconds
-				else caster->CombatStop(); // isn't necessary to call AttackStop because is just called in CombatStop
-			}
-		}
+            if (!caster->GetInstanceScript() || !caster->GetInstanceScript()->IsEncounterInProgress()) //Don't leave combat if you are in combat with a boss
+            {
+                if (!instant_exit)
+                    caster->getHostileRefManager().deleteReferences(); // exit combat after 6 seconds
+                else caster->CombatStop(); // isn't necessary to call AttackStop because is just called in CombatStop
+            }
+        }
 
-		void Register()
-		{
-			OnEffectHitTarget += SpellEffectFn(spell_shadowmeld_SpellScript::HandleDummy, EFFECT_1, SPELL_EFFECT_DUMMY);
-		}
-	};
+        void Register()
+        {
+            OnEffectHitTarget += SpellEffectFn(spell_shadowmeld_SpellScript::HandleDummy, EFFECT_1, SPELL_EFFECT_DUMMY);
+        }
+    };
 
-	SpellScript* GetSpellScript() const
-	{
-		return new spell_shadowmeld_SpellScript();
-	}
+    SpellScript* GetSpellScript() const
+    {
+        return new spell_shadowmeld_SpellScript();
+    }
 };
 
 enum MusicBox
@@ -3841,7 +3841,7 @@ class spell_item_sylvanas_music_box : public SpellScriptLoader
 
 void AddSC_generic_spell_scripts()
 {
-	new spell_shadowmeld();
+    new spell_shadowmeld();
     new spell_gen_absorb0_hitlimit1();
     new spell_gen_adaptive_warding();
     new spell_gen_allow_cast_from_item_only();
@@ -3923,5 +3923,5 @@ void AddSC_generic_spell_scripts()
     new spell_gen_wg_water();
     new spell_gen_whisper_gulch_yogg_saron_whisper();
     new spell_gen_eject_all_passengers();
-	new spell_item_sylvanas_music_box();
+    new spell_item_sylvanas_music_box();
 }

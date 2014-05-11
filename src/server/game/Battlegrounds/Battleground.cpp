@@ -107,7 +107,7 @@ template<class Do>
 void Battleground::BroadcastWorker(Do& _do)
 {
     for (BattlegroundPlayerMap::const_iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
-	if (Player* player = _GetPlayer(itr, "BroadcastWorker"))
+    if (Player* player = _GetPlayer(itr, "BroadcastWorker"))
             _do(player);
 }
 
@@ -455,72 +455,72 @@ inline void Battleground::_ProcessJoin(uint32 diff)
                 player->ResetAllPowers();
     }
 
-	/* Arena Crystal - po kliknuti tohoto crystalu vsemi hraci v arene se posune wait time na 15s */
+    /* Arena Crystal - po kliknuti tohoto crystalu vsemi hraci v arene se posune wait time na 15s */
 
-	// Musime si vytvorit a inicializovat par promennych
-	bool everyoneReady = true;
+    // Musime si vytvorit a inicializovat par promennych
+    bool everyoneReady = true;
 
-	int32 timeDiff = 0;
+    int32 timeDiff = 0;
 
-	if (isArena() /*&& GetStartDelayTime() > 15000*/)
-	{
-		// Toto je pocet lidi v arene
-		uint8 playersCount = 0;
+    if (isArena() /*&& GetStartDelayTime() > 15000*/)
+    {
+        // Toto je pocet lidi v arene
+        uint8 playersCount = 0;
 
-		// Tato funkce projede arenu a zjisti, kolik je v ni lidi a kolik lidi kliklo na crystal.
-		// Pokud na crystal neklikli vsichni nebo pokud je v arene zatim malo lidi, tak se nemuze wait time zkratit
-		for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
-		{
-			if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
-			{
-				if (plr->m_clicked == true)
-				{
-					++playersCount;
-					continue;
-				}
-				else
-					everyoneReady = false;
-			}
-		}
-		// Pokud jsou vsichni ready, zkontrolujeme, jestli je v arene dostatek lidi (pro 2v2 arenu to jsou 4 lidi, pro 3v3 arenu 6 lidi apod.)
-		if (everyoneReady && GetArenaType() * 2 == playersCount)
-		{
-			// Pokud ano, nastavime si promennou na momentalni wait time - 15 sekund (15000 ms)
-			// Tu potom pouzivame v podminkach pro prechod wait fazi
-			timeDiff = GetStartDelayTime() - 15000;
+        // Tato funkce projede arenu a zjisti, kolik je v ni lidi a kolik lidi kliklo na crystal.
+        // Pokud na crystal neklikli vsichni nebo pokud je v arene zatim malo lidi, tak se nemuze wait time zkratit
+        for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
+        {
+            if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
+            {
+                if (plr->m_clicked == true)
+                {
+                    ++playersCount;
+                    continue;
+                }
+                else
+                    everyoneReady = false;
+            }
+        }
+        // Pokud jsou vsichni ready, zkontrolujeme, jestli je v arene dostatek lidi (pro 2v2 arenu to jsou 4 lidi, pro 3v3 arenu 6 lidi apod.)
+        if (everyoneReady && GetArenaType() * 2 == playersCount)
+        {
+            // Pokud ano, nastavime si promennou na momentalni wait time - 15 sekund (15000 ms)
+            // Tu potom pouzivame v podminkach pro prechod wait fazi
+            timeDiff = GetStartDelayTime() - 15000;
 
-			// Musime si znovu projet vsechny lidi v arene a nastavit jim novy atribut - touto funkci se projede cca 4000x za jeden wait time,
-			// proto vzdy prvni vstup do teto funkce ma nejvetsi hodnotu timeDiffu (GetStartDelayTime() je pri prvnim projeti nejvetsi - nejvetsi hodnotu
-			// musime hraci ulozit a dale pouzivat, jinak by byl hrac v nekonecne cekacce
-			for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
-			if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
-			{
+            // Musime si znovu projet vsechny lidi v arene a nastavit jim novy atribut - touto funkci se projede cca 4000x za jeden wait time,
+            // proto vzdy prvni vstup do teto funkce ma nejvetsi hodnotu timeDiffu (GetStartDelayTime() je pri prvnim projeti nejvetsi - nejvetsi hodnotu
+            // musime hraci ulozit a dale pouzivat, jinak by byl hrac v nekonecne cekacce
+            for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
+            if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
+            {
 
-				if (plr->timeDiff < timeDiff)
-					plr->timeDiff = timeDiff;
-				else
-					timeDiff = plr->timeDiff;
-			}
-		}
-		// Todle nastane jen pri nastaveni ".debug arena" - max pocet lidi je 2, nastaveno pro prvotni testovani, mozna to najde budouci vyuziti,
-		// proto to tu necham
-		else if (sBattlegroundMgr->isArenaTesting())
-		{
-			if (everyoneReady && playersCount == 2)
-			{
-				timeDiff = GetStartDelayTime() - 15000;
+                if (plr->timeDiff < timeDiff)
+                    plr->timeDiff = timeDiff;
+                else
+                    timeDiff = plr->timeDiff;
+            }
+        }
+        // Todle nastane jen pri nastaveni ".debug arena" - max pocet lidi je 2, nastaveno pro prvotni testovani, mozna to najde budouci vyuziti,
+        // proto to tu necham
+        else if (sBattlegroundMgr->isArenaTesting())
+        {
+            if (everyoneReady && playersCount == 2)
+            {
+                timeDiff = GetStartDelayTime() - 15000;
 
-				for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
-				if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
-				{
-					if (plr->timeDiff < timeDiff)
-						plr->timeDiff = timeDiff;
-					else
-						timeDiff = plr->timeDiff;
-				}
-			}
-		}
-	}
+                for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
+                if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
+                {
+                    if (plr->timeDiff < timeDiff)
+                        plr->timeDiff = timeDiff;
+                    else
+                        timeDiff = plr->timeDiff;
+                }
+            }
+        }
+    }
 
     if (!(m_Events & BG_STARTING_EVENT_1))
     {
@@ -546,23 +546,23 @@ inline void Battleground::_ProcessJoin(uint32 diff)
         SendMessageToAll(StartMessageIds[BG_STARTING_EVENT_FIRST], CHAT_MSG_BG_SYSTEM_NEUTRAL);
     }
     // After 1 minute or 30 seconds, warning is signaled
-	else if ((GetStartDelayTime() - timeDiff) <= StartDelayTimes[BG_STARTING_EVENT_SECOND] && !(m_Events & BG_STARTING_EVENT_2))
+    else if ((GetStartDelayTime() - timeDiff) <= StartDelayTimes[BG_STARTING_EVENT_SECOND] && !(m_Events & BG_STARTING_EVENT_2))
     {
         m_Events |= BG_STARTING_EVENT_2;
         SendMessageToAll(StartMessageIds[BG_STARTING_EVENT_SECOND], CHAT_MSG_BG_SYSTEM_NEUTRAL);
     }
     // After 30 or 15 seconds, warning is signaled
-	else if ((GetStartDelayTime() - timeDiff) <= StartDelayTimes[BG_STARTING_EVENT_THIRD] && !(m_Events & BG_STARTING_EVENT_3))
+    else if ((GetStartDelayTime() - timeDiff) <= StartDelayTimes[BG_STARTING_EVENT_THIRD] && !(m_Events & BG_STARTING_EVENT_3))
     {
-		// Pokud vsichni v arene klikli na crystal, prehraje jim to upozorneni - aby vedeli, ze uz maji jen 15 sekund
-		if (isArena() && timeDiff != 0)
-			PlaySoundToAll(8213);
+        // Pokud vsichni v arene klikli na crystal, prehraje jim to upozorneni - aby vedeli, ze uz maji jen 15 sekund
+        if (isArena() && timeDiff != 0)
+            PlaySoundToAll(8213);
 
         m_Events |= BG_STARTING_EVENT_3;
         SendMessageToAll(StartMessageIds[BG_STARTING_EVENT_THIRD], CHAT_MSG_BG_SYSTEM_NEUTRAL);
     }
     // Delay expired (after 2 or 1 minute)
-	else if ((GetStartDelayTime() - timeDiff) <= 0 && !(m_Events & BG_STARTING_EVENT_4))
+    else if ((GetStartDelayTime() - timeDiff) <= 0 && !(m_Events & BG_STARTING_EVENT_4))
     {
         m_Events |= BG_STARTING_EVENT_4;
 
@@ -914,11 +914,11 @@ void Battleground::EndBattleground(uint32 winner)
         if (player->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION))
             player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
 
-		if (isArena())
-		{
-			player->m_clicked = false;
-			player->timeDiff = 0;
-		}
+        if (isArena())
+        {
+            player->m_clicked = false;
+            player->timeDiff = 0;
+        }
 
         // Last standing - Rated 5v5 arena & be solely alive player
         if (team == winner && isArena() && isRated() && GetArenaType() == ARENA_TYPE_5v5 && aliveWinners == 1 && player->IsAlive())
@@ -1077,8 +1077,8 @@ void Battleground::RemovePlayerAtLeave(uint64 guid, bool Transport, bool SendPac
             if (isArena())
             {
                 bgTypeId=BATTLEGROUND_AA;                   // set the bg type to all arenas (it will be used for queue refreshing)
-				player->m_clicked = false;
-				player->timeDiff = 0;
+                player->m_clicked = false;
+                player->timeDiff = 0;
 
                 // unsummon current and summon old pet if there was one and there isn't a current pet
                 player->RemovePet(NULL, PET_SAVE_NOT_IN_SLOT);
@@ -1800,7 +1800,7 @@ void Battleground::SendWarningToAll(int32 entry, ...)
 
     std::map<uint32, WorldPacket> localizedPackets;
     for (BattlegroundPlayerMap::const_iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
-	if (Player* player = _GetPlayer(itr, "SendWarningToAll"))
+    if (Player* player = _GetPlayer(itr, "SendWarningToAll"))
         {
             if (localizedPackets.find(player->GetSession()->GetSessionDbLocaleIndex()) == localizedPackets.end())
             {

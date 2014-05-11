@@ -1206,14 +1206,14 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex effIndex, SpellImplicitTarge
 
         for (std::list<WorldObject*>::iterator itr = targets.begin(); itr != targets.end(); ++itr)
         {
-			if(*itr)
+            if(*itr)
         {
             if (Unit* unitTarget = (*itr)->ToUnit())
                 AddUnitTarget(unitTarget, effMask, false);
             else if (GameObject* gObjTarget = (*itr)->ToGameObject())
                 AddGOTarget(gObjTarget, effMask);
         }
-		}
+        }
     }
 }
 
@@ -2263,8 +2263,8 @@ void Spell::DoAllEffectOnTarget(TargetInfo* target)
         if (target->reflectResult == SPELL_MISS_NONE)       // If reflected spell hit caster -> do all effect on him
         {
             spellHitTarget = m_caster;
-			// Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
-			m_caster->ProcDamageAndSpell(unit, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, m_spellInfo);
+            // Start triggers for remove charges if need (trigger only for victim, and mark as active spell)
+            m_caster->ProcDamageAndSpell(unit, PROC_FLAG_NONE, PROC_FLAG_TAKEN_SPELL_MAGIC_DMG_CLASS_NEG, PROC_EX_REFLECT, 1, BASE_ATTACK, m_spellInfo);
             if (m_caster->GetTypeId() == TYPEID_UNIT)
                 m_caster->ToCreature()->LowerPlayerDamageReq(target->damage);
         }
@@ -2614,7 +2614,7 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
                     {
                         if (m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
                             m_originalCaster->ModSpellCastTime(aurSpellInfo, duration, this);
-						// Seduction with Improved Succubus talent - fix duration. 
+                        // Seduction with Improved Succubus talent - fix duration. 
                         if (m_spellInfo->Id == 6358 && unit->GetTypeId() == TYPEID_PLAYER && m_originalCaster->GetOwner()) 
                         { 
                             float mod = 1.0f; 
@@ -3599,8 +3599,8 @@ void Spell::finish(bool ok)
             }
         }
 
-		if ((m_spellInfo->GetFirstRankSpell()->Id == 19750 /* Flash of Light*/ || m_spellInfo->GetFirstRankSpell()->Id == 879)/*Exorcism*/ && m_caster->HasAura(59578)) //Art of War
-			found = true;
+        if ((m_spellInfo->GetFirstRankSpell()->Id == 19750 /* Flash of Light*/ || m_spellInfo->GetFirstRankSpell()->Id == 879)/*Exorcism*/ && m_caster->HasAura(59578)) //Art of War
+            found = true;
 
         if (!found && !(m_spellInfo->AttributesEx2 & SPELL_ATTR2_NOT_RESET_AUTO_ACTIONS))
         {
@@ -4463,8 +4463,8 @@ void Spell::TakeRunePower(bool didHit)
 
     Player* player = m_caster->ToPlayer();
     m_runesState = player->GetRunesState();                 // store previous state
-	uint32 runeGraceTime;
-	uint32 runeGraceCDReduction;
+    uint32 runeGraceTime;
+    uint32 runeGraceCDReduction;
 
     int32 runeCost[NUM_RUNE_TYPES];                         // blood, frost, unholy, death
 
@@ -4482,9 +4482,9 @@ void Spell::TakeRunePower(bool didHit)
         RuneType rune = player->GetCurrentRune(i);
         if (!player->GetRuneCooldown(i) && runeCost[rune] > 0)
         {
-			runeGraceTime = player->GetRuneGraceTime(i);
-			runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
-			player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
+            runeGraceTime = player->GetRuneGraceTime(i);
+            runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
+            player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
             player->SetLastUsedRune(rune);
             runeCost[rune]--;
         }
@@ -4500,9 +4500,9 @@ void Spell::TakeRunePower(bool didHit)
             if (!player->GetRuneCooldown(i) && rune == RUNE_DEATH)
             {
                 player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) : uint32(RUNE_MISS_COOLDOWN));
-				runeGraceTime = player->GetRuneGraceTime(i);
-				runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
-				player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
+                runeGraceTime = player->GetRuneGraceTime(i);
+                runeGraceCDReduction = runeGraceTime < RUNE_GRACE_PERIOD ? runeGraceTime : 0;
+                player->SetRuneCooldown(i, didHit ? player->GetRuneBaseCooldown(i) - runeGraceCDReduction : uint32(RUNE_MISS_COOLDOWN));
                 player->SetLastUsedRune(rune);
                 runeCost[rune]--;
 
@@ -4665,9 +4665,9 @@ SpellCastResult Spell::CheckCast(bool strict)
                 return SPELL_FAILED_DONT_REPORT;
             else
             {
-				// Return spell fizzle for shadowform, returning not ready causes it to bug out client side.
-				return m_spellInfo->Id == 15473 ? SPELL_FAILED_FIZZLE : SPELL_FAILED_NOT_READY;
-			}
+                // Return spell fizzle for shadowform, returning not ready causes it to bug out client side.
+                return m_spellInfo->Id == 15473 ? SPELL_FAILED_FIZZLE : SPELL_FAILED_NOT_READY;
+            }
         }
 
         // check if we are using a potion in combat for the 2nd+ time. Cooldown is added only after caster gets out of combat
@@ -4684,9 +4684,9 @@ SpellCastResult Spell::CheckCast(bool strict)
     // Check global cooldown
     if (strict && !(_triggeredCastFlags & TRIGGERED_IGNORE_GCD) && HasGlobalCooldown())
     {
-		// Return spell fizzle for shadowform, returning not ready causes it to bug out client side.
-		return m_spellInfo->Id == 15473 ? SPELL_FAILED_FIZZLE : SPELL_FAILED_NOT_READY;
-	}
+        // Return spell fizzle for shadowform, returning not ready causes it to bug out client side.
+        return m_spellInfo->Id == 15473 ? SPELL_FAILED_FIZZLE : SPELL_FAILED_NOT_READY;
+    }
 
     // only triggered spells can be processed an ended battleground
     if (!IsTriggered() && m_caster->GetTypeId() == TYPEID_PLAYER)
@@ -5497,7 +5497,7 @@ SpellCastResult Spell::CheckPetCast(Unit* target)
 
     // dead owner (pets still alive when owners ressed?)
     if (Unit* owner = m_caster->GetCharmerOrOwner())
-		if (!owner->IsAlive() && owner->getDeathState() != GHOULED)
+        if (!owner->IsAlive() && owner->getDeathState() != GHOULED)
             return SPELL_FAILED_CASTER_DEAD;
 
     if (!target && m_targets.GetUnitTarget())
@@ -5619,7 +5619,7 @@ SpellCastResult Spell::CheckCasterAuras() const
                         switch (part->GetAuraType())
                         {
                             case SPELL_AURA_MOD_STUN:
-								if (m_spellInfo->Id != 1044 && (!usableInStun || !(auraInfo->GetAllEffectsMechanicMask() & (1 << MECHANIC_STUN))))
+                                if (m_spellInfo->Id != 1044 && (!usableInStun || !(auraInfo->GetAllEffectsMechanicMask() & (1 << MECHANIC_STUN))))
                                     return SPELL_FAILED_STUNNED;
                                 break;
                             case SPELL_AURA_MOD_CONFUSE:
@@ -6463,10 +6463,10 @@ bool Spell::CheckEffectTarget(Unit const* target, uint32 eff) const
             break;
     }
 
-	if (m_spellInfo->AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS || DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS))
+    if (m_spellInfo->AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS || DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, m_spellInfo->Id, NULL, SPELL_DISABLE_LOS))
         return true;
 
-	if (IsTriggered())
+    if (IsTriggered())
     {
         switch (m_spellInfo->Id)
         {
@@ -6534,7 +6534,7 @@ bool Spell::CheckEffectTarget(Unit const* target, uint32 eff) const
 
             // all ok by some way or another, skip normal check
             break;
-		case SPELL_EFFECT_SCHOOL_DAMAGE:
+        case SPELL_EFFECT_SCHOOL_DAMAGE:
         case SPELL_EFFECT_APPLY_AURA:
             switch (m_spellInfo->Id)
             {

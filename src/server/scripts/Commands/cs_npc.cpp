@@ -436,8 +436,8 @@ public:
         }
         Creature* creature = unit->ToCreature();
         if (
-			
-			(newEntryNum))
+            
+            (newEntryNum))
             handler->SendSysMessage(LANG_DONE);
         else
             handler->SendSysMessage(LANG_ERROR);

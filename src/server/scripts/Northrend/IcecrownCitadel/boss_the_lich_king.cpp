@@ -264,7 +264,7 @@ enum Events
     EVENT_MOVE_TO_LICH_KING         = 62,
     EVENT_DESPAWN_SELF              = 63,
 
-	// Spirit Bombs Explosion delay
+    // Spirit Bombs Explosion delay
     EVENT_SPELL_EXPLOSION           = 64,
 };
 
@@ -500,13 +500,13 @@ class TriggerWickedSpirit : public BasicEvent
 
 class HeightFilterValkyrTargetSelection
 {
-	public:
-		HeightFilterValkyrTargetSelection() { }
-		
-		bool operator()(WorldObject* target) const
-		{
-			return target->GetPositionZ() < 830.0f;
-		}
+    public:
+        HeightFilterValkyrTargetSelection() { }
+        
+        bool operator()(WorldObject* target) const
+        {
+            return target->GetPositionZ() < 830.0f;
+        }
 };
 
 class boss_the_lich_king : public CreatureScript
@@ -679,7 +679,7 @@ class boss_the_lich_king : public CreatureScript
                 if (events.IsInPhase(PHASE_ONE) && !HealthAbovePct(70))
                 {
                     events.SetPhase(PHASE_TRANSITION);
-					SetImmuneToTaunt(true);
+                    SetImmuneToTaunt(true);
                     me->SetReactState(REACT_PASSIVE);
                     me->AttackStop();
                     me->GetMotionMaster()->MovePoint(POINT_CENTER_1, CenterPosition);
@@ -689,7 +689,7 @@ class boss_the_lich_king : public CreatureScript
                 if (events.IsInPhase(PHASE_TWO) && !HealthAbovePct(40))
                 {
                     events.SetPhase(PHASE_TRANSITION);
-					SetImmuneToTaunt(true);
+                    SetImmuneToTaunt(true);
                     me->SetReactState(REACT_PASSIVE);
                     me->AttackStop();
                     me->GetMotionMaster()->MovePoint(POINT_CENTER_2, CenterPosition);
@@ -835,7 +835,7 @@ class boss_the_lich_king : public CreatureScript
                     case POINT_CENTER_1:
                         me->SetFacingTo(0.0f);
                         Talk(SAY_LK_REMORSELESS_WINTER);
-						SetImmuneToTaunt(false);
+                        SetImmuneToTaunt(false);
                         me->GetMap()->SetZoneMusic(AREA_THE_FROZEN_THRONE, MUSIC_SPECIAL);
                         DoCast(me, SPELL_REMORSELESS_WINTER_1);
                         events.DelayEvents(62500, EVENT_GROUP_BERSERK); // delay berserk timer, its not ticking during phase transitions
@@ -851,7 +851,7 @@ class boss_the_lich_king : public CreatureScript
                     case POINT_CENTER_2:
                         me->SetFacingTo(0.0f);
                         Talk(SAY_LK_REMORSELESS_WINTER);
-						SetImmuneToTaunt(false);
+                        SetImmuneToTaunt(false);
                         me->GetMap()->SetZoneMusic(AREA_THE_FROZEN_THRONE, MUSIC_SPECIAL);
                         DoCast(me, SPELL_REMORSELESS_WINTER_2);
                         summons.DespawnEntry(NPC_VALKYR_SHADOWGUARD);
@@ -1131,19 +1131,19 @@ class boss_the_lich_king : public CreatureScript
                 DoMeleeAttackIfReady();
             }
 
-			void SetImmuneToTaunt(bool apply)	
-            {	
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_THREAT, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, apply);	
+            void SetImmuneToTaunt(bool apply)    
+            {    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_THREAT, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, apply);    
 
-                // Following might not be necessay, but just in case...	
-                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TOTAL_THREAT, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CRITICAL_THREAT, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_THREAT_ALL, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_MODIFY_THREAT_PERCENT, apply);	
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_REDIRECT_THREAT, apply);	
-            }	
+                // Following might not be necessay, but just in case...    
+                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TOTAL_THREAT, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_CRITICAL_THREAT, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_THREAT_ALL, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_MODIFY_THREAT_PERCENT, apply);    
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_REDIRECT_THREAT, apply);    
+            }    
 
         private:
             uint32 _necroticPlagueStack;
@@ -1469,10 +1469,10 @@ class npc_valkyr_shadowguard : public CreatureScript
                 me->SetReactState(REACT_PASSIVE);
                 DoCast(me, SPELL_WINGS_OF_THE_DAMNED, false);
                 me->SetSpeed(MOVE_FLIGHT, 0.642857f, true);
-				me->SetSpeed(MOVE_WALK, 0.642857f, true);
-				me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-				me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK_DEST, true);
-				_movementWasStopped = true;
+                me->SetSpeed(MOVE_WALK, 0.642857f, true);
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK_DEST, true);
+                _movementWasStopped = true;
             }
 
             void IsSummonedBy(Unit* /*summoner*/) override
@@ -1518,14 +1518,14 @@ class npc_valkyr_shadowguard : public CreatureScript
                 switch (id)
                 {
                     case POINT_DROP_PLAYER: 
-					// On stun point motion is finalized, if position is really reached, distance is null
-						if (!me->GetDistance(_dropPoint))
-						{
-							DoCastAOE(SPELL_EJECT_ALL_PASSENGERS);
-							me->DespawnOrUnsummon(1000);
-						}
-						else
-							_movementWasStopped = true;
+                    // On stun point motion is finalized, if position is really reached, distance is null
+                        if (!me->GetDistance(_dropPoint))
+                        {
+                            DoCastAOE(SPELL_EJECT_ALL_PASSENGERS);
+                            me->DespawnOrUnsummon(1000);
+                        }
+                        else
+                            _movementWasStopped = true;
                         break;
                     case POINT_CHARGE:
                         if (Player* target = ObjectAccessor::GetPlayer(*me, _grabbedPlayer))
@@ -1582,11 +1582,11 @@ class npc_valkyr_shadowguard : public CreatureScript
                             break;
                         case EVENT_MOVE_TO_DROP_POS:
                             if (!me->HasAuraType(SPELL_AURA_MOD_STUN) && _movementWasStopped)
-							{
-								_movementWasStopped = false;
-								me->GetMotionMaster()->MovePoint(POINT_DROP_PLAYER, _dropPoint);
-							}
-							_events.ScheduleEvent(EVENT_MOVE_TO_DROP_POS, 500);
+                            {
+                                _movementWasStopped = false;
+                                me->GetMotionMaster()->MovePoint(POINT_DROP_PLAYER, _dropPoint);
+                            }
+                            _events.ScheduleEvent(EVENT_MOVE_TO_DROP_POS, 500);
                             break;
                         case EVENT_LIFE_SIPHON:
                             if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1))
@@ -1606,7 +1606,7 @@ class npc_valkyr_shadowguard : public CreatureScript
             Position _dropPoint;
             uint64 _grabbedPlayer;
             InstanceScript* _instance;
-			bool _movementWasStopped;
+            bool _movementWasStopped;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -1947,13 +1947,13 @@ class npc_spirit_bomb : public CreatureScript
             void IsSummonedBy(Unit* /*summoner*/) override
             {
                 float destX, destY, destZ, Z;
-				me->GetPosition(destX, destY, Z);
-				me->NearTeleportTo(destX, destY, Z+5.0f, me->GetOrientation());
-				me->Relocate(destX, destY, Z+5.0f);
-				me->SendMovementFlagUpdate();
-				destZ = 1055.0f;    // approximation, gets more precise later
+                me->GetPosition(destX, destY, Z);
+                me->NearTeleportTo(destX, destY, Z+5.0f, me->GetOrientation());
+                me->Relocate(destX, destY, Z+5.0f);
+                me->SendMovementFlagUpdate();
+                destZ = 1055.0f;    // approximation, gets more precise later
                 me->UpdateGroundPositionZ(destX, destY, destZ);
-				me->SetSpeed(MOVE_FLIGHT, 0.5f, true);
+                me->SetSpeed(MOVE_FLIGHT, 0.5f, true);
                 me->GetMotionMaster()->MovePoint(POINT_GROUND, destX, destY, destZ);
             }
 
@@ -1962,7 +1962,7 @@ class npc_spirit_bomb : public CreatureScript
                 if (type != POINT_MOTION_TYPE || point != POINT_GROUND)
                     return;
 
-				_events.ScheduleEvent(EVENT_SPELL_EXPLOSION, 3000);
+                _events.ScheduleEvent(EVENT_SPELL_EXPLOSION, 3000);
             }
 
             void AttackStart(Unit* /*victim*/) override
@@ -1974,7 +1974,7 @@ class npc_spirit_bomb : public CreatureScript
                 UpdateVictim();
                 // no melee attacks
 
-				_events.Update(diff);
+                _events.Update(diff);
                 while (uint32 eventId = _events.ExecuteEvent())
                 {
                     if(EVENT_SPELL_EXPLOSION)
@@ -1985,8 +1985,8 @@ class npc_spirit_bomb : public CreatureScript
                     }
                 }
             }
-		private:
-		EventMap _events;
+        private:
+        EventMap _events;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -2072,11 +2072,11 @@ class spell_the_lich_king_infest : public SpellScriptLoader
 
             void OnPeriodic(AuraEffect const* /*aurEff*/)
             {
-				if (GetUnitOwner()->HasAura(SPELL_HARVEST_SOUL_VALKYR))
-					{
-						PreventDefaultAction();
-						Remove(AURA_REMOVE_BY_ENEMY_SPELL);
-					}
+                if (GetUnitOwner()->HasAura(SPELL_HARVEST_SOUL_VALKYR))
+                    {
+                        PreventDefaultAction();
+                        Remove(AURA_REMOVE_BY_ENEMY_SPELL);
+                    }
 
                 if (GetUnitOwner()->HealthAbovePct(90))
                 {
@@ -2521,7 +2521,7 @@ class spell_the_lich_king_summon_into_air : public SpellScriptLoader
                 // spirit bombs get higher
                 if (GetSpellInfo()->Effects[effIndex].MiscValue == NPC_SPIRIT_BOMB)
                 {
-					static Position const offset = { 0.0f, 0.0f, 15.0f, 0.0f };
+                    static Position const offset = { 0.0f, 0.0f, 15.0f, 0.0f };
                     dest->RelocateOffset(offset);
                     GetHitDest()->RelocateOffset(offset);
                 }
@@ -2600,7 +2600,7 @@ class spell_the_lich_king_valkyr_target_search : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-				targets.remove_if(HeightFilterValkyrTargetSelection());
+                targets.remove_if(HeightFilterValkyrTargetSelection());
                 targets.remove_if(Trinity::UnitAuraCheck(true, GetSpellInfo()->Id));
                 if (targets.empty())
                     return;
@@ -2622,7 +2622,7 @@ class spell_the_lich_king_valkyr_target_search : public SpellScriptLoader
             {
                 PreventHitDefaultEffect(effIndex);
                 if (GetCaster() && GetCaster()->GetMotionMaster() && GetHitUnit())
-					GetCaster()->GetMotionMaster()->MoveCharge(GetHitUnit()->GetPositionX(), GetHitUnit()->GetPositionY(), GetHitUnit()->GetPositionZ());
+                    GetCaster()->GetMotionMaster()->MoveCharge(GetHitUnit()->GetPositionX(), GetHitUnit()->GetPositionY(), GetHitUnit()->GetPositionZ());
             }
 
             void Register() override

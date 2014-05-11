@@ -105,7 +105,7 @@ void BattlegroundMgr::Update(uint32 diff)
         }
     }
 
-	DynamicMMR(diff);
+    DynamicMMR(diff);
 
     // update events timer
     for (int qtype = BATTLEGROUND_QUEUE_NONE; qtype < MAX_BATTLEGROUND_QUEUE_TYPES; ++qtype)
@@ -123,13 +123,13 @@ void BattlegroundMgr::Update(uint32 diff)
             uint8 arenaType = scheduled[i] >> 24 & 255;
             BattlegroundQueueTypeId bgQueueTypeId = BattlegroundQueueTypeId(scheduled[i] >> 16 & 255);
             BattlegroundTypeId bgTypeId = BattlegroundTypeId((scheduled[i] >> 8) & 255);
-			uint8 dynamicMMRindex = 0;
-			if (arenaType != 0)
-				dynamicMMRindex = (scheduled[i] >> 4 & 255) - 96;
+            uint8 dynamicMMRindex = 0;
+            if (arenaType != 0)
+                dynamicMMRindex = (scheduled[i] >> 4 & 255) - 96;
             BattlegroundBracketId bracket_id = BattlegroundBracketId(scheduled[i] & 255);
             if (dynamicMMRindex > 0)
-				bracket_id = BattlegroundBracketId(14);
-			m_BattlegroundQueues[bgQueueTypeId].BattlegroundQueueUpdate(diff, bgTypeId, bracket_id, arenaType, arenaMMRating > 0, arenaMMRating, dynamicMMRindex);
+                bracket_id = BattlegroundBracketId(14);
+            m_BattlegroundQueues[bgQueueTypeId].BattlegroundQueueUpdate(diff, bgTypeId, bracket_id, arenaType, arenaMMRating > 0, arenaMMRating, dynamicMMRindex);
         }
     }
 
@@ -897,8 +897,8 @@ void BattlegroundMgr::BuildBattlegroundListPacket(WorldPacket* data, uint64 guid
 
 void BattlegroundMgr::SendToBattleground(Player* player, uint32 instanceId, BattlegroundTypeId bgTypeId)
 {
-	if (!player)
-		return;
+    if (!player)
+        return;
 
     if (Battleground* bg = GetBattleground(instanceId, bgTypeId))
     {
@@ -1045,7 +1045,7 @@ void BattlegroundMgr::ScheduleQueueUpdate(uint32 arenaMatchmakerRating, uint8 ar
 {
     //This method must be atomic, @todo add mutex
     //we will use only 1 number created of bgTypeId and bracket_id
-	uint64 const scheduleId = ((uint64)arenaMatchmakerRating << 32) | (uint32(arenaType) << 24) | (bgQueueTypeId << 16) | (bgTypeId << 8) | (dynamicMMRindex << 4) | bracket_id;
+    uint64 const scheduleId = ((uint64)arenaMatchmakerRating << 32) | (uint32(arenaType) << 24) | (bgQueueTypeId << 16) | (bgTypeId << 8) | (dynamicMMRindex << 4) | bracket_id;
     if (std::find(m_QueueUpdateScheduler.begin(), m_QueueUpdateScheduler.end(), scheduleId) == m_QueueUpdateScheduler.end())
         m_QueueUpdateScheduler.push_back(scheduleId);
 }
@@ -1248,148 +1248,148 @@ void BattlegroundMgr::RemoveBattleground(BattlegroundTypeId bgTypeId, uint32 ins
 
 void BattlegroundMgr::DynamicMMR(uint32 diff)
 {
-	_customRefreshTimer += diff;
-	if (_customRefreshTimer > 1000)
-	{
-		_customRefreshTimer = 0;
-		for (int i = BATTLEGROUND_QUEUE_2v2; i < BATTLEGROUND_QUEUE_5v5; ++i)
-		{
-			for (int bgTypeId = 0; bgTypeId < MAX_BATTLEGROUND_BRACKETS; ++bgTypeId)
-			{
-				for (int groupType = BG_QUEUE_PREMADE_ALLIANCE; groupType < BG_QUEUE_NORMAL_ALLIANCE; ++groupType)
-				{
-					if (m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].empty())
-						continue;
-					BattlegroundQueue::GroupsQueueType::iterator itr = m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].begin();
-					for (; itr != m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].end(); itr++)
-					{
-						if (!(*itr)->IsInvitedToBGInstanceGUID && (*itr)->IsRated)
-						{
-							if (getMSTime() - (*itr)->JoinTime > 180000)
-							{
-								// Tahle podminka je pro to, aby to lidem dalo announce jen jednou za 30 sekund, ne kazdou sekundu
-								if ((*itr)->DynamicMMRindex < 6)
-								{
-									(*itr)->DynamicMMRindex = 6;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (600 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (600 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-							else if (getMSTime() - (*itr)->JoinTime > 150000)
-							{
-								if ((*itr)->DynamicMMRindex < 5)
-								{
-									(*itr)->DynamicMMRindex = 5;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (500 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (500 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-							else if (getMSTime() - (*itr)->JoinTime > 120000)
-							{
-								if ((*itr)->DynamicMMRindex < 4)
-								{
-									(*itr)->DynamicMMRindex = 4;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (400 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (400 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-							else if (getMSTime() - (*itr)->JoinTime > 90000)
-							{
-								if ((*itr)->DynamicMMRindex < 3)
-								{
-									(*itr)->DynamicMMRindex = 3;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (300 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (300 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-							else if (getMSTime() - (*itr)->JoinTime > 60000)
-							{
-								if ((*itr)->DynamicMMRindex < 2)
-								{
-									(*itr)->DynamicMMRindex = 2;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (200 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (200 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-							else if (getMSTime() - (*itr)->JoinTime > 30000)
-							{
-								if ((*itr)->DynamicMMRindex < 1)
-								{
-									(*itr)->DynamicMMRindex = 1;
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-									if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
-									{
-										for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
-										{
-											if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
-											{
-												ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (100 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (100 + GetMaxRatingDifference()));
-											}
-										}
-									}
-								}
-								else
-									ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    _customRefreshTimer += diff;
+    if (_customRefreshTimer > 1000)
+    {
+        _customRefreshTimer = 0;
+        for (int i = BATTLEGROUND_QUEUE_2v2; i < BATTLEGROUND_QUEUE_5v5; ++i)
+        {
+            for (int bgTypeId = 0; bgTypeId < MAX_BATTLEGROUND_BRACKETS; ++bgTypeId)
+            {
+                for (int groupType = BG_QUEUE_PREMADE_ALLIANCE; groupType < BG_QUEUE_NORMAL_ALLIANCE; ++groupType)
+                {
+                    if (m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].empty())
+                        continue;
+                    BattlegroundQueue::GroupsQueueType::iterator itr = m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].begin();
+                    for (; itr != m_BattlegroundQueues[i].m_QueuedGroups[bgTypeId][groupType].end(); itr++)
+                    {
+                        if (!(*itr)->IsInvitedToBGInstanceGUID && (*itr)->IsRated)
+                        {
+                            if (getMSTime() - (*itr)->JoinTime > 180000)
+                            {
+                                // Tahle podminka je pro to, aby to lidem dalo announce jen jednou za 30 sekund, ne kazdou sekundu
+                                if ((*itr)->DynamicMMRindex < 6)
+                                {
+                                    (*itr)->DynamicMMRindex = 6;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (600 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (600 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                            else if (getMSTime() - (*itr)->JoinTime > 150000)
+                            {
+                                if ((*itr)->DynamicMMRindex < 5)
+                                {
+                                    (*itr)->DynamicMMRindex = 5;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (500 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (500 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                            else if (getMSTime() - (*itr)->JoinTime > 120000)
+                            {
+                                if ((*itr)->DynamicMMRindex < 4)
+                                {
+                                    (*itr)->DynamicMMRindex = 4;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (400 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (400 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                            else if (getMSTime() - (*itr)->JoinTime > 90000)
+                            {
+                                if ((*itr)->DynamicMMRindex < 3)
+                                {
+                                    (*itr)->DynamicMMRindex = 3;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (300 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (300 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                            else if (getMSTime() - (*itr)->JoinTime > 60000)
+                            {
+                                if ((*itr)->DynamicMMRindex < 2)
+                                {
+                                    (*itr)->DynamicMMRindex = 2;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (200 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (200 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                            else if (getMSTime() - (*itr)->JoinTime > 30000)
+                            {
+                                if ((*itr)->DynamicMMRindex < 1)
+                                {
+                                    (*itr)->DynamicMMRindex = 1;
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                                    if (ArenaTeam* team = sArenaTeamMgr->GetArenaTeamById((*itr)->ArenaTeamId))
+                                    {
+                                        for (ArenaTeam::MemberList::iterator iter = team->m_membersBegin(); iter != team->m_membersEnd(); iter++)
+                                        {
+                                            if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
+                                            {
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (100 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (100 + GetMaxRatingDifference()));
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    ScheduleQueueUpdate((*itr)->ArenaMatchmakerRating, (*itr)->ArenaType, BattlegroundQueueTypeId(i), (*itr)->BgTypeId, BattlegroundBracketId(14), (*itr)->DynamicMMRindex);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

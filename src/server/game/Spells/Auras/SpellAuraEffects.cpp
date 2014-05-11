@@ -546,7 +546,7 @@ void AuraEffect::CalculatePeriodic(Unit* caster, bool create, bool load)
             }
             // and periodic time of auras affected by SPELL_AURA_PERIODIC_HASTE
             else if (caster->HasAuraTypeWithAffectMask(SPELL_AURA_PERIODIC_HASTE, m_spellInfo) || m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
-				m_amplitude = m_amplitude * caster->GetFloatValue(UNIT_MOD_CAST_SPEED) - 0.01f;
+                m_amplitude = m_amplitude * caster->GetFloatValue(UNIT_MOD_CAST_SPEED) - 0.01f;
         }
     }
 
@@ -559,7 +559,7 @@ void AuraEffect::CalculatePeriodic(Unit* caster, bool create, bool load)
     }
     else // aura just created or reapplied
     {
-		if (!IsPeriodic()) //do not reset timers on reapplying DoT's
+        if (!IsPeriodic()) //do not reset timers on reapplying DoT's
         {
             m_periodicTimer = 0;
             m_tickNumber = 0;
@@ -669,10 +669,10 @@ void AuraEffect::HandleEffect(AuraApplication * aurApp, uint8 mode, bool apply)
     if (apply)
         GetBase()->CallScriptAfterEffectApplyHandlers(this, aurApp, (AuraEffectHandleModes)mode);
     else
-		if (aurApp->GetTarget()->IsInWorld())
-			GetBase()->CallScriptAfterEffectRemoveHandlers(this, aurApp, (AuraEffectHandleModes)mode);
-		else 
-			return;
+        if (aurApp->GetTarget()->IsInWorld())
+            GetBase()->CallScriptAfterEffectRemoveHandlers(this, aurApp, (AuraEffectHandleModes)mode);
+        else 
+            return;
 
 }
 
@@ -4644,10 +4644,10 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
                     break;
                 case 52916: // Honor Among Thieves
                     if (caster && caster->GetTypeId() == TYPEID_PLAYER && (caster != target || !caster->ToPlayer()->GetGroup()))
-						if (Unit* spellTarget = ObjectAccessor::GetUnit(*caster, caster->GetTarget()))
-							if (caster->IsValidAttackTarget(spellTarget))
-								caster->CastSpell(spellTarget, 51699, true);
-					break;
+                        if (Unit* spellTarget = ObjectAccessor::GetUnit(*caster, caster->GetTarget()))
+                            if (caster->IsValidAttackTarget(spellTarget))
+                                caster->CastSpell(spellTarget, 51699, true);
+                    break;
                 case 71563:
                     if (Aura* newAura = target->AddAura(71564, target))
                         newAura->SetStackAmount(newAura->GetSpellInfo()->StackAmount);
@@ -4908,34 +4908,34 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
         case SPELLFAMILY_DEATHKNIGHT:
         {
             if (!(mode & AURA_EFFECT_HANDLE_REAL))
-				break;
-				if (GetId() == 46619) // Raise Ally
-				{
-					if (!target || target->GetTypeId() != TYPEID_PLAYER)
-						return;
-					Player* player = target->ToPlayer();
-					if (apply)
-					{
-						player->setDeathState(GHOULED);
-						player->RemoveAllAurasOnDeath();
-						WorldPacket data(SMSG_PRE_RESURRECT, player->GetPackGUID().size());
-						data.append(player->GetPackGUID());
-						player->GetSession()->SendPacket(&data);
-						player->StopMirrorTimers();
-						player->SetFloatValue(UNIT_FIELD_BOUNDINGRADIUS, float(1.0f));
-						player->SetHealth(1);
-						player->SetPower(player->getPowerType(), 1);
-						player->SetMovement(MOVE_ROOT);
-					}
-					else
-					{
-						player->RemoveAurasDueToSpell(62218);
-						player->SetMovement(MOVE_UNROOT);
-						player->SetHealth(0);
-						player->setDeathState(JUST_DIED);
-					}
-					break;
-				}
+                break;
+                if (GetId() == 46619) // Raise Ally
+                {
+                    if (!target || target->GetTypeId() != TYPEID_PLAYER)
+                        return;
+                    Player* player = target->ToPlayer();
+                    if (apply)
+                    {
+                        player->setDeathState(GHOULED);
+                        player->RemoveAllAurasOnDeath();
+                        WorldPacket data(SMSG_PRE_RESURRECT, player->GetPackGUID().size());
+                        data.append(player->GetPackGUID());
+                        player->GetSession()->SendPacket(&data);
+                        player->StopMirrorTimers();
+                        player->SetFloatValue(UNIT_FIELD_BOUNDINGRADIUS, float(1.0f));
+                        player->SetHealth(1);
+                        player->SetPower(player->getPowerType(), 1);
+                        player->SetMovement(MOVE_ROOT);
+                    }
+                    else
+                    {
+                        player->RemoveAurasDueToSpell(62218);
+                        player->SetMovement(MOVE_UNROOT);
+                        player->SetHealth(0);
+                        player->setDeathState(JUST_DIED);
+                    }
+                    break;
+                }
             break;
         }
     }
@@ -5434,7 +5434,7 @@ void AuraEffect::HandlePeriodicDummyAuraTick(Unit* target, Unit* caster) const
             if (GetSpellInfo()->SpellFamilyFlags[0] & 0x20)
             {
                 if (caster)
-					target->CastCustomSpell(target, 52212, &m_amount, NULL, NULL, true, 0, this, caster->GetGUID());
+                    target->CastCustomSpell(target, 52212, &m_amount, NULL, NULL, true, 0, this, caster->GetGUID());
                 break;
             }
             // Blood of the North
@@ -5692,7 +5692,7 @@ void AuraEffect::HandlePeriodicTriggerSpellAuraTick(Unit* target, Unit* caster) 
                 GetBase()->GetUnitOwner()->CastSpell(target, triggeredSpellInfo, true, 0, this, GetBase()->GetUnitOwner()->GetGUID());
                 return;
             }
-			case 56654:
+            case 56654:
             case 58882:
                 caster->CastCustomSpell(caster, 58883, &m_amount, NULL, NULL, true, NULL, this, caster->GetGUID());
                 return;

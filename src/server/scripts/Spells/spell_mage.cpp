@@ -374,7 +374,7 @@ class spell_mage_ignite : public SpellScriptLoader
 
             bool Validate(SpellInfo const* /*spellInfo*/) override
             {
-				return sSpellMgr->GetSpellInfo(SPELL_MAGE_IGNITE);
+                return sSpellMgr->GetSpellInfo(SPELL_MAGE_IGNITE);
             }
 
             bool CheckProc(ProcEventInfo& eventInfo)
@@ -386,7 +386,7 @@ class spell_mage_ignite : public SpellScriptLoader
             {
                 PreventDefaultAction();
 
-				Unit* caster = GetCaster();
+                Unit* caster = GetCaster();
                 Unit* target = eventInfo.GetProcTarget();
                 SpellInfo const* igniteDot = sSpellMgr->EnsureSpellInfo(SPELL_MAGE_IGNITE);
                 int32 pct = 8 * GetSpellInfo()->GetRank();
@@ -673,5 +673,5 @@ void AddSC_mage_spell_scripts()
     new spell_mage_master_of_elements();
     new spell_mage_polymorph_cast_visual();
     new spell_mage_summon_water_elemental();
-	new spell_mage_flamestrike();
+    new spell_mage_flamestrike();
 }

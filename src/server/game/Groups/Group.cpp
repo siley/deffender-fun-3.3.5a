@@ -300,7 +300,7 @@ bool Group::AddLeaderInvite(Player* player)
 
 void Group::RemoveInvite(Player* player)
 {
-	if (player && player->GetGroup() == this)
+    if (player && player->GetGroup() == this)
     {
         m_invitees.erase(player);
         player->SetGroupInvite(NULL);

@@ -86,7 +86,7 @@ public:
             { "creature_queststarter",         rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_QUESTSTARTER,            true,  &HandleReloadCreatureQuestStarterCommand,       "", NULL },
             { "creature_summon_groups",        rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_SUMMON_GROUPS,           true,  &HandleReloadCreatureSummonGroupsCommand,       "", NULL },
             { "creature_template",             rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE,                true,  &HandleReloadCreatureTemplateCommand,           "", NULL },
-			{ "creature_template_outfits",		SEC_ADMINISTRATOR, true, &HandleReloadCreatureTemplateOutfitsCommand, "", NULL },
+            { "creature_template_outfits",        SEC_ADMINISTRATOR, true, &HandleReloadCreatureTemplateOutfitsCommand, "", NULL },
             //{ "db_script_string",              rbac::RBAC_PERM_COMMAND_RELOAD_,                                 true,  &HandleReloadDbScriptStringCommand,             "", NULL },
             { "disables",                      rbac::RBAC_PERM_COMMAND_RELOAD_DISABLES,                         true,  &HandleReloadDisablesCommand,                   "", NULL },
             { "disenchant_loot_template",      rbac::RBAC_PERM_COMMAND_RELOAD_DISENCHANT_LOOT_TEMPLATE,         true,  &HandleReloadLootTemplatesDisenchantCommand,    "", NULL },
@@ -196,7 +196,7 @@ public:
         HandleReloadGameTeleCommand(handler, "");
 
         HandleReloadCreatureSummonGroupsCommand(handler, "");
-		HandleReloadCreatureTemplateOutfitsCommand(handler, "");
+        HandleReloadCreatureTemplateOutfitsCommand(handler, "");
 
         HandleReloadVehicleAccessoryCommand(handler, "");
         HandleReloadVehicleTemplateAccessoryCommand(handler, "");
@@ -531,13 +531,13 @@ public:
         return true;
     }
 
-	static bool HandleReloadCreatureTemplateOutfitsCommand(ChatHandler* handler, const char* /*args*/)
-	{
-		TC_LOG_INFO("misc", "Loading Creature Outfits... (`creature_template_outfits`)");
-		sObjectMgr->LoadCreatureOutfits();
-		handler->SendGlobalGMSysMessage("DB table `creature_template_outfits` reloaded.");
-		return true;
-	}
+    static bool HandleReloadCreatureTemplateOutfitsCommand(ChatHandler* handler, const char* /*args*/)
+    {
+        TC_LOG_INFO("misc", "Loading Creature Outfits... (`creature_template_outfits`)");
+        sObjectMgr->LoadCreatureOutfits();
+        handler->SendGlobalGMSysMessage("DB table `creature_template_outfits` reloaded.");
+        return true;
+    }
 
     static bool HandleReloadCreatureQuestStarterCommand(ChatHandler* handler, const char* /*args*/)
     {

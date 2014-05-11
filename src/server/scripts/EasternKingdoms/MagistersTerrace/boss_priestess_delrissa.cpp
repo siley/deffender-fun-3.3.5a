@@ -549,21 +549,21 @@ public:
                 Eviscerate_Timer = 4000;
             } else Eviscerate_Timer -= diff;
 
-			if (InVanish)
-			{
-				if (Wait_Timer <= diff)
-				{
-					
-					if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
-					{
-						target->CastSpell(target, SPELL_BACKSTAB, true);
-						target->CastSpell(target, SPELL_KIDNEY_SHOT, true);
-					}
-					
-					InVanish = false;
-					
-				} else Wait_Timer -= diff;
-			}
+            if (InVanish)
+            {
+                if (Wait_Timer <= diff)
+                {
+                    
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                    {
+                        target->CastSpell(target, SPELL_BACKSTAB, true);
+                        target->CastSpell(target, SPELL_KIDNEY_SHOT, true);
+                    }
+                    
+                    InVanish = false;
+                    
+                } else Wait_Timer -= diff;
+            }
 
             if (!InVanish)
                 DoMeleeAttackIfReady();

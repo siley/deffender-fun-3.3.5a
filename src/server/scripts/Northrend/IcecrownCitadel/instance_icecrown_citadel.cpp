@@ -174,7 +174,7 @@ class instance_icecrown_citadel : public InstanceMapScript
             void OnPlayerEnter(Player* player) override
             {
                 if (!TeamInInstance)
-					TeamInInstance = ALLIANCE;
+                    TeamInInstance = ALLIANCE;
 
                 if (GetBossState(DATA_LADY_DEATHWHISPER) == DONE && GetBossState(DATA_ICECROWN_GUNSHIP_BATTLE) != DONE)
                     SpawnGunship();
@@ -187,7 +187,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                     Map::PlayerList const &players = instance->GetPlayers();
                     if (!players.isEmpty())
                         if (Player* player = players.begin()->GetSource())
-							TeamInInstance = ALLIANCE;
+                            TeamInInstance = ALLIANCE;
                 }
 
                 switch (creature->GetEntry())
@@ -237,7 +237,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                         break;
                     case NPC_SE_HIGH_OVERLORD_SAURFANG:
                         if (TeamInInstance == ALLIANCE)
-							creature->UpdateEntry(NPC_SE_MURADIN_BRONZEBEARD, creature->GetCreatureData());
+                            creature->UpdateEntry(NPC_SE_MURADIN_BRONZEBEARD, creature->GetCreatureData());
                         // no break;
                     case NPC_SE_MURADIN_BRONZEBEARD:
                         DeathbringerSaurfangEventGUID = creature->GetGUID();
@@ -321,7 +321,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                         // Remove corpse as soon as it dies (and respawn 10 seconds later)
                         creature->SetCorpseDelay(0);
                         creature->SetReactState(REACT_PASSIVE);
-						creature->SetSpeed(MOVE_FLIGHT, 0.5f, true);
+                        creature->SetSpeed(MOVE_FLIGHT, 0.5f, true);
                         break;
                     default:
                         break;

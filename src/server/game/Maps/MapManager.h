@@ -105,17 +105,17 @@ class MapManager
             return IsValidMapCoord(loc.GetMapId(), loc.GetPositionX(), loc.GetPositionY(), loc.GetPositionZ(), loc.GetOrientation());
         }
 
-		static float NormalizeOrientation(float o)
-		{
-			if (o < 0)
-			{
-				float mod = o *-1;
-				mod = fmod(mod, 2.0f * static_cast<float>(M_PI));
-				mod = -mod + 2.0f * static_cast<float>(M_PI);
-				return mod;
-			}
-			return fmod(o, 2.0f * static_cast<float>(M_PI));
-		}
+        static float NormalizeOrientation(float o)
+        {
+            if (o < 0)
+            {
+                float mod = o *-1;
+                mod = fmod(mod, 2.0f * static_cast<float>(M_PI));
+                mod = -mod + 2.0f * static_cast<float>(M_PI);
+                return mod;
+            }
+            return fmod(o, 2.0f * static_cast<float>(M_PI));
+        }
 
         void DoDelayedMovesAndRemoves();
 

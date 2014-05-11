@@ -180,7 +180,7 @@ enum UlduarNPCs
 
 enum UlduarGameObjects
 {
-	GO_XT_TELEPORTER						= 250000,
+    GO_XT_TELEPORTER                        = 250000,
     // Leviathan
     GO_LEVIATHAN_DOOR                       = 194905,
     GO_LEVIATHAN_GATE                       = 194630,

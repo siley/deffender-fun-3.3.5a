@@ -335,14 +335,14 @@ void BattlefieldWG::OnBattleEnd(bool endByTimer)
                 ShowNpc(creature, true);
     }
 
-	// Rebuild all walls
-	for (GameObjectBuilding::const_iterator itr = BuildingsInZone.begin(); itr != BuildingsInZone.end(); ++itr)
-	{
-		if (*itr)
-		{
-			(*itr)->Rebuild();
-		}
-	}
+    // Rebuild all walls
+    for (GameObjectBuilding::const_iterator itr = BuildingsInZone.begin(); itr != BuildingsInZone.end(); ++itr)
+    {
+        if (*itr)
+        {
+            (*itr)->Rebuild();
+        }
+    }
 
     // Update all graveyard, control is to defender when no wartime
     for (uint8 i = 0; i < BATTLEFIELD_WG_GY_HORDE; i++)

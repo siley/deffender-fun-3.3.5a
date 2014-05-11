@@ -36,7 +36,7 @@ void HomeMovementGenerator<Creature>::DoFinalize(Creature* owner)
         owner->SetWalk(true);
         owner->LoadCreaturesAddon(true);
         owner->AI()->JustReachedHome();
-		owner->AI()->Reset();
+        owner->AI()->Reset();
     }
 }
 

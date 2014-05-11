@@ -685,45 +685,45 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
     // selection by spell family
     switch (m_spellInfo->SpellFamilyName)
     {
-		case SPELLFAMILY_GENERIC:
-			switch (m_spellInfo->Id)
-			{
-				case 58984: //shadowmeld
-				{
-					if (!m_caster)
-						return;
+        case SPELLFAMILY_GENERIC:
+            switch (m_spellInfo->Id)
+            {
+                case 58984: //shadowmeld
+                {
+                    if (!m_caster)
+                        return;
 
-					m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
-					m_caster->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
+                    m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+                    m_caster->InterruptSpell(CURRENT_CHANNELED_SPELL);  // break channeled spells
 
-					bool instant_exit = true;
-					if (Player *pCaster = m_caster->ToPlayer()) // if is a creature instant exits combat, else check if someone in party is in combat in visibility distance
-						{
-						uint64 myGUID = pCaster->GetGUID();
-						float visibilityRange = pCaster->GetMap()->GetVisibilityRange();
-						if (Group *pGroup = pCaster->GetGroup())
-						{
-							const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
-							for (Group::member_citerator itr=membersList.begin(); itr!=membersList.end() && instant_exit; ++itr)
-								if (itr->guid != myGUID)
-									if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
-										if (GroupMember->IsInCombat() && pCaster->GetMap()==GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
-											instant_exit = false;
-						}
+                    bool instant_exit = true;
+                    if (Player *pCaster = m_caster->ToPlayer()) // if is a creature instant exits combat, else check if someone in party is in combat in visibility distance
+                        {
+                        uint64 myGUID = pCaster->GetGUID();
+                        float visibilityRange = pCaster->GetMap()->GetVisibilityRange();
+                        if (Group *pGroup = pCaster->GetGroup())
+                        {
+                            const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
+                            for (Group::member_citerator itr=membersList.begin(); itr!=membersList.end() && instant_exit; ++itr)
+                                if (itr->guid != myGUID)
+                                    if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
+                                        if (GroupMember->IsInCombat() && pCaster->GetMap()==GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
+                                            instant_exit = false;
+                        }
 
-						pCaster->SendAttackSwingCancelAttack();
-						}
-					if (!m_caster->GetInstanceScript() || !m_caster->GetInstanceScript()->IsEncounterInProgress()) //Don't leave combat if you are in combat with a boss
-						{
-						if (!instant_exit)
-							m_caster->getHostileRefManager().deleteReferences(); // exit combat after 6 seconds
-						else 
-							m_caster->CombatStop(); // isn't necessary to call AttackStop because is just called in CombatStop
-					}
-					return;
-				}
-			}
-			break;
+                        pCaster->SendAttackSwingCancelAttack();
+                        }
+                    if (!m_caster->GetInstanceScript() || !m_caster->GetInstanceScript()->IsEncounterInProgress()) //Don't leave combat if you are in combat with a boss
+                        {
+                        if (!instant_exit)
+                            m_caster->getHostileRefManager().deleteReferences(); // exit combat after 6 seconds
+                        else 
+                            m_caster->CombatStop(); // isn't necessary to call AttackStop because is just called in CombatStop
+                    }
+                    return;
+                }
+            }
+            break;
         case SPELLFAMILY_PALADIN:
             switch (m_spellInfo->Id)
             {
@@ -759,27 +759,27 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
             break;
         default:
             break;
-		case SPELLFAMILY_DEATHKNIGHT:
-			switch (m_spellInfo->Id)
-			{
-				case 61999:
-					if (!unitTarget || m_caster->GetTypeId() != TYPEID_PLAYER || unitTarget->IsAlive())
-					{
-						SendCastResult(SPELL_FAILED_TARGET_NOT_DEAD);
-						finish(true);
-						CancelGlobalCooldown();
-						m_caster->ToPlayer()->RemoveSpellCooldown(m_spellInfo->Id, true);
-						return;
-					}
-					else
-					{
-						unitTarget->CastSpell(unitTarget, 46619, true);
-						CancelGlobalCooldown();
-						return;
-					}
-				break;
-			}
-		break;
+        case SPELLFAMILY_DEATHKNIGHT:
+            switch (m_spellInfo->Id)
+            {
+                case 61999:
+                    if (!unitTarget || m_caster->GetTypeId() != TYPEID_PLAYER || unitTarget->IsAlive())
+                    {
+                        SendCastResult(SPELL_FAILED_TARGET_NOT_DEAD);
+                        finish(true);
+                        CancelGlobalCooldown();
+                        m_caster->ToPlayer()->RemoveSpellCooldown(m_spellInfo->Id, true);
+                        return;
+                    }
+                    else
+                    {
+                        unitTarget->CastSpell(unitTarget, 46619, true);
+                        CancelGlobalCooldown();
+                        return;
+                    }
+                break;
+            }
+        break;
     }
 
     // pet auras
@@ -827,19 +827,19 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
 
                 break;
             }
-			case 35009: // Invisible
-				m_caster->CombatStop();
-			return;
+            case 35009: // Invisible
+                m_caster->CombatStop();
+            return;
             // Vanish (not exist)
             case 18461:
             {
-				m_caster->CombatStop();
-				m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
-				unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL); // break channeled spells
-				m_caster->AttackStop();
-				m_caster->CombatStop();
+                m_caster->CombatStop();
+                m_caster->InterruptSpell(CURRENT_AUTOREPEAT_SPELL); // break Auto Shot and autohit
+                unitTarget->InterruptSpell(CURRENT_CHANNELED_SPELL); // break channeled spells
+                m_caster->AttackStop();
+                m_caster->CombatStop();
 
-				((Player*)m_caster)->SendAttackSwingCancelAttack();
+                ((Player*)m_caster)->SendAttackSwingCancelAttack();
                 unitTarget->RemoveMovementImpairingAuras();
                 unitTarget->RemoveAurasByType(SPELL_AURA_MOD_STALKED);
 
@@ -1166,7 +1166,7 @@ void Spell::EffectTeleportUnits(SpellEffIndex /*effIndex*/)
     TC_LOG_DEBUG("spells", "Spell::EffectTeleportUnits - teleport unit to %u %f %f %f %f\n", mapid, x, y, z, orientation);
 
     if (unitTarget->GetTypeId() == TYPEID_PLAYER)
-		unitTarget->ToPlayer()->TeleportTo(mapid, x, y, z, orientation, unitTarget == m_caster ? TELE_TO_SPELL | TELE_TO_NOT_LEAVE_COMBAT : 0);
+        unitTarget->ToPlayer()->TeleportTo(mapid, x, y, z, orientation, unitTarget == m_caster ? TELE_TO_SPELL | TELE_TO_NOT_LEAVE_COMBAT : 0);
     else if (mapid == unitTarget->GetMapId())
         unitTarget->NearTeleportTo(x, y, z, orientation, unitTarget == m_caster);
     else
@@ -2293,7 +2293,7 @@ void Spell::EffectSummonType(SpellEffIndex effIndex)
         case 1562:
         case 833:
         case 1161:
-		case 713:
+        case 713:
             numSummons = (damage > 0) ? damage : 1;
             break;
         default:
@@ -3152,14 +3152,14 @@ void Spell::EffectTaunt(SpellEffIndex /*effIndex*/)
 
     // this effect use before aura Taunt apply for prevent taunt already attacking target
     // for spell as marked "non effective at already attacking target"
-	if (!unitTarget || !unitTarget->CanHaveThreatList() && !unitTarget->IsPet()
+    if (!unitTarget || !unitTarget->CanHaveThreatList() && !unitTarget->IsPet()
         || unitTarget->GetVictim() == m_caster)
     {
         SendCastResult(SPELL_FAILED_DONT_REPORT);
         return;
     }
 
-	if (m_spellInfo->Id == 62124 && !unitTarget->ToCreature()->HasReactState(REACT_PASSIVE))
+    if (m_spellInfo->Id == 62124 && !unitTarget->ToCreature()->HasReactState(REACT_PASSIVE))
         m_caster->CastSpell(unitTarget, 67485, true);
 
     // Also use this effect to set the taunter's threat to the taunted creature's highest value
@@ -3359,7 +3359,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
                         if (runic > 25)
                             runic = 25;    
                         AddPct(totalDamagePercentMod, runic);
-					}
+                    }
                 break;
             }
             // Obliterate (12.5% more damage per disease)

@@ -761,7 +761,7 @@ class spell_dru_starfall_dummy : public SpellScriptLoader
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
-				targets.remove_if(druid_los_check(GetCaster()));
+                targets.remove_if(druid_los_check(GetCaster()));
                 Trinity::Containers::RandomResizeList(targets, 2);
             }
 
@@ -934,7 +934,7 @@ class spell_dru_typhoon : public SpellScriptLoader
         {
             PrepareSpellScript(spell_dru_typhoon_SpellScript);
 
-			void FilterTargets(std::list<WorldObject*>& targets)
+            void FilterTargets(std::list<WorldObject*>& targets)
             {
                 targets.remove_if(druid_los_check(GetCaster()));
             }
@@ -948,7 +948,7 @@ class spell_dru_typhoon : public SpellScriptLoader
 
             void Register() override
             {
-				OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_dru_typhoon_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_CONE_ENEMY_104);
+                OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_dru_typhoon_SpellScript::FilterTargets, EFFECT_0, TARGET_UNIT_CONE_ENEMY_104);
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_dru_typhoon_SpellScript::FilterTargets, EFFECT_1, TARGET_UNIT_CONE_ENEMY_104);
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_dru_typhoon_SpellScript::FilterTargets, EFFECT_2, TARGET_UNIT_CONE_ENEMY_104);
                 OnEffectHitTarget += SpellEffectFn(spell_dru_typhoon_SpellScript::HandleKnockBack, EFFECT_0, SPELL_EFFECT_KNOCK_BACK);

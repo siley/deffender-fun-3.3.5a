@@ -568,7 +568,7 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPacket& recvData)
     if (!unit)
         return;
 
-	if (unit->ToCreature())
+    if (unit->ToCreature())
     {
         CreatureOutfitContainer* outfits = sObjectMgr->GetCreatureOutfitMap();
         CreatureOutfitContainer::const_iterator it = outfits->find(unit->GetEntry());

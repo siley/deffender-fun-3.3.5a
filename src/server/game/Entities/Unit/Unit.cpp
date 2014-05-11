@@ -1066,15 +1066,15 @@ void Unit::CalculateSpellDamageTaken(SpellNonMeleeDamage* damageInfo, int32 dama
     if (damage > 0)
     {
         switch (spellInfo->SpellIconID)
-		{
-			// Chaos Bolt - "Chaos Bolt cannot be resisted, and pierces through all absorption effects."
-			case 3178:
-				break;
-			default:
-				CalcAbsorbResist(victim, damageSchoolMask, SPELL_DIRECT_DAMAGE, damage, &damageInfo->absorb, &damageInfo->resist, spellInfo);
-				damage -= damageInfo->absorb + damageInfo->resist;
-				break;
-		}
+        {
+            // Chaos Bolt - "Chaos Bolt cannot be resisted, and pierces through all absorption effects."
+            case 3178:
+                break;
+            default:
+                CalcAbsorbResist(victim, damageSchoolMask, SPELL_DIRECT_DAMAGE, damage, &damageInfo->absorb, &damageInfo->resist, spellInfo);
+                damage -= damageInfo->absorb + damageInfo->resist;
+                break;
+        }
     }
     else
         damage = 0;
@@ -1129,8 +1129,8 @@ void Unit::CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* dam
 
     if (!victim)
         return;
-	if (!this)
-		return;
+    if (!this)
+        return;
 
     if (!IsAlive() || !victim->IsAlive())
         return;
@@ -2402,7 +2402,7 @@ SpellMissInfo Unit::MeleeSpellHitResult(Unit* victim, SpellInfo const* spellInfo
                 canParry = false;
         }
     }
-	// Spells with these attributes can't be dodged parried or blocked even if the player has turned since the ability was used (Shred, Backstab, etc)
+    // Spells with these attributes can't be dodged parried or blocked even if the player has turned since the ability was used (Shred, Backstab, etc)
     else if (victim->GetTypeId() == TYPEID_PLAYER && 
         spellInfo->AttributesEx & SPELL_ATTR1_UNK27 && 
         spellInfo->AttributesEx & SPELL_ATTR2_UNK20 && 
@@ -3401,7 +3401,7 @@ void Unit::_ApplyAura(AuraApplication * aurApp, uint8 effMask)
     // apply effects of the aura
     for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
-		if (effMask & 1 << i && (!aurApp->GetRemoveMode()) && !IsImmunedToSpellEffect(aura->GetSpellInfo(), i))
+        if (effMask & 1 << i && (!aurApp->GetRemoveMode()) && !IsImmunedToSpellEffect(aura->GetSpellInfo(), i))
             aurApp->_HandleEffect(i, true);
     }
 }
@@ -3468,7 +3468,7 @@ void Unit::_UnapplyAura(AuraApplicationMap::iterator &i, AuraRemoveMode removeMo
     ASSERT(!aurApp->GetEffectMask());
 
     // Remove totem at next update if totem loses its aura
-	if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem())
+    if (aurApp->GetRemoveMode() == AURA_REMOVE_BY_EXPIRE && GetTypeId() == TYPEID_UNIT && ToCreature()->IsTotem())
         if (ToTotem()->GetSpell() == aura->GetId() && ToTotem()->GetTotemType() == TOTEM_PASSIVE)
             ToTotem()->setDeathState(JUST_DIED);
 
@@ -7163,27 +7163,27 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
 
                 if (pPet && pPet->GetVictim() && damage && procSpell)
                 {
-					pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-					pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                    pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
                     uint32 procDmg = damage / 2;
                     pPet->SendSpellNonMeleeDamageLog(pPet->GetVictim(), procSpell->Id, procDmg, procSpell->GetSchoolMask(), 0, 0, false, 0, false);
                     pPet->DealDamage(pPet->GetVictim(), procDmg, NULL, SPELL_DIRECT_DAMAGE, procSpell->GetSchoolMask(), procSpell, true);
                     break;
                 }
-				else // copy 50% melee damage
-				if (pPet && pPet->GetVictim() && damage && !procSpell)
-				{
-					CalcDamageInfo damageInfo;
-					CalculateMeleeDamage(pPet->GetVictim(), 0, &damageInfo, BASE_ATTACK);
-					damageInfo.attacker = pPet;
-					damageInfo.damage = damageInfo.damage / 2;
-					// Send log damage message to client
-					pPet->DealDamageMods(pPet->GetVictim(),damageInfo.damage,&damageInfo.absorb);
-					pPet->SendAttackStateUpdate(&damageInfo);
-					pPet->ProcDamageAndSpell(damageInfo.target, damageInfo.procAttacker, damageInfo.procVictim, damageInfo.procEx, damageInfo.damage, damageInfo.attackType);
-					pPet->DealMeleeDamage(&damageInfo,true);
-				}
+                else // copy 50% melee damage
+                if (pPet && pPet->GetVictim() && damage && !procSpell)
+                {
+                    CalcDamageInfo damageInfo;
+                    CalculateMeleeDamage(pPet->GetVictim(), 0, &damageInfo, BASE_ATTACK);
+                    damageInfo.attacker = pPet;
+                    damageInfo.damage = damageInfo.damage / 2;
+                    // Send log damage message to client
+                    pPet->DealDamageMods(pPet->GetVictim(),damageInfo.damage,&damageInfo.absorb);
+                    pPet->SendAttackStateUpdate(&damageInfo);
+                    pPet->ProcDamageAndSpell(damageInfo.target, damageInfo.procAttacker, damageInfo.procVictim, damageInfo.procEx, damageInfo.damage, damageInfo.attackType);
+                    pPet->DealMeleeDamage(&damageInfo,true);
+                }
                 else
                     return false;
             }
@@ -7541,19 +7541,19 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 damage, Aura* triggeredByAura, Sp
                 }
                 return true;
             }
-			else if (dummySpell->Id == 53486 || dummySpell->Id == 53488)             // The Art of War
-				if (!(procEx & PROC_EX_CRITICAL_HIT))
-					*handled = true;
+            else if (dummySpell->Id == 53486 || dummySpell->Id == 53488)             // The Art of War
+                if (!(procEx & PROC_EX_CRITICAL_HIT))
+                    *handled = true;
             break;
         }
-		case SPELLFAMILY_PRIEST:
-		{
-			// Blessed Recovery
-			if (dummySpell->SpellIconID == 1875 && dummySpell->SchoolMask == SPELL_SCHOOL_MASK_NORMAL)
-				if (procEx & PROC_EX_ABSORB && damage <= 0)
-					*handled = true;
-				break;
-		}
+        case SPELLFAMILY_PRIEST:
+        {
+            // Blessed Recovery
+            if (dummySpell->SpellIconID == 1875 && dummySpell->SchoolMask == SPELL_SCHOOL_MASK_NORMAL)
+                if (procEx & PROC_EX_ABSORB && damage <= 0)
+                    *handled = true;
+                break;
+        }
         case SPELLFAMILY_MAGE:
         {
             // Combustion
@@ -7589,28 +7589,28 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 damage, Aura* triggeredByAura, Sp
                     CastCustomSpell(this, 67545, &bp0, NULL, NULL, true, NULL, triggeredByAura->GetEffect(EFFECT_0), GetGUID());
                     return true;
                 }
-				case 11119: // Ignite
-				case 11120:
-				case 12846:
-				case 12847:
-				case 12848:
-				{
-				  // dont proc Ignite on Molten Armor crits.
-				  if (procSpell && procSpell->SpellIconID == 2307 && procSpell->SpellVisual[0] == 0)
-						  *handled = true;
-						  break;
-				}
-				default:
-					break;
-			}
-			// Molten Armor
-			if (dummySpell->SpellIconID == 2307 && dummySpell->SpellVisual[0] == 7757)
-			if (procEx & PROC_EX_ABSORB && damage <= 0) // dont proc if damage is fully absorbed.
-				*handled = true;
+                case 11119: // Ignite
+                case 11120:
+                case 12846:
+                case 12847:
+                case 12848:
+                {
+                  // dont proc Ignite on Molten Armor crits.
+                  if (procSpell && procSpell->SpellIconID == 2307 && procSpell->SpellVisual[0] == 0)
+                          *handled = true;
+                          break;
+                }
+                default:
+                    break;
+            }
+            // Molten Armor
+            if (dummySpell->SpellIconID == 2307 && dummySpell->SpellVisual[0] == 7757)
+            if (procEx & PROC_EX_ABSORB && damage <= 0) // dont proc if damage is fully absorbed.
+                *handled = true;
              break;
         }
 
-		case SPELLFAMILY_DEATHKNIGHT:
+        case SPELLFAMILY_DEATHKNIGHT:
         {
             // Blood of the North
             // Reaping
@@ -7692,21 +7692,21 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 damage, Aura* triggeredByAura, Sp
             }
             break;
         }
-		case SPELLFAMILY_SHAMAN:
-		{
-			switch (dummySpell->SpellIconID)
-				{
-					// Should not proc if the damage is full absorbed
-					case 2287: // Water Shield
-					case 19:   // Lightning Shield
-						if (procEx & PROC_EX_ABSORB && dummySpell->DmgClass == SPELL_DAMAGE_CLASS_MAGIC && damage <= 0)
-							*handled = true;
-							break;
-						default:
-							break;
-				}
-				break;
-		}
+        case SPELLFAMILY_SHAMAN:
+        {
+            switch (dummySpell->SpellIconID)
+                {
+                    // Should not proc if the damage is full absorbed
+                    case 2287: // Water Shield
+                    case 19:   // Lightning Shield
+                        if (procEx & PROC_EX_ABSORB && dummySpell->DmgClass == SPELL_DAMAGE_CLASS_MAGIC && damage <= 0)
+                            *handled = true;
+                            break;
+                        default:
+                            break;
+                }
+                break;
+        }
         case SPELLFAMILY_WARRIOR:
         {
             switch (dummySpell->Id)
@@ -8393,12 +8393,12 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
                 return false;
 
             if (trigger_spell_id == 52916)
-				CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
-			else
-				target->CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
+                CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
+            else
+                target->CastSpell(target, trigger_spell_id, true, castItem, triggeredByAura);
 
-			if (cooldown && target->GetTypeId() == TYPEID_PLAYER)
-				target->ToPlayer()->AddSpellCooldown(trigger_spell_id, 0, time(NULL) + cooldown);
+            if (cooldown && target->GetTypeId() == TYPEID_PLAYER)
+                target->ToPlayer()->AddSpellCooldown(trigger_spell_id, 0, time(NULL) + cooldown);
 
             return true;
         }
@@ -10370,19 +10370,19 @@ uint32 Unit::SpellDamageBonusTaken(Unit* caster, SpellInfo const* spellProto, ui
     // Mod damage from spell mechanic
     if (uint32 mechanicMask = spellProto->GetAllEffectsMechanicMask())
     {
-		int32 dmgBonusDisease = 0;
+        int32 dmgBonusDisease = 0;
         AuraEffectList const& mDamageDoneMechanic = GetAuraEffectsByType(SPELL_AURA_MOD_MECHANIC_DAMAGE_TAKEN_PERCENT);
         for (AuraEffectList::const_iterator i = mDamageDoneMechanic.begin(); i != mDamageDoneMechanic.end(); ++i)
         if (mechanicMask & uint32(1 << ((*i)->GetMiscValue())))
-		{
-			if ((*i)->GetSpellInfo()->Id != 65142)
-				AddPct(TakenTotalMod, (*i)->GetAmount());
-			else if ((*i)->GetAmount() > dmgBonusDisease)
-				dmgBonusDisease = (*i)->GetAmount();
-		}
+        {
+            if ((*i)->GetSpellInfo()->Id != 65142)
+                AddPct(TakenTotalMod, (*i)->GetAmount());
+            else if ((*i)->GetAmount() > dmgBonusDisease)
+                dmgBonusDisease = (*i)->GetAmount();
+        }
 
-		if (dmgBonusDisease != 0)
-			AddPct(TakenTotalMod, dmgBonusDisease);
+        if (dmgBonusDisease != 0)
+            AddPct(TakenTotalMod, dmgBonusDisease);
     }
 
     int32 TakenAdvertisedBenefit = SpellBaseDamageBonusTaken(spellProto->GetSchoolMask());
@@ -10709,10 +10709,10 @@ uint32 Unit::SpellCriticalDamageBonus(SpellInfo const* spellProto, uint32 damage
 
     if (damage > uint32(crit_bonus))
     {
-		// all these spells should have only 50% bonus damage on crit like a magic spells
-		if (spellProto->Id == 55078 || spellProto->Id == 61840 ||
-			(spellProto->SpellFamilyName == SPELLFAMILY_HUNTER && spellProto->SpellFamilyFlags[0] & 0x4000))
-			 crit_bonus /= 2;
+        // all these spells should have only 50% bonus damage on crit like a magic spells
+        if (spellProto->Id == 55078 || spellProto->Id == 61840 ||
+            (spellProto->SpellFamilyName == SPELLFAMILY_HUNTER && spellProto->SpellFamilyFlags[0] & 0x4000))
+             crit_bonus /= 2;
 
         // adds additional damage to critBonus (from talents)
         if (Player* modOwner = GetSpellModOwner())
@@ -11673,14 +11673,14 @@ void Unit::Dismount()
         }
         else
             player->ResummonPetTemporaryUnSummonedIfAny();
-			Pet* plPet = player->GetPet();
-			if (plPet != NULL)
-			{
-				uint32 uclass;
-				uclass=(player->getClassMask());
-				if ((uclass==256) || (uclass==32)) //Warlock and DK pets
-					plPet->SetHealth(plPet->GetMaxHealth());
-			}
+            Pet* plPet = player->GetPet();
+            if (plPet != NULL)
+            {
+                uint32 uclass;
+                uclass=(player->getClassMask());
+                if ((uclass==256) || (uclass==32)) //Warlock and DK pets
+                    plPet->SetHealth(plPet->GetMaxHealth());
+            }
     }
 }
 
@@ -12338,8 +12338,8 @@ void Unit::UpdateSpeed(UnitMoveType mtype, bool forced)
         AddPct(speed, slow);
         if (float minSpeedMod = (float)GetMaxPositiveAuraModifier(SPELL_AURA_MOD_MINIMUM_SPEED))
         {
-			float baseSpeed = (GetTypeId() == TYPEID_UNIT ? ToCreature()->GetCreatureTemplate()->speed_walk : 1.0f);
-			float min_speed = (minSpeedMod / 100.0f) * baseSpeed;
+            float baseSpeed = (GetTypeId() == TYPEID_UNIT ? ToCreature()->GetCreatureTemplate()->speed_walk : 1.0f);
+            float min_speed = (minSpeedMod / 100.0f) * baseSpeed;
             if (speed < min_speed)
                 speed = min_speed;
         }
@@ -12466,7 +12466,7 @@ void Unit::setDeathState(DeathState s)
     // Death state needs to be updated before RemoveAllAurasOnDeath() is called, to prevent entering combat
     m_deathState = s;
 
-	if (s != ALIVE && s != JUST_RESPAWNED && s != GHOULED)
+    if (s != ALIVE && s != JUST_RESPAWNED && s != GHOULED)
     {
         CombatStop();
         DeleteThreatList();
@@ -14125,27 +14125,27 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* target, uint32 procFlag, u
 
         SpellInfo const* spellProto = itr->second->GetBase()->GetSpellInfo();
 
-		// !TW - Exception for seal procs, they should all be able to proc on full absorbs.
+        // !TW - Exception for seal procs, they should all be able to proc on full absorbs.
 
-		if (spellProto && (procExtra & PROC_EX_BLOCK || procExtra & PROC_EX_ABSORB))
-		{
-			switch (spellProto->Id)
-			{
-			case 21084: // Seal of Righteousness
-			case 20166: // Seal of Wisdom
-			case 20165: // Seal of Light
-			case 20164: // Seal of Justice
-			case 20375: // Seal of Command
-			case 31801: // Seal of Vengeance
-			case 53736: // Seal of Corruption
-			case 53486: // The Art of War (Rank 1)
-			case 53488: // The Art of War (Rank 2)
-				active = true;
-				break;
-			default:
-				break;
-			}
-		}
+        if (spellProto && (procExtra & PROC_EX_BLOCK || procExtra & PROC_EX_ABSORB))
+        {
+            switch (spellProto->Id)
+            {
+            case 21084: // Seal of Righteousness
+            case 20166: // Seal of Wisdom
+            case 20165: // Seal of Light
+            case 20164: // Seal of Justice
+            case 20375: // Seal of Command
+            case 31801: // Seal of Vengeance
+            case 53736: // Seal of Corruption
+            case 53486: // The Art of War (Rank 1)
+            case 53488: // The Art of War (Rank 2)
+                active = true;
+                break;
+            default:
+                break;
+            }
+        }
 
         // only auras that has triggered spell should proc from fully absorbed damage
         if (procExtra & PROC_EX_ABSORB && isVictim)

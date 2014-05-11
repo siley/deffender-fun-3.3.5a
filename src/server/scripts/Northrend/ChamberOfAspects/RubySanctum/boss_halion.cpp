@@ -496,7 +496,7 @@ class boss_twilight_halion : public CreatureScript
                             }
                         }
                     }
-				//end custom code
+                //end custom code
             }
 
             void EnterCombat(Unit* who) override
@@ -602,7 +602,7 @@ class boss_twilight_halion : public CreatureScript
                     ExecuteEvent(eventId);
                 generic_halionAI::UpdateAI(diff);
                 }
-			//end custom code
+            //end custom code
 
         private:
             EventMap events;
@@ -1133,7 +1133,7 @@ class npc_meteor_strike : public CreatureScript
                                 }
                             controller->AI()->JustSummoned(flame);
                             }
-						//end custom code
+                        //end custom code
                         flame->CastSpell(flame, SPELL_METEOR_STRIKE_FIRE_AURA_2, true);
                         ++_spawnCount;
                     }

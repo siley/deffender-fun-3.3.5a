@@ -21,233 +21,233 @@
 class anticheat_commandscript : public CommandScript
 {
 public:
-	anticheat_commandscript() : CommandScript("anticheat_commandscript") { }
+    anticheat_commandscript() : CommandScript("anticheat_commandscript") { }
 
-	ChatCommand* GetCommands() const
-	{
-		static ChatCommand anticheatCommandTable[] =
-		{
-			{ "player",         SEC_GAMEMASTER,     true,  &HandleAntiCheatPlayerCommand,         "", NULL },
-			{ "handle",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatHandleCommand,         "", NULL },
-			{ "jail",           SEC_GAMEMASTER,     true,  &HandleAnticheatJailCommand,           "", NULL },
-			{ "warn",           SEC_GAMEMASTER,     true,  &HandleAnticheatWarnCommand,           "", NULL },
-			{ "targetmarker",   SEC_MODERATOR,      true,  &HandleAnticheatTargetMarkerCommand,   "", NULL },
-			{ NULL,             0,                  false, NULL,                                  "", NULL }
-		};
+    ChatCommand* GetCommands() const
+    {
+        static ChatCommand anticheatCommandTable[] =
+        {
+            { "player",         SEC_GAMEMASTER,     true,  &HandleAntiCheatPlayerCommand,         "", NULL },
+            { "handle",         SEC_ADMINISTRATOR,  true,  &HandleAntiCheatHandleCommand,         "", NULL },
+            { "jail",           SEC_GAMEMASTER,     true,  &HandleAnticheatJailCommand,           "", NULL },
+            { "warn",           SEC_GAMEMASTER,     true,  &HandleAnticheatWarnCommand,           "", NULL },
+            { "targetmarker",   SEC_MODERATOR,      true,  &HandleAnticheatTargetMarkerCommand,   "", NULL },
+            { NULL,             0,                  false, NULL,                                  "", NULL }
+        };
 
-		static ChatCommand commandTable[] =
-		{
-			{ "anticheat",      SEC_GAMEMASTER,     true, NULL,                     "",  anticheatCommandTable},
-			{ NULL,             0,                  false, NULL,                               "", NULL }
-		};
+        static ChatCommand commandTable[] =
+        {
+            { "anticheat",      SEC_GAMEMASTER,     true, NULL,                     "",  anticheatCommandTable},
+            { NULL,             0,                  false, NULL,                               "", NULL }
+        };
 
-		return commandTable;
-	}
+        return commandTable;
+    }
 
-	static bool HandleAnticheatWarnCommand(ChatHandler* handler, const char* args)
-	{
-		if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
-			return false;
+    static bool HandleAnticheatWarnCommand(ChatHandler* handler, const char* args)
+    {
+        if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
+            return false;
 
-		Player* pTarget = NULL;
+        Player* pTarget = NULL;
 
-		std::string strCommand;
+        std::string strCommand;
 
-		char* command = strtok((char*)args, " ");
+        char* command = strtok((char*)args, " ");
 
-		if (command)
-		{
-			strCommand = command;
-			normalizePlayerName(strCommand);
+        if (command)
+        {
+            strCommand = command;
+            normalizePlayerName(strCommand);
 
-			pTarget = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
-		}else 
-			pTarget = handler->getSelectedPlayer();
+            pTarget = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
+        }else 
+            pTarget = handler->getSelectedPlayer();
 
-		if (!pTarget)
-			return false;
+        if (!pTarget)
+            return false;
 
-		WorldPacket data;
+        WorldPacket data;
 
-		// need copy to prevent corruption by strtok call in LineFromMessage original string
-		char* buf = strdup("The anticheat system has reported several times that you may be cheating. You will be monitored to confirm if this is accurate.");
-		char* pos = buf;
+        // need copy to prevent corruption by strtok call in LineFromMessage original string
+        char* buf = strdup("The anticheat system has reported several times that you may be cheating. You will be monitored to confirm if this is accurate.");
+        char* pos = buf;
 
-		while (char* line = handler->LineFromMessage(pos))
-		{
-			handler->BuildChatPacket(data, CHAT_MSG_SYSTEM, LANG_UNIVERSAL, NULL, NULL, line);
-			pTarget->GetSession()->SendPacket(&data);
-		}
+        while (char* line = handler->LineFromMessage(pos))
+        {
+            handler->BuildChatPacket(data, CHAT_MSG_SYSTEM, LANG_UNIVERSAL, NULL, NULL, line);
+            pTarget->GetSession()->SendPacket(&data);
+        }
 
-		free(buf);
-		return true;
-	}
+        free(buf);
+        return true;
+    }
 
-	static bool HandleAnticheatJailCommand(ChatHandler* handler, const char* args)
-	{
-		if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
-			return false;
+    static bool HandleAnticheatJailCommand(ChatHandler* handler, const char* args)
+    {
+        if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
+            return false;
 
-		Player* pTarget = NULL;
+        Player* pTarget = NULL;
 
-		std::string strCommand;
+        std::string strCommand;
 
-		char* command = strtok((char*)args, " ");
+        char* command = strtok((char*)args, " ");
 
-		if (command)
-		{
-			strCommand = command;
-			normalizePlayerName(strCommand);
+        if (command)
+        {
+            strCommand = command;
+            normalizePlayerName(strCommand);
 
-			pTarget = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
-		}else 
-			pTarget = handler->getSelectedPlayer();
+            pTarget = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
+        }else 
+            pTarget = handler->getSelectedPlayer();
 
-		if (!pTarget)
-		{
-			handler->SendSysMessage("Hrac nenalezen / Player not found");
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
+        if (!pTarget)
+        {
+            handler->SendSysMessage("Hrac nenalezen / Player not found");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
 
-		if (pTarget == handler->GetSession()->GetPlayer())
-			return false;
+        if (pTarget == handler->GetSession()->GetPlayer())
+            return false;
 
-		// teleport both to jail.
-		pTarget->TeleportTo(1,16226.5f,16403.6f,-64.5f,3.2f);
-		handler->GetSession()->GetPlayer()->TeleportTo(1,16226.5f,16403.6f,-64.5f,3.2f);
+        // teleport both to jail.
+        pTarget->TeleportTo(1,16226.5f,16403.6f,-64.5f,3.2f);
+        handler->GetSession()->GetPlayer()->TeleportTo(1,16226.5f,16403.6f,-64.5f,3.2f);
 
-		WorldLocation loc;
+        WorldLocation loc;
 
-		// the player should be already there, but no :(
-		// pTarget->GetPosition(&loc);
+        // the player should be already there, but no :(
+        // pTarget->GetPosition(&loc);
 
-		loc.m_mapId = 1;
-		loc.m_positionX = 16226.5f;
-		loc.m_positionY = 16403.6f;
-		loc.m_positionZ = -64.5f;
-		loc.m_orientation = 3.2f;
+        loc.m_mapId = 1;
+        loc.m_positionX = 16226.5f;
+        loc.m_positionY = 16403.6f;
+        loc.m_positionZ = -64.5f;
+        loc.m_orientation = 3.2f;
 
-		pTarget->SetHomebind(loc,876);
-		return true;
-	}
+        pTarget->SetHomebind(loc,876);
+        return true;
+    }
 
-	static bool HandleAntiCheatPlayerCommand(ChatHandler* handler, const char* args)
-	{
-		if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
-			return false;
+    static bool HandleAntiCheatPlayerCommand(ChatHandler* handler, const char* args)
+    {
+        if (!sWorld->getBoolConfig(CONFIG_ANTICHEAT_ENABLE))
+            return false;
 
-		std::string strCommand;
+        std::string strCommand;
 
-		char* command = strtok((char*)args, " ");
+        char* command = strtok((char*)args, " ");
 
-		uint32 guid = 0;
-		Player* player = NULL;
+        uint32 guid = 0;
+        Player* player = NULL;
 
-		if (command)
-		{
-			strCommand = command;
+        if (command)
+        {
+            strCommand = command;
 
-			normalizePlayerName(strCommand);
-			player = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
+            normalizePlayerName(strCommand);
+            player = sObjectAccessor->FindPlayerByName(strCommand.c_str()); //get player by name
 
-			if (player)
-				guid = player->GetGUIDLow();
-		}else 
-		{
-			player = handler->getSelectedPlayer();
-			if (player)
-				guid = player->GetGUIDLow();  
-		}
+            if (player)
+                guid = player->GetGUIDLow();
+        }else 
+        {
+            player = handler->getSelectedPlayer();
+            if (player)
+                guid = player->GetGUIDLow();  
+        }
 
-		if (!guid)
-		{
-			handler->PSendSysMessage("There is no player.");
-			return true;
-		}
+        if (!guid)
+        {
+            handler->PSendSysMessage("There is no player.");
+            return true;
+        }
 
-		float average = sAnticheatMgr->GetAverage(guid);
-		uint32 total_reports = sAnticheatMgr->GetTotalReports(guid);
-		uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid,0);
-		uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid,1);
-		uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid,3);
-		uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid,2);
-		uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid,4);
-		uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid,5);
+        float average = sAnticheatMgr->GetAverage(guid);
+        uint32 total_reports = sAnticheatMgr->GetTotalReports(guid);
+        uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid,0);
+        uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid,1);
+        uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid,3);
+        uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid,2);
+        uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid,4);
+        uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid,5);
 
-		handler->PSendSysMessage("Information about player %s",player->GetName().c_str());
-		handler->PSendSysMessage("Average: %f || Total Reports: %u ",average,total_reports);
-		handler->PSendSysMessage("Speed Reports: %u || Fly Reports: %u || Jump Reports: %u ",speed_reports,fly_reports,jump_reports);
-		handler->PSendSysMessage("Walk On Water Reports: %u  || Teleport To Plane Reports: %u",waterwalk_reports,teleportplane_reports);
-		handler->PSendSysMessage("Climb Reports: %u", climb_reports);
+        handler->PSendSysMessage("Information about player %s",player->GetName().c_str());
+        handler->PSendSysMessage("Average: %f || Total Reports: %u ",average,total_reports);
+        handler->PSendSysMessage("Speed Reports: %u || Fly Reports: %u || Jump Reports: %u ",speed_reports,fly_reports,jump_reports);
+        handler->PSendSysMessage("Walk On Water Reports: %u  || Teleport To Plane Reports: %u",waterwalk_reports,teleportplane_reports);
+        handler->PSendSysMessage("Climb Reports: %u", climb_reports);
 
-		return true;
-	}
+        return true;
+    }
 
-	static bool HandleAntiCheatHandleCommand(ChatHandler* handler, const char* args)
-	{
-		std::string strCommand;
+    static bool HandleAntiCheatHandleCommand(ChatHandler* handler, const char* args)
+    {
+        std::string strCommand;
 
-		char* command = strtok((char*)args, " ");
+        char* command = strtok((char*)args, " ");
 
-		if (!command)
-			return true;
+        if (!command)
+            return true;
 
-		if (!handler->GetSession()->GetPlayer())
-			return true;
+        if (!handler->GetSession()->GetPlayer())
+            return true;
 
-		strCommand = command;
+        strCommand = command;
 
-		if (strCommand.compare("on") == 0)
-		{
-			sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,true);
-			handler->SendSysMessage("The Anticheat System is now: Enabled!");
-		}
-		else if (strCommand.compare("off") == 0)
-		{
-			sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,false);
-			handler->SendSysMessage("The Anticheat System is now: Disabled!");
-		}
+        if (strCommand.compare("on") == 0)
+        {
+            sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,true);
+            handler->SendSysMessage("The Anticheat System is now: Enabled!");
+        }
+        else if (strCommand.compare("off") == 0)
+        {
+            sWorld->setBoolConfig(CONFIG_ANTICHEAT_ENABLE,false);
+            handler->SendSysMessage("The Anticheat System is now: Disabled!");
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	static bool HandleAnticheatTargetMarkerCommand(ChatHandler* handler, const char* args)
-	{
-		Player* target = handler->getSelectedPlayer();
-		if (!target)
-			return false;
+    static bool HandleAnticheatTargetMarkerCommand(ChatHandler* handler, const char* args)
+    {
+        Player* target = handler->getSelectedPlayer();
+        if (!target)
+            return false;
 
-		int32 spawntime = 30;
-		char* spawntimeString = strtok((char*)args, " ");
-		if (spawntimeString)
-			spawntime = atoi(spawntimeString);
+        int32 spawntime = 30;
+        char* spawntimeString = strtok((char*)args, " ");
+        if (spawntimeString)
+            spawntime = atoi(spawntimeString);
 
-		GameObject* pGameObj = new GameObject;
+        GameObject* pGameObj = new GameObject;
 
-		Map* map = target->GetMap();
+        Map* map = target->GetMap();
 
-		float x = target->GetPositionX();
-		float y = target->GetPositionY();
-		float z = target->GetPositionZ();
+        float x = target->GetPositionX();
+        float y = target->GetPositionY();
+        float z = target->GetPositionZ();
 
-		if (!pGameObj->Create(sObjectMgr->GenerateLowGuid(HIGHGUID_GAMEOBJECT), 2000000, map, target->GetPhaseMask(), x, y, z, target->GetOrientation(), 0.0f, 0.0f, 0.0f, 0.0f, 100, GO_STATE_READY))
-		{
-			delete pGameObj;
-			return false;
-		}
-		pGameObj->SetRespawnTime(spawntime < 1 ? 1800 : spawntime * MINUTE);
-		pGameObj->m_serverSideVisibility.SetValue(SERVERSIDE_VISIBILITY_GM, SEC_MODERATOR);
-		pGameObj->SetOwnerGUID(handler->GetSession()->GetPlayer()->GetGUID());
-		pGameObj->SetSpawnedByDefault(false);
+        if (!pGameObj->Create(sObjectMgr->GenerateLowGuid(HIGHGUID_GAMEOBJECT), 2000000, map, target->GetPhaseMask(), x, y, z, target->GetOrientation(), 0.0f, 0.0f, 0.0f, 0.0f, 100, GO_STATE_READY))
+        {
+            delete pGameObj;
+            return false;
+        }
+        pGameObj->SetRespawnTime(spawntime < 1 ? 1800 : spawntime * MINUTE);
+        pGameObj->m_serverSideVisibility.SetValue(SERVERSIDE_VISIBILITY_GM, SEC_MODERATOR);
+        pGameObj->SetOwnerGUID(handler->GetSession()->GetPlayer()->GetGUID());
+        pGameObj->SetSpawnedByDefault(false);
 
-		map->AddToMap(pGameObj);
+        map->AddToMap(pGameObj);
 
-		return true;
-	}
+        return true;
+    }
 };
 
 void AddSC_anticheat_commandscript()
 {
-	new anticheat_commandscript();
+    new anticheat_commandscript();
 }

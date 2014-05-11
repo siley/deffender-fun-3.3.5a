@@ -19,7 +19,7 @@ bool DynamicTeleportMgr::Init()
 
     if(!result)
     {
-		TC_LOG_INFO("server.loading", ">> Loaded 0 Dynamic Teleporter rows. DB table `dynamic_teleporter` is empty!");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 Dynamic Teleporter rows. DB table `dynamic_teleporter` is empty!");
         return false;
     }
 
@@ -52,7 +52,7 @@ bool DynamicTeleportMgr::Init()
         ++counter;
     } while(result->NextRow());
 
-	TC_LOG_INFO("server.loading", ">> Loaded %u Dynamic Teleporter rows in %u ms", counter, GetMSTimeDiffToNow(oldMSTime));
+    TC_LOG_INFO("server.loading", ">> Loaded %u Dynamic Teleporter rows in %u ms", counter, GetMSTimeDiffToNow(oldMSTime));
 
     m_isLoaded = true;
     return true;

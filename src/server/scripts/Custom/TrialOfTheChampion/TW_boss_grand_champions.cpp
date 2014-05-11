@@ -524,7 +524,7 @@ class TW_boss_warrior_toc5 : public CreatureScript
             {
                 bDone = true;
                 Talk(WARNING_WEAPONS);
-                me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect	
+                me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect    
 
                 if (me->GetGUID() == instance->GetData64(DATA_GRAND_CHAMPION_1))
                     me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);

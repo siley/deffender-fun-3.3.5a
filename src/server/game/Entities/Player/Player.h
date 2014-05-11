@@ -307,7 +307,7 @@ enum RuneCooldowns
 {
     RUNE_BASE_COOLDOWN  = 10000,
     RUNE_MISS_COOLDOWN  = 1500,     // cooldown applied on runes when the spell misses
-	RUNE_GRACE_PERIOD   = 2500,
+    RUNE_GRACE_PERIOD   = 2500,
 };
 
 enum RuneType
@@ -325,7 +325,7 @@ struct RuneInfo
     uint8 CurrentRune;
     uint32 Cooldown;
     AuraEffect const* ConvertAura;
-	time_t timeRuneWentActive;
+    time_t timeRuneWentActive;
 };
 
 struct Runes
@@ -1295,7 +1295,7 @@ class Player : public Unit, public GridObject<Player>
         uint32 GetArmorProficiency() const { return m_ArmorProficiency; }
         bool IsUseEquipedWeapon(bool mainhand) const;
         bool IsTwoHandUsed() const;
-		bool HasTwoHandWeaponInOneHand() const;
+        bool HasTwoHandWeaponInOneHand() const;
         void SendNewItem(Item* item, uint32 count, bool received, bool created, bool broadcast = false);
         bool BuyItemFromVendorSlot(uint64 vendorguid, uint32 vendorslot, uint32 item, uint8 count, uint8 bag, uint8 slot);
         bool _StoreOrEquipNewItem(uint32 vendorslot, uint32 item, uint8 count, uint8 bag, uint8 slot, int32 price, ItemTemplate const* pProto, Creature* pVendor, VendorItem const* crItem, bool bStore);
@@ -1695,7 +1695,7 @@ class Player : public Unit, public GridObject<Player>
         bool IsGroupVisibleFor(Player const* p) const;
         bool IsInSameGroupWith(Player const* p) const;
         bool IsInSameRaidWith(Player const* p) const;
-		void UninviteFromGroup(Group* group);
+        void UninviteFromGroup(Group* group);
         static void RemoveFromGroup(Group* group, uint64 guid, RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT, uint64 kicker = 0, const char* reason = NULL);
         void RemoveFromGroup(RemoveMethod method = GROUP_REMOVEMETHOD_DEFAULT) { RemoveFromGroup(GetGroup(), GetGUID(), method); }
         void SendUpdateToOutOfRangeGroupMembers();
@@ -2244,14 +2244,14 @@ class Player : public Unit, public GridObject<Player>
         RuneType GetCurrentRune(uint8 index) const { return RuneType(m_runes->runes[index].CurrentRune); }
         uint32 GetRuneCooldown(uint8 index) const { return m_runes->runes[index].Cooldown; }
         uint32 GetRuneBaseCooldown(uint8 index);
-		uint32 GetRuneGraceTime(uint8 index) { return (time(NULL) - m_runes->runes[index].timeRuneWentActive) * IN_MILLISECONDS; }
+        uint32 GetRuneGraceTime(uint8 index) { return (time(NULL) - m_runes->runes[index].timeRuneWentActive) * IN_MILLISECONDS; }
         bool IsBaseRuneSlotsOnCooldown(RuneType runeType) const;
         RuneType GetLastUsedRune() { return m_runes->lastUsedRune; }
         void SetLastUsedRune(RuneType type) { m_runes->lastUsedRune = type; }
         void SetBaseRune(uint8 index, RuneType baseRune) { m_runes->runes[index].BaseRune = baseRune; }
         void SetCurrentRune(uint8 index, RuneType currentRune) { m_runes->runes[index].CurrentRune = currentRune; }
         void SetRuneCooldown(uint8 index, uint32 cooldown);
-		void SetRuneActiveTime(uint8 index, time_t time) { m_runes->runes[index].timeRuneWentActive = time; }
+        void SetRuneActiveTime(uint8 index, time_t time) { m_runes->runes[index].timeRuneWentActive = time; }
         void SetRuneConvertAura(uint8 index, AuraEffect const* aura);
         void AddRuneByAuraEffect(uint8 index, RuneType newType, AuraEffect const* aura);
         void RemoveRunesByAuraEffect(AuraEffect const* aura);
@@ -2303,8 +2303,8 @@ class Player : public Unit, public GridObject<Player>
 
         std::string GetMapAreaAndZoneString();
         std::string GetCoordsMapAreaAndZoneString();
-		bool m_clicked;
-		int32 timeDiff;
+        bool m_clicked;
+        int32 timeDiff;
 
     protected:
         // Gamemaster whisper whitelist

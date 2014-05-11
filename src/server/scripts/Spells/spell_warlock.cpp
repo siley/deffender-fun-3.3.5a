@@ -53,8 +53,8 @@ enum WarlockSpells
     SPELL_WARLOCK_SOULSHATTER                       = 32835,
     SPELL_WARLOCK_SIPHON_LIFE_HEAL                  = 63106,
     SPELL_WARLOCK_UNSTABLE_AFFLICTION_DISPEL        = 31117,
-	SPELL_PRIEST_SHADOW_WORD_DEATH                  = 32409,
-	SPELL_WARLOCK_GLYPH_OF_SUCCUBUS                 = 56250
+    SPELL_PRIEST_SHADOW_WORD_DEATH                  = 32409,
+    SPELL_WARLOCK_GLYPH_OF_SUCCUBUS                 = 56250
 };
 
 enum WarlockSpellIcons
@@ -955,5 +955,5 @@ void AddSC_warlock_spell_scripts()
     new spell_warl_siphon_life();
     new spell_warl_soulshatter();
     new spell_warl_unstable_affliction();
-	new spell_warl_seduction();
+    new spell_warl_seduction();
 }

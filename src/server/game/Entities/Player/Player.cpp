@@ -895,9 +895,9 @@ Player::Player(WorldSession* session): Unit(true)
     m_achievementMgr = new AchievementMgr(this);
     m_reputationMgr = new ReputationMgr(this);
 
-	// Arena Crystal
-	m_clicked = false;
-	timeDiff = 0;
+    // Arena Crystal
+    m_clicked = false;
+    timeDiff = 0;
 }
 
 Player::~Player()
@@ -2906,7 +2906,7 @@ bool Player::IsInSameRaidWith(Player const* p) const
 /// @todo Shouldn't we also check if there is no other invitees before disbanding the group?
 void Player::UninviteFromGroup(Group* group)
 {
-	if (!group || !this)
+    if (!group || !this)
          return;
 
     group->RemoveInvite(this);
@@ -4168,9 +4168,9 @@ void Player::removeSpell(uint32 spell_id, bool disabled, bool learn_low_rank)
     }
 
     if (spell_id == 46917 && m_canTitanGrip)
-	{
+    {
         SetCanTitanGrip(false);
-		// Remove Titan's Grip damage penalty now
+        // Remove Titan's Grip damage penalty now
         RemoveAurasDueToSpell(49152);
     }
     if (spell_id == 674 && m_canDualWield)
@@ -4997,7 +4997,7 @@ void Player::DeleteFromDB(uint64 playerguid, uint32 accountId, bool updateRealmC
             stmt->setUInt32(0, guid);
             trans->Append(stmt);
 
-			stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_BOUNTY);
+            stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_BOUNTY);
             stmt->setUInt32(0, guid);
             trans->Append(stmt);
 
@@ -12158,32 +12158,32 @@ Item* Player::StoreNewItem(ItemPosCountVec const& dest, uint32 item, bool update
             pItem->SetItemRandomProperties(randomPropertyId);
         pItem = StoreItem(dest, pItem, update);
 
-		if (m_session)
-		{
-			if (m_session->GetPlayer()->GetLevelFromDB(GetGUIDLow()) > 1)
-			{
-				Player* pPlayer = m_session->GetPlayer();
-				uint64 sel_guid = pPlayer->GetTarget();
-				const ItemTemplate* proto = pItem->GetTemplate();
-				if (proto->Quality >= ITEM_QUALITY_EPIC && (proto->ItemLevel >= 200 || (proto->Class == ITEM_CLASS_MISC && proto->ItemLevel >= 80)))
-				{
-					PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_ITEM);
-					stmt->setUInt32(0, GetGUIDLow());
-					stmt->setString(1, pPlayer->GetName());
-					stmt->setUInt32(2, m_session->GetAccountId());
-					stmt->setUInt32(3, pItem->GetEntry());
-					stmt->setUInt32(4, pItem->GetGUID());
-					stmt->setUInt32(5, 0);
-					char position[96];
-					sprintf(position, "X: %f Y: %f Z: %f Map: %u", pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ(), pPlayer->GetMapId());
-					stmt->setString(6, position);
-					char target[96];
-					sprintf(target, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (pPlayer->GetSelectedUnit()) ? pPlayer->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
-					stmt->setString(7, target);
-					CharacterDatabase.Execute(stmt);
-				}
-			}
-		}
+        if (m_session)
+        {
+            if (m_session->GetPlayer()->GetLevelFromDB(GetGUIDLow()) > 1)
+            {
+                Player* pPlayer = m_session->GetPlayer();
+                uint64 sel_guid = pPlayer->GetTarget();
+                const ItemTemplate* proto = pItem->GetTemplate();
+                if (proto->Quality >= ITEM_QUALITY_EPIC && (proto->ItemLevel >= 200 || (proto->Class == ITEM_CLASS_MISC && proto->ItemLevel >= 80)))
+                {
+                    PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_ITEM);
+                    stmt->setUInt32(0, GetGUIDLow());
+                    stmt->setString(1, pPlayer->GetName());
+                    stmt->setUInt32(2, m_session->GetAccountId());
+                    stmt->setUInt32(3, pItem->GetEntry());
+                    stmt->setUInt32(4, pItem->GetGUID());
+                    stmt->setUInt32(5, 0);
+                    char position[96];
+                    sprintf(position, "X: %f Y: %f Z: %f Map: %u", pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ(), pPlayer->GetMapId());
+                    stmt->setString(6, position);
+                    char target[96];
+                    sprintf(target, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (pPlayer->GetSelectedUnit()) ? pPlayer->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
+                    stmt->setString(7, target);
+                    CharacterDatabase.Execute(stmt);
+                }
+            }
+        }
 
         if (allowedLooters.size() > 1 && pItem->GetTemplate()->GetMaxStackSize() == 1 && pItem->IsSoulBound())
         {
@@ -12455,7 +12455,7 @@ Item* Player::EquipItem(uint16 pos, Item* pItem, bool update)
         return pItem2;
     }
 
-	// Apply Titan's Grip penalty if necessary
+    // Apply Titan's Grip penalty if necessary
     if ((slot == EQUIPMENT_SLOT_MAINHAND || slot == EQUIPMENT_SLOT_OFFHAND) && CanTitanGrip() && HasTwoHandWeaponInOneHand() && !HasAura(49152))
         CastSpell(this, 49152, true);
 
@@ -12482,7 +12482,7 @@ void Player::QuickEquipItem(uint16 pos, Item* pItem)
             pItem->SendUpdateToPlayer(this);
         }
 
-		// Apply Titan's Grip damage penalty if necessary
+        // Apply Titan's Grip damage penalty if necessary
         if ((slot == EQUIPMENT_SLOT_MAINHAND || slot == EQUIPMENT_SLOT_OFFHAND) && CanTitanGrip() && HasTwoHandWeaponInOneHand() && !HasAura(49152))
             CastSpell(this, 49152, true);
 
@@ -12607,9 +12607,9 @@ void Player::RemoveItem(uint8 bag, uint8 slot, bool update)
             SetUInt64Value(PLAYER_FIELD_INV_SLOT_HEAD + (slot * 2), 0);
 
             if (slot < EQUIPMENT_SLOT_END)
-			{
+            {
                 SetVisibleItemSlot(slot, NULL);
-				// Remove Tita's Grip damage penalty if necessary
+                // Remove Tita's Grip damage penalty if necessary
                 if ((slot == EQUIPMENT_SLOT_MAINHAND || slot == EQUIPMENT_SLOT_OFFHAND) && CanTitanGrip() && !HasTwoHandWeaponInOneHand())
                     RemoveAurasDueToSpell(49152);
             }
@@ -12630,9 +12630,9 @@ void Player::MoveItemFromInventory(uint8 bag, uint8 slot, bool update)
 {
     if (Item* it = GetItemByPos(bag, slot))
     {
-		sTransmogrification->DeleteFakeFromDB(it->GetGUIDLow()); // custom
+        sTransmogrification->DeleteFakeFromDB(it->GetGUIDLow()); // custom
         ItemRemovedQuestCheck(it->GetEntry(), it->GetCount());
-		RemoveItem(bag, slot, update);
+        RemoveItem(bag, slot, update);
         it->SetNotRefundable(this, false);
         it->RemoveFromUpdateQueueOf(this);
         if (it->IsInWorld())
@@ -12705,31 +12705,31 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
         ItemRemovedQuestCheck(pItem->GetEntry(), pItem->GetCount());
         sScriptMgr->OnItemRemove(this, pItem);
 
-		if (m_session)
-		{
-			if (m_session->GetPlayer()->GetLevelFromDB(GetGUIDLow()) > 1)
-			{
-				Player* pPlayer = m_session->GetPlayer();
-				uint64 sel_guid = pPlayer->GetTarget();
-				if (proto->Quality >= ITEM_QUALITY_EPIC && (proto->ItemLevel >= 200 || (proto->Class == ITEM_CLASS_MISC && proto->ItemLevel >= 80)))
-				{
-					PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_ITEM);
-					stmt->setUInt32(0, GetGUIDLow());
-					stmt->setString(1, pPlayer->GetName());
-					stmt->setUInt32(2, m_session->GetAccountId());
-					stmt->setUInt32(3, pItem->GetEntry());
-					stmt->setUInt32(4, pItem->GetGUID());
-					stmt->setUInt32(5, 1);
-					char position[96];
-					sprintf(position, "X: %f Y: %f Z: %f Map: %u", pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ(), pPlayer->GetMapId());
-					stmt->setString(6, position);
-					char target[96];
-					sprintf(target, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (pPlayer->GetSelectedUnit()) ? pPlayer->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
-					stmt->setString(7, target);
-					CharacterDatabase.Execute(stmt);
-				}
-			}
-		}
+        if (m_session)
+        {
+            if (m_session->GetPlayer()->GetLevelFromDB(GetGUIDLow()) > 1)
+            {
+                Player* pPlayer = m_session->GetPlayer();
+                uint64 sel_guid = pPlayer->GetTarget();
+                if (proto->Quality >= ITEM_QUALITY_EPIC && (proto->ItemLevel >= 200 || (proto->Class == ITEM_CLASS_MISC && proto->ItemLevel >= 80)))
+                {
+                    PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_ITEM);
+                    stmt->setUInt32(0, GetGUIDLow());
+                    stmt->setString(1, pPlayer->GetName());
+                    stmt->setUInt32(2, m_session->GetAccountId());
+                    stmt->setUInt32(3, pItem->GetEntry());
+                    stmt->setUInt32(4, pItem->GetGUID());
+                    stmt->setUInt32(5, 1);
+                    char position[96];
+                    sprintf(position, "X: %f Y: %f Z: %f Map: %u", pPlayer->GetPositionX(), pPlayer->GetPositionY(), pPlayer->GetPositionZ(), pPlayer->GetMapId());
+                    stmt->setString(6, position);
+                    char target[96];
+                    sprintf(target, "%s: %s (GUID: %u)", GetLogNameForGuid(sel_guid), (pPlayer->GetSelectedUnit()) ? pPlayer->GetSelectedUnit()->GetName().c_str() : "", GUID_LOPART(sel_guid));
+                    stmt->setString(7, target);
+                    CharacterDatabase.Execute(stmt);
+                }
+            }
+        }
 
         if (bag == INVENTORY_SLOT_BAG_0)
         {
@@ -14522,39 +14522,39 @@ void Player::PrepareGossipMenu(WorldObject* source, uint32 menuId /*= 0*/, bool 
             }
         }
 
-		if (canTalk)
-		{
-			std::string strOptionText, strBoxText;
-			BroadcastText const* optionBroadcastText = sObjectMgr->GetBroadcastText(itr->second.OptionBroadcastTextId);
-			BroadcastText const* boxBroadcastText = sObjectMgr->GetBroadcastText(itr->second.BoxBroadcastTextId);
-			LocaleConstant locale = GetSession()->GetSessionDbLocaleIndex();
+        if (canTalk)
+        {
+            std::string strOptionText, strBoxText;
+            BroadcastText const* optionBroadcastText = sObjectMgr->GetBroadcastText(itr->second.OptionBroadcastTextId);
+            BroadcastText const* boxBroadcastText = sObjectMgr->GetBroadcastText(itr->second.BoxBroadcastTextId);
+            LocaleConstant locale = GetSession()->GetSessionDbLocaleIndex();
 
-			if (optionBroadcastText)
+            if (optionBroadcastText)
                 strOptionText = optionBroadcastText->GetText(locale, getGender());
-			else
-				strOptionText = itr->second.OptionText;
+            else
+                strOptionText = itr->second.OptionText;
 
-			if (boxBroadcastText)
+            if (boxBroadcastText)
                 strBoxText = boxBroadcastText->GetText(locale, getGender());
-			else
-				strBoxText = itr->second.BoxText;
+            else
+                strBoxText = itr->second.BoxText;
 
-			if (locale != DEFAULT_LOCALE)
-			{
-				if (!optionBroadcastText)
-				{
-					/// Find localizations from database.
-					if (GossipMenuItemsLocale const* gossipMenuLocale = sObjectMgr->GetGossipMenuItemsLocale(MAKE_PAIR32(menuId, menuId)))
-						ObjectMgr::GetLocaleString(gossipMenuLocale->OptionText, locale, strOptionText);
-				}
+            if (locale != DEFAULT_LOCALE)
+            {
+                if (!optionBroadcastText)
+                {
+                    /// Find localizations from database.
+                    if (GossipMenuItemsLocale const* gossipMenuLocale = sObjectMgr->GetGossipMenuItemsLocale(MAKE_PAIR32(menuId, menuId)))
+                        ObjectMgr::GetLocaleString(gossipMenuLocale->OptionText, locale, strOptionText);
+                }
 
-				if (!boxBroadcastText)
-				{
-					/// Find localizations from database.
-					if (GossipMenuItemsLocale const* gossipMenuLocale = sObjectMgr->GetGossipMenuItemsLocale(MAKE_PAIR32(menuId, menuId)))
-						ObjectMgr::GetLocaleString(gossipMenuLocale->BoxText, locale, strBoxText);
-				}
-			}
+                if (!boxBroadcastText)
+                {
+                    /// Find localizations from database.
+                    if (GossipMenuItemsLocale const* gossipMenuLocale = sObjectMgr->GetGossipMenuItemsLocale(MAKE_PAIR32(menuId, menuId)))
+                        ObjectMgr::GetLocaleString(gossipMenuLocale->BoxText, locale, strBoxText);
+                }
+            }
 
             menu->GetGossipMenu().AddMenuItem(itr->second.OptionIndex, itr->second.OptionIcon, strOptionText, 0, itr->second.OptionType, strBoxText, itr->second.BoxMoney, itr->second.BoxCoded);
             menu->GetGossipMenu().AddGossipMenuItemData(itr->second.OptionIndex, itr->second.ActionMenuId, itr->second.ActionPoiId);
@@ -19515,9 +19515,9 @@ void Player::SaveToDB(bool create /*=false*/)
 
     CharacterDatabase.CommitTransaction(trans);
 
-	// Anticheat
-	sAnticheatMgr->SavePlayerData(this);
-	sAnticheatMgr->SavePlayerData(this);
+    // Anticheat
+    sAnticheatMgr->SavePlayerData(this);
+    sAnticheatMgr->SavePlayerData(this);
 
     // save pet (hunter pet level and experience and all type pets health/mana).
     if (Pet* pet = GetPet())
@@ -20166,18 +20166,18 @@ void Player::outDebugValues() const
     if (!sLog->ShouldLog("entities.unit", LOG_LEVEL_DEBUG))
         return;
 
-    TC_LOG_DEBUG("entities.unit", "HP is: \t\t\t%u\t\tMP is: \t\t\t%u", GetMaxHealth(), GetMaxPower(POWER_MANA));
-    TC_LOG_DEBUG("entities.unit", "AGILITY is: \t\t%f\t\tSTRENGTH is: \t\t%f", GetStat(STAT_AGILITY), GetStat(STAT_STRENGTH));
-    TC_LOG_DEBUG("entities.unit", "INTELLECT is: \t\t%f\t\tSPIRIT is: \t\t%f", GetStat(STAT_INTELLECT), GetStat(STAT_SPIRIT));
-    TC_LOG_DEBUG("entities.unit", "STAMINA is: \t\t%f", GetStat(STAT_STAMINA));
-    TC_LOG_DEBUG("entities.unit", "Armor is: \t\t%u\t\tBlock is: \t\t%f", GetArmor(), GetFloatValue(PLAYER_BLOCK_PERCENTAGE));
-    TC_LOG_DEBUG("entities.unit", "HolyRes is: \t\t%u\t\tFireRes is: \t\t%u", GetResistance(SPELL_SCHOOL_HOLY), GetResistance(SPELL_SCHOOL_FIRE));
-    TC_LOG_DEBUG("entities.unit", "NatureRes is: \t\t%u\t\tFrostRes is: \t\t%u", GetResistance(SPELL_SCHOOL_NATURE), GetResistance(SPELL_SCHOOL_FROST));
-    TC_LOG_DEBUG("entities.unit", "ShadowRes is: \t\t%u\t\tArcaneRes is: \t\t%u", GetResistance(SPELL_SCHOOL_SHADOW), GetResistance(SPELL_SCHOOL_ARCANE));
-    TC_LOG_DEBUG("entities.unit", "MIN_DAMAGE is: \t\t%f\tMAX_DAMAGE is: \t\t%f", GetFloatValue(UNIT_FIELD_MINDAMAGE), GetFloatValue(UNIT_FIELD_MAXDAMAGE));
-    TC_LOG_DEBUG("entities.unit", "MIN_OFFHAND_DAMAGE is: \t%f\tMAX_OFFHAND_DAMAGE is: \t%f", GetFloatValue(UNIT_FIELD_MINOFFHANDDAMAGE), GetFloatValue(UNIT_FIELD_MAXOFFHANDDAMAGE));
-    TC_LOG_DEBUG("entities.unit", "MIN_RANGED_DAMAGE is: \t%f\tMAX_RANGED_DAMAGE is: \t%f", GetFloatValue(UNIT_FIELD_MINRANGEDDAMAGE), GetFloatValue(UNIT_FIELD_MAXRANGEDDAMAGE));
-    TC_LOG_DEBUG("entities.unit", "ATTACK_TIME is: \t%u\t\tRANGE_ATTACK_TIME is: \t%u", GetAttackTime(BASE_ATTACK), GetAttackTime(RANGED_ATTACK));
+    TC_LOG_DEBUG("entities.unit", "HP is:             %u        MP is:             %u", GetMaxHealth(), GetMaxPower(POWER_MANA));
+    TC_LOG_DEBUG("entities.unit", "AGILITY is:         %f        STRENGTH is:         %f", GetStat(STAT_AGILITY), GetStat(STAT_STRENGTH));
+    TC_LOG_DEBUG("entities.unit", "INTELLECT is:         %f        SPIRIT is:         %f", GetStat(STAT_INTELLECT), GetStat(STAT_SPIRIT));
+    TC_LOG_DEBUG("entities.unit", "STAMINA is:         %f", GetStat(STAT_STAMINA));
+    TC_LOG_DEBUG("entities.unit", "Armor is:         %u        Block is:         %f", GetArmor(), GetFloatValue(PLAYER_BLOCK_PERCENTAGE));
+    TC_LOG_DEBUG("entities.unit", "HolyRes is:         %u        FireRes is:         %u", GetResistance(SPELL_SCHOOL_HOLY), GetResistance(SPELL_SCHOOL_FIRE));
+    TC_LOG_DEBUG("entities.unit", "NatureRes is:         %u        FrostRes is:         %u", GetResistance(SPELL_SCHOOL_NATURE), GetResistance(SPELL_SCHOOL_FROST));
+    TC_LOG_DEBUG("entities.unit", "ShadowRes is:         %u        ArcaneRes is:         %u", GetResistance(SPELL_SCHOOL_SHADOW), GetResistance(SPELL_SCHOOL_ARCANE));
+    TC_LOG_DEBUG("entities.unit", "MIN_DAMAGE is:         %f    MAX_DAMAGE is:         %f", GetFloatValue(UNIT_FIELD_MINDAMAGE), GetFloatValue(UNIT_FIELD_MAXDAMAGE));
+    TC_LOG_DEBUG("entities.unit", "MIN_OFFHAND_DAMAGE is:     %f    MAX_OFFHAND_DAMAGE is:     %f", GetFloatValue(UNIT_FIELD_MINOFFHANDDAMAGE), GetFloatValue(UNIT_FIELD_MAXOFFHANDDAMAGE));
+    TC_LOG_DEBUG("entities.unit", "MIN_RANGED_DAMAGE is:     %f    MAX_RANGED_DAMAGE is:     %f", GetFloatValue(UNIT_FIELD_MINRANGEDDAMAGE), GetFloatValue(UNIT_FIELD_MAXRANGEDDAMAGE));
+    TC_LOG_DEBUG("entities.unit", "ATTACK_TIME is:     %u        RANGE_ATTACK_TIME is:     %u", GetAttackTime(BASE_ATTACK), GetAttackTime(RANGED_ATTACK));
 }
 
 /*********************************************************/
@@ -22146,7 +22146,7 @@ void Player::SendCooldownEvent(SpellInfo const* spellInfo, uint32 itemId /*= 0*/
     data << uint64(GetGUID());
     SendDirectMessage(&data);
 
-	uint32 cat = spellInfo->GetCategory();
+    uint32 cat = spellInfo->GetCategory();
     uint32 catRec = spellInfo->CategoryRecoveryTime;
     if (cat && catRec)
     {
@@ -23862,12 +23862,12 @@ void Player::RemoveItemDependentAurasAndCasts(Item* pItem)
             continue;
         }
 
-		// Bladestorm
-		if (HasAura(46924))
-		{
-			++itr;
-			continue;
-		}
+        // Bladestorm
+        if (HasAura(46924))
+        {
+            ++itr;
+            continue;
+        }
 
         // no alt item, remove aura, restart check
         RemoveOwnedAura(itr);
@@ -26202,10 +26202,10 @@ void Player::ActivateSpec(uint8 spec)
                 for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)                  // search through the SpellInfo for valid trigger spells
                     if (_spellEntry->Effects[i].TriggerSpell > 0 && (_spellEntry->Effects[i].Effect == SPELL_EFFECT_LEARN_SPELL || _spellEntry->Effects[i].Effect == SPELL_EFFECT_TRIGGER_SPELL))
                     {
-						removeSpell(_spellEntry->Effects[i].TriggerSpell, true); // and remove any spells that the talent teaches
-						RemoveAurasDueToSpell(_spellEntry->Effects[i].TriggerSpell, true);
+                        removeSpell(_spellEntry->Effects[i].TriggerSpell, true); // and remove any spells that the talent teaches
+                        RemoveAurasDueToSpell(_spellEntry->Effects[i].TriggerSpell, true);
                     }
-			// if this talent rank can be found in the PlayerTalentMap, mark the talent as removed so it gets deleted
+            // if this talent rank can be found in the PlayerTalentMap, mark the talent as removed so it gets deleted
             //PlayerTalentMap::iterator plrTalent = m_talents[m_activeSpec]->find(talentInfo->RankID[rank]);
             //if (plrTalent != m_talents[m_activeSpec]->end())
             //    plrTalent->second->state = PLAYERSPELL_REMOVED;

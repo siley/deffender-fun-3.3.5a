@@ -2435,5 +2435,5 @@ void AddSC_npcs_special()
     new npc_experience();
     new npc_firework();
     new npc_spring_rabbit();
-	new npc_risen_ally();
+    new npc_risen_ally();
 }

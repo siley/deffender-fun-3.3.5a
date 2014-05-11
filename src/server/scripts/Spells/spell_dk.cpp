@@ -465,7 +465,7 @@ class spell_dk_death_coil : public SpellScriptLoader
                 {
                     if (caster->IsFriendlyTo(target))
                     {
-						int32 bp = int32(damage * 2.25f);
+                        int32 bp = int32(damage * 2.25f);
                         caster->CastCustomSpell(target, SPELL_DK_DEATH_COIL_HEAL, &bp, NULL, NULL, true);
                     }
                     else
@@ -564,18 +564,18 @@ class spell_dk_death_grip : public SpellScriptLoader
                 Position const* pos = GetExplTargetDest();
                 if (Unit* target = GetHitUnit())
                 {
-					if (target->IsImmunedToSpell(sSpellMgr->GetSpellInfo(49576)))
-					{
-						target->ApplySpellImmune(0, IMMUNITY_ID, 49576, false);
-					}
-					else
-					{
-						if (!target->HasAuraType(SPELL_AURA_DEFLECT_SPELLS)) // Deterrence
-						{
-							target->CastSpell(pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), damage, true);
-							target->CastStop();
-						}
-					}
+                    if (target->IsImmunedToSpell(sSpellMgr->GetSpellInfo(49576)))
+                    {
+                        target->ApplySpellImmune(0, IMMUNITY_ID, 49576, false);
+                    }
+                    else
+                    {
+                        if (!target->HasAuraType(SPELL_AURA_DEFLECT_SPELLS)) // Deterrence
+                        {
+                            target->CastSpell(pos->GetPositionX(), pos->GetPositionY(), pos->GetPositionZ(), damage, true);
+                            target->CastStop();
+                        }
+                    }
                 }
             }
 

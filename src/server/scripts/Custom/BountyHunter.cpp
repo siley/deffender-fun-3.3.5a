@@ -74,18 +74,18 @@ bool passChecks(Player * pPlayer, const char * name)
                 m_session->SendNotification("Nemuzes dat odmenu na sebe!");
                 return false;
         }
-		if(pBounty->GetZoneId() == 1519)
-		{
+        if(pBounty->GetZoneId() == 1519)
+        {
                 m_session->SendNotification("Na hrace v hlavnim meste nelze dat odmenu");
                 return false;
         }
-		if(pBounty->GetZoneId() == 1637)
-		{
+        if(pBounty->GetZoneId() == 1637)
+        {
                 m_session->SendNotification("Na hrace v hlavnim meste nelze dat odmenu");
                 return false;
         }
-		if(pBounty->GetGroup())
-		{
+        if(pBounty->GetGroup())
+        {
                 m_session->SendNotification("Hrac ma Group");
                 return false;
         }
@@ -279,7 +279,7 @@ class BountyHunter : public CreatureScript
                                                         option +=" ";
                                                         option += fields[1].GetString();
                                                         option += " marek";
-														ChatHandler(pPlayer->GetSession()).PSendSysMessage(option.c_str(), pPlayer->GetGUID(), false);
+                                                        ChatHandler(pPlayer->GetSession()).PSendSysMessage(option.c_str(), pPlayer->GetGUID(), false);
                                                 }while(Bounties->NextRow());
                                         }
                                         else

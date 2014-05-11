@@ -57,9 +57,9 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo movemen
         player->HasAuraType(SPELL_AURA_WATER_WALK))
         return;
 
-	// Check if is in Strand of the Ancients
-	if (player->GetZoneId() == 4384)
-		return;
+    // Check if is in Strand of the Ancients
+    if (player->GetZoneId() == 4384)
+        return;
 
     BuildReport(player,WALK_WATER_HACK_REPORT);
 
@@ -79,9 +79,9 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo movementInfo)
         player->HasAuraType(SPELL_AURA_MOD_INCREASE_FLIGHT_SPEED))
         return;
 
-	// Check if is in Strand of the Ancients
-	if (player->GetZoneId() == 4384)
-		return;
+    // Check if is in Strand of the Ancients
+    if (player->GetZoneId() == 4384)
+        return;
     
     BuildReport(player,FLY_HACK_REPORT);
 }
@@ -158,8 +158,8 @@ void AnticheatMgr::ClimbHackDetection(Player *player, MovementInfo movementInfo,
         player->IsFalling())
         return;
 
-	Position playerPos;
-	Position pos = player->GetPosition();
+    Position playerPos;
+    Position pos = player->GetPosition();
 
     float deltaZ = fabs(playerPos.GetPositionZ() - movementInfo.pos.GetPositionZ());
     float deltaXY = movementInfo.pos.GetExactDist2d(&playerPos);
@@ -194,9 +194,9 @@ void AnticheatMgr::SpeedHackDetection(Player* player,MovementInfo movementInfo)
         moveType = MOVE_FLIGHT;
     else if (player->HasUnitMovementFlag(MOVEMENTFLAG_WALKING))
         moveType = MOVE_WALK;
-	// Check if is in Strand of the Ancients
-	else if (player->GetZoneId() == 4384)
-		return;
+    // Check if is in Strand of the Ancients
+    else if (player->GetZoneId() == 4384)
+        return;
     else
         moveType = MOVE_RUN;
 

@@ -36,12 +36,12 @@ public:
         if(player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
-			npc->MonsterWhisper("Jsi v combatu!", player, true);
+            npc->MonsterWhisper("Jsi v combatu!", player, true);
             return true;
         }
         player->ADD_GOSSIP_ITEM_EXTENDED( 6, "Zmena frakce (cena 50 000G)", GOSSIP_SENDER_MAIN, 1, "!! UPOZORNENI: Migrace vam smaze veskere questy, ktere mate v questlogu !!", 0, false);
         player->ADD_GOSSIP_ITEM( 0, "Close",    GOSSIP_SENDER_MAIN, 2);
-		player->SEND_GOSSIP_MENU(GOSSIP, npc->GetGUID());
+        player->SEND_GOSSIP_MENU(GOSSIP, npc->GetGUID());
 
         return true;
     }
@@ -51,7 +51,7 @@ public:
         if(player->IsInCombat())
         {
             player->CLOSE_GOSSIP_MENU();
-			npc->MonsterWhisper("Jsi v combatu!", player, true);
+            npc->MonsterWhisper("Jsi v combatu!", player, true);
             return true;
         }
 
@@ -65,12 +65,12 @@ public:
 
         switch(uiAction)
         {
-		case 1: //Faction Change
+        case 1: //Faction Change
             if(vip_pay(PRICE_FACTIONCHANGE, player))
             {
                 player->CLOSE_GOSSIP_MENU();
                 player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-				npc->MonsterWhisper(VIP_NPC_TEXT_FACTIONCHANGE, player, true);
+                npc->MonsterWhisper(VIP_NPC_TEXT_FACTIONCHANGE, player, true);
                 return true;
             }
             break;
@@ -87,7 +87,7 @@ public:
         }
 
         player->CLOSE_GOSSIP_MENU();
-		npc->MonsterWhisper(VIP_NPC_TEXT_MONEYERR, player, true);
+        npc->MonsterWhisper(VIP_NPC_TEXT_MONEYERR, player, true);
 
         return true;
     }

@@ -91,10 +91,10 @@ enum Events
 
 static const uint32 OozeEntries[4] =
 {
-	36897, // Little Ooze 10 
-	38138, // Little Ooze 25 
-	36899, // Big Ooze 10
-	38123 // Big Ooze 25
+    36897, // Little Ooze 10 
+    38138, // Little Ooze 25 
+    36899, // Big Ooze 10
+    38123 // Big Ooze 25
 };
 
 class boss_rotface : public CreatureScript
@@ -108,9 +108,9 @@ class boss_rotface : public CreatureScript
             {
                 infectionStage = 0;
                 infectionCooldown = 14000;
-				aimOrientation = 0.0f;
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
-				DespawnOozes();
+                aimOrientation = 0.0f;
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
+                DespawnOozes();
             }
 
             void Reset() override
@@ -124,9 +124,9 @@ class boss_rotface : public CreatureScript
 
                 infectionStage = 0;
                 infectionCooldown = 14000;
-				aimOrientation = 0.0f;
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
-				DespawnOozes();
+                aimOrientation = 0.0f;
+                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
+                DespawnOozes();
             }
 
             void EnterCombat(Unit* who) override
@@ -142,7 +142,7 @@ class boss_rotface : public CreatureScript
                 Talk(SAY_AGGRO);
                 if (Creature* professor = Unit::GetCreature(*me, instance->GetData64(DATA_PROFESSOR_PUTRICIDE)))
                     if (professor->IsAlive())
-						professor->AI()->DoAction(ACTION_ROTFACE_COMBAT);
+                        professor->AI()->DoAction(ACTION_ROTFACE_COMBAT);
 
                 DoZoneInCombat();
                 DoCast(me, SPELL_GREEN_ABOMINATION_HITTIN__YA_PROC, true);
@@ -155,8 +155,8 @@ class boss_rotface : public CreatureScript
                 Talk(SAY_DEATH);
                 if (Creature* professor = Unit::GetCreature(*me, instance->GetData64(DATA_PROFESSOR_PUTRICIDE)))
                     if (professor->IsAlive())
-						professor->AI()->DoAction(ACTION_ROTFACE_DEATH);
-					DespawnOozes();
+                        professor->AI()->DoAction(ACTION_ROTFACE_DEATH);
+                    DespawnOozes();
             }
 
             void JustReachedHome() override
@@ -179,13 +179,13 @@ class boss_rotface : public CreatureScript
                     professor->AI()->EnterEvadeMode();
             }
 
-			void SpellHitTarget(Unit* target, SpellInfo const* spell) override
+            void SpellHitTarget(Unit* target, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_SLIME_SPRAY)
                     {
-					Talk(SAY_SLIME_SPRAY);
-					aimOrientation = me->GetAngle(target);
-				}
+                    Talk(SAY_SLIME_SPRAY);
+                    aimOrientation = me->GetAngle(target);
+                }
             }
 
             void MoveInLineOfSight(Unit* /*who*/) override
@@ -200,17 +200,17 @@ class boss_rotface : public CreatureScript
                         professor->CastSpell(summon, SPELL_VILE_GAS_H, true);
             }
 
-			void SummonedCreatureDespawn(Creature* summon)
-			{
-				if (summon)
-				{
-					if (summon->GetEntry() == NPC_OOZE_SPRAY_STALKER)
-					{
-						aimOrientation = 0.0f;
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
-					}
-				}
-			}
+            void SummonedCreatureDespawn(Creature* summon)
+            {
+                if (summon)
+                {
+                    if (summon->GetEntry() == NPC_OOZE_SPRAY_STALKER)
+                    {
+                        aimOrientation = 0.0f;
+                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
+                    }
+                }
+            }
 
             void UpdateAI(uint32 diff) override
             {
@@ -219,13 +219,13 @@ class boss_rotface : public CreatureScript
 
                 events.Update(diff);
 
-				if (aimOrientation != 0.0f)
-				{
-					me->SetOrientation(aimOrientation);
-					me->SendMovementFlagUpdate();
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
-					return;
-				}
+                if (aimOrientation != 0.0f)
+                {
+                    me->SetOrientation(aimOrientation);
+                    me->SendMovementFlagUpdate();
+                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_STUNNED);
+                    return;
+                }
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
                     return;
@@ -266,20 +266,20 @@ class boss_rotface : public CreatureScript
                 DoMeleeAttackIfReady();
             }
 
-			void DespawnOozes()
-			{
-				std::list<Creature*> Type[4];
-				for (int i = 0; i < 4; ++i)
-					GetCreatureListWithEntryInGrid(Type[i], me, OozeEntries[i], 200);
-				for (int x = 0; x < 4; ++x)
-					for (std::list<Creature*>::const_iterator itr = Type[x].begin(); itr != Type[x].end(); ++itr)
-						(*itr)->DespawnOrUnsummon();
-			}	
+            void DespawnOozes()
+            {
+                std::list<Creature*> Type[4];
+                for (int i = 0; i < 4; ++i)
+                    GetCreatureListWithEntryInGrid(Type[i], me, OozeEntries[i], 200);
+                for (int x = 0; x < 4; ++x)
+                    for (std::list<Creature*>::const_iterator itr = Type[x].begin(); itr != Type[x].end(); ++itr)
+                        (*itr)->DespawnOrUnsummon();
+            }    
 
         private:
             uint32 infectionCooldown;
             uint32 infectionStage;
-			float aimOrientation;
+            float aimOrientation;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -295,15 +295,15 @@ class npc_little_ooze : public CreatureScript
 
         struct npc_little_oozeAI : public ScriptedAI
         {
-			npc_little_oozeAI(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript())
+            npc_little_oozeAI(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript())
             {
-				me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-				me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             }
 
             void IsSummonedBy(Unit* summoner) override
             {
-				DoZoneInCombat(me, 100.0f);
+                DoZoneInCombat(me, 100.0f);
                 DoCast(me, SPELL_LITTLE_OOZE_COMBINE, true);
                 DoCast(me, SPELL_WEAK_RADIATING_OOZE, true);
                 DoCast(me, SPELL_GREEN_ABOMINATION_HITTIN__YA_PROC, true);
@@ -334,7 +334,7 @@ class npc_little_ooze : public CreatureScript
 
         private:
             EventMap events;
-			InstanceScript* instance;
+            InstanceScript* instance;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
@@ -352,8 +352,8 @@ class npc_big_ooze : public CreatureScript
         {
             npc_big_oozeAI(Creature* creature) : ScriptedAI(creature), instance(creature->GetInstanceScript())
             {
-				me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-				me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
+                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             }
 
             void IsSummonedBy(Unit* /*summoner*/) override
@@ -872,8 +872,8 @@ class spell_rotface_vile_gas_trigger : public SpellScriptLoader
                 std::list<WorldObject*> ranged, melee;
                 std::list<WorldObject*>::iterator itr = targets.begin();
 
-				if ((*itr)->ToCreature())
-					return;
+                if ((*itr)->ToCreature())
+                    return;
 
                 while (itr != targets.end() && (*itr)->GetDistance(GetCaster()) < 5.0f)
                 {

@@ -385,7 +385,7 @@ public:
                 }
                 else
                 {
-					TC_LOG_ERROR("sql.sql", "Item entry (Entry: %u, itemGUID: %u, playerGUID: %u) does not exist, ignoring.", fakeEntry, GUID_LOPART(itemGUID), player->GetGUIDLow());
+                    TC_LOG_ERROR("sql.sql", "Item entry (Entry: %u, itemGUID: %u, playerGUID: %u) does not exist, ignoring.", fakeEntry, GUID_LOPART(itemGUID), player->GetGUIDLow());
                     // CharacterDatabase.PExecute("DELETE FROM custom_transmogrification WHERE FakeEntry = %u", fakeEntry);
                 }
             } while (result->NextRow());
@@ -430,7 +430,7 @@ public:
     void OnStartup()
     {
         sT->LoadConfig(false);
-		TC_LOG_INFO("loading", "Deleting non-existing transmogrification entries...");
+        TC_LOG_INFO("loading", "Deleting non-existing transmogrification entries...");
         CharacterDatabase.Execute("DELETE FROM custom_transmogrification WHERE NOT EXISTS (SELECT 1 FROM item_instance WHERE item_instance.guid = custom_transmogrification.GUID)");
 
 #ifdef PRESETS

@@ -47,7 +47,7 @@ public:
         static ChatCommand commandTable[] =
         {
             { "additem",          rbac::RBAC_PERM_COMMAND_ADDITEM,          false, &HandleAddItemCommand,          "", NULL },
-			{ "addmark", SEC_ADMINISTRATOR, false, &HandleAddMarkCommand, "", NULL },
+            { "addmark", SEC_ADMINISTRATOR, false, &HandleAddMarkCommand, "", NULL },
             { "additemset",       rbac::RBAC_PERM_COMMAND_ADDITEMSET,       false, &HandleAddItemSetCommand,       "", NULL },
             { "appear",           rbac::RBAC_PERM_COMMAND_APPEAR,           false, &HandleAppearCommand,           "", NULL },
             { "aura",             rbac::RBAC_PERM_COMMAND_AURA,             false, &HandleAuraCommand,             "", NULL },
@@ -233,18 +233,18 @@ public:
         uint32 spellId = handler->extractSpellIdFromLink((char*)args);
 
         if (SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId))
-		{
+        {
             if (handler->getSelectedUnit() == handler->GetSession()->GetPlayer() || handler->GetSession()->HasPermission(rbac::RBAC_PERM_USE_AURA_ON_TARGET) || spellInfo->Id == 34709)
-				Aura::TryRefreshStackOrCreate(spellInfo, MAX_EFFECT_MASK, target, target);
-			else
-			{
-				handler->SendSysMessage("Neplatny spell - pro eventy ti staci 34709");
-				handler->SetSentErrorMessage(true);
-				return false;
-			}
-		}
-		return true;
-	}
+                Aura::TryRefreshStackOrCreate(spellInfo, MAX_EFFECT_MASK, target, target);
+            else
+            {
+                handler->SendSysMessage("Neplatny spell - pro eventy ti staci 34709");
+                handler->SetSentErrorMessage(true);
+                return false;
+            }
+        }
+        return true;
+    }
 
     static bool HandleUnAuraCommand(ChatHandler* handler, char const* args)
     {
@@ -1183,83 +1183,83 @@ public:
         return true;
     }
 
-	static bool HandleAddMarkCommand(ChatHandler* handler, const char* args)
-	{
-		uint32 itemId = 38186;
-		int32 count = 1;
+    static bool HandleAddMarkCommand(ChatHandler* handler, const char* args)
+    {
+        uint32 itemId = 38186;
+        int32 count = 1;
 
-		if (*args)
-		{
-			char* ccount = strtok((char*)args, " ");
-			if (!ccount)
-				return false;
+        if (*args)
+        {
+            char* ccount = strtok((char*)args, " ");
+            if (!ccount)
+                return false;
 
-			count = atoi((char*)ccount);
+            count = atoi((char*)ccount);
 
-			if (count > 255)
-				count = 255;
-			else if (count == 0)
-				count = 1;
-		}
+            if (count > 255)
+                count = 255;
+            else if (count == 0)
+                count = 1;
+        }
 
-		Player* pl = handler->GetSession()->GetPlayer();
-		Player* plTarget = handler->getSelectedPlayer();
-		if (!plTarget)
-			plTarget = pl;
+        Player* pl = handler->GetSession()->GetPlayer();
+        Player* plTarget = handler->getSelectedPlayer();
+        if (!plTarget)
+            plTarget = pl;
 
-		//TC_LOG_DEBUG(LOG_FILTER_GENERAL, handler->GetTrinityString(LANG_ADDITEM), itemId, count);
+        //TC_LOG_DEBUG(LOG_FILTER_GENERAL, handler->GetTrinityString(LANG_ADDITEM), itemId, count);
 
-		ItemTemplate const *pProto = sObjectMgr->GetItemTemplate(itemId);
-		if (!pProto)
-		{
-			handler->PSendSysMessage(LANG_COMMAND_ITEMIDINVALID, itemId);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
+        ItemTemplate const *pProto = sObjectMgr->GetItemTemplate(itemId);
+        if (!pProto)
+        {
+            handler->PSendSysMessage(LANG_COMMAND_ITEMIDINVALID, itemId);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
 
-		//Subtract
-		if (count < 0)
-		{
-			plTarget->DestroyItemCount(itemId, -count, true, false);
-			handler->PSendSysMessage(LANG_REMOVEITEM, itemId, -count, handler->GetNameLink(plTarget).c_str());
-			return true;
-		}
+        //Subtract
+        if (count < 0)
+        {
+            plTarget->DestroyItemCount(itemId, -count, true, false);
+            handler->PSendSysMessage(LANG_REMOVEITEM, itemId, -count, handler->GetNameLink(plTarget).c_str());
+            return true;
+        }
 
-		//Adding items
-		uint32 noSpaceForCount = 0;
+        //Adding items
+        uint32 noSpaceForCount = 0;
 
-		// check space and find places
-		ItemPosCountVec dest;
-		uint8 msg = plTarget->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, itemId, count, &noSpaceForCount);
-		if (msg != EQUIP_ERR_OK)                               // convert to possible store amount
-			count -= noSpaceForCount;
+        // check space and find places
+        ItemPosCountVec dest;
+        uint8 msg = plTarget->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, itemId, count, &noSpaceForCount);
+        if (msg != EQUIP_ERR_OK)                               // convert to possible store amount
+            count -= noSpaceForCount;
 
-		if (count == 0 || dest.empty())                         // can't add any
-		{
-			handler->PSendSysMessage(LANG_ITEM_CANNOT_CREATE, itemId, noSpaceForCount);
-			handler->SetSentErrorMessage(true);
-			return false;
-		}
+        if (count == 0 || dest.empty())                         // can't add any
+        {
+            handler->PSendSysMessage(LANG_ITEM_CANNOT_CREATE, itemId, noSpaceForCount);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
 
-		Item* item = plTarget->StoreNewItem(dest, itemId, true, Item::GenerateItemRandomPropertyId(itemId));
-		// remove binding (let GM give it to another player later)
-		if (pl == plTarget)
-		for (ItemPosCountVec::const_iterator itr = dest.begin(); itr != dest.end(); ++itr)
-		if (Item* item1 = pl->GetItemByPos(itr->pos))
-			item1->SetBinding(false);
+        Item* item = plTarget->StoreNewItem(dest, itemId, true, Item::GenerateItemRandomPropertyId(itemId));
+        // remove binding (let GM give it to another player later)
+        if (pl == plTarget)
+        for (ItemPosCountVec::const_iterator itr = dest.begin(); itr != dest.end(); ++itr)
+        if (Item* item1 = pl->GetItemByPos(itr->pos))
+            item1->SetBinding(false);
 
-		if (count > 0 && item)
-		{
-			pl->SendNewItem(item, count, false, true);
-			if (pl != plTarget)
-				plTarget->SendNewItem(item, count, true, false);
-		}
+        if (count > 0 && item)
+        {
+            pl->SendNewItem(item, count, false, true);
+            if (pl != plTarget)
+                plTarget->SendNewItem(item, count, true, false);
+        }
 
-		if (noSpaceForCount > 0)
-			handler->PSendSysMessage(LANG_ITEM_CANNOT_CREATE, itemId, noSpaceForCount);
+        if (noSpaceForCount > 0)
+            handler->PSendSysMessage(LANG_ITEM_CANNOT_CREATE, itemId, noSpaceForCount);
 
-		return true;
-	}
+        return true;
+    }
 
     static bool HandleAddItemSetCommand(ChatHandler* handler, char const* args)
     {

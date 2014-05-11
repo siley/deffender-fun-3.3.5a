@@ -145,7 +145,7 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
     ginfo->ArenaMatchmakerRating     = MatchmakerRating;
     ginfo->OpponentsTeamRating       = 0;
     ginfo->OpponentsMatchmakerRating = 0;
-	ginfo->DynamicMMRindex			 = 0;
+    ginfo->DynamicMMRindex             = 0;
 
     ginfo->Players.clear();
 
@@ -889,37 +889,37 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
         uint32 arenaMinRating = (arenaRating <= sBattlegroundMgr->GetMaxRatingDifference()) ? 0 : arenaRating - sBattlegroundMgr->GetMaxRatingDifference();
         uint32 arenaMaxRating = arenaRating + sBattlegroundMgr->GetMaxRatingDifference();
 
-		// Dynamic MMR
-		if (dynamicMMRindex == 1)
-		{
-			arenaMinRating -= 100;
-			arenaMaxRating += 100;
-		}
-		else if (dynamicMMRindex == 2)
-		{
-			arenaMinRating -= 200;
-			arenaMaxRating += 200;
-		}
-		else if (dynamicMMRindex == 3)
-		{
-			arenaMinRating -= 300;
-			arenaMaxRating += 300;
-		}
-		else if (dynamicMMRindex == 4)
-		{
-			arenaMinRating -= 400;
-			arenaMaxRating += 400;
-		}
-		else if (dynamicMMRindex == 5)
-		{
-			arenaMinRating -= 500;
-			arenaMaxRating += 500;
-		}
-		else if (dynamicMMRindex == 6)
-		{
-			arenaMinRating -= 600;
-			arenaMaxRating += 600;
-		}
+        // Dynamic MMR
+        if (dynamicMMRindex == 1)
+        {
+            arenaMinRating -= 100;
+            arenaMaxRating += 100;
+        }
+        else if (dynamicMMRindex == 2)
+        {
+            arenaMinRating -= 200;
+            arenaMaxRating += 200;
+        }
+        else if (dynamicMMRindex == 3)
+        {
+            arenaMinRating -= 300;
+            arenaMaxRating += 300;
+        }
+        else if (dynamicMMRindex == 4)
+        {
+            arenaMinRating -= 400;
+            arenaMaxRating += 400;
+        }
+        else if (dynamicMMRindex == 5)
+        {
+            arenaMinRating -= 500;
+            arenaMaxRating += 500;
+        }
+        else if (dynamicMMRindex == 6)
+        {
+            arenaMinRating -= 600;
+            arenaMaxRating += 600;
+        }
 
         // if max rating difference is set and the time past since server startup is greater than the rating discard time
         // (after what time the ratings aren't taken into account when making teams) then

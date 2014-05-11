@@ -80,7 +80,7 @@ private:
             }
             else
             {
-				TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!td)");
+                TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!td)");
                 return;
             }
         }
@@ -108,7 +108,7 @@ private:
         }
         else
         {
-			TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!tl)");
+            TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!tl)");
         }
 
         return;
@@ -144,7 +144,7 @@ private:
             }
             else
             {
-				TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!td)");
+                TC_LOG_INFO("LOG_FILTER_GENERAL", "TD_ERROR: UNK1 (!td)");
                 return false;
             }
         }

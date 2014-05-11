@@ -24,7 +24,7 @@
 
 enum Teleporter
 {
-	ANTECHAMBER = 200,
+    ANTECHAMBER = 200,
 };
 
 class xt_teleporter : public GameObjectScript
@@ -42,9 +42,9 @@ class xt_teleporter : public GameObjectScript
 
             switch (action)
             {
-				case ANTECHAMBER:
-					player->TeleportTo(603, 1498.09f, -24.246f, 420.967f, 0.0f);
-					player->CLOSE_GOSSIP_MENU();
+                case ANTECHAMBER:
+                    player->TeleportTo(603, 1498.09f, -24.246f, 420.967f, 0.0f);
+                    player->CLOSE_GOSSIP_MENU();
                     break;
             }
 
@@ -53,7 +53,7 @@ class xt_teleporter : public GameObjectScript
 
         bool OnGossipHello(Player* player, GameObject* gameObject) override
         {      
-			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Teleport to the Antechamber of Ulduar", GOSSIP_SENDER_MAIN, ANTECHAMBER); 
+            player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Teleport to the Antechamber of Ulduar", GOSSIP_SENDER_MAIN, ANTECHAMBER); 
 
             player->SEND_GOSSIP_MENU(gameObject->GetGOInfo()->GetGossipMenuId(), gameObject->GetGUID());
             return true;

@@ -2982,7 +2982,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_0].TriggerSpell = 36325; // They Must Burn Bomb Drop (DND)
                 break;
             case 49838: // Stop Time
-			case 53651: // Light's Beacon (Hidden periodic aura on Beacon of Light target)
+            case 53651: // Light's Beacon (Hidden periodic aura on Beacon of Light target)
             case 50259: // Daze from Feral Charge - Cat
             case 49376: // Feral Charge - Cat
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
@@ -3069,7 +3069,7 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 54171: // Divine Storm
                 spellInfo->MaxAffectedTargets = 3;
                 break;
-			case 7328:  // Redemption
+            case 7328:  // Redemption
             case 7329:  // Redemption
             case 10322: // Redemption
             case 10324: // Redemption
@@ -3130,7 +3130,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->ProcCharges = 2;
                 spellInfo->StackAmount = 0;
                 break;
-			case 49575:
+            case 49575:
                 spellInfo->Effects[0].MiscValueB = 70;
                 break;
             case 28200: // Ascendance (Talisman of Ascendance trinket)
@@ -3156,7 +3156,7 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 29809: // Desecration Arm - 36 instead of 37 - typo? :/
                 spellInfo->Effects[EFFECT_0].RadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_7_YARDS);
                 break;
-			case 18754: // Improved succubus - problems with apply if target is pet 
+            case 18754: // Improved succubus - problems with apply if target is pet 
                 spellInfo->Effects[0].ApplyAuraName = SPELL_AURA_ADD_FLAT_MODIFIER;     // it's affects duration of seduction, let's minimize affection 
                 spellInfo->Effects[0].BasePoints = -1.5*IN_MILLISECONDS*0.22;           // reduce cast time of seduction by 22%  
                 spellInfo->Effects[0].TargetA = TARGET_UNIT_CASTER; 
@@ -3176,9 +3176,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 48420:
                 spellInfo->Stances = 1 << (FORM_CAT - 1);
                 break;
-			case 52212: // Death Knight: Death and Decay trigger spell
-				spellInfo->AttributesEx6 |= SPELL_ATTR6_CAN_TARGET_INVISIBLE;
-				break;
+            case 52212: // Death Knight: Death and Decay trigger spell
+                spellInfo->AttributesEx6 |= SPELL_ATTR6_CAN_TARGET_INVISIBLE;
+                break;
             case 48421:
                 spellInfo->Stances = 1 << (FORM_MOONKIN - 1);
                 break;
@@ -3258,7 +3258,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_0].TargetB = SpellImplicitTargetInfo();
                 spellInfo->Effects[EFFECT_1].TargetB = SpellImplicitTargetInfo();
                 break;
-			case 58883: // Rapid Recuperation
+            case 58883: // Rapid Recuperation
                 spellInfo->Effects[0].Effect = SPELL_EFFECT_ENERGIZE_PCT;
                 break;
             case 53241: // Marked for Death (Rank 1)
@@ -3334,7 +3334,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 /// @todo: remove this when basepoints of all Ride Vehicle auras are calculated correctly
                 spellInfo->Effects[EFFECT_0].BasePoints = 1;
                 break;
-			case  50452: // Bloodworm summon
+            case  50452: // Bloodworm summon
                 spellInfo->Effects[EFFECT_0].DieSides = 3;
                 break;
             // ULDUAR SPELLS
@@ -3548,9 +3548,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 71614: // Ice Lock
                 spellInfo->Mechanic = MECHANIC_STUN;
                 break;
-			case 24259: // Spell Lock silence
-			    spellInfo->Speed = 80;
-		        break;
+            case 24259: // Spell Lock silence
+                spellInfo->Speed = 80;
+                break;
             case 72762: // Defile
                 spellInfo->DurationEntry = sSpellDurationStore.LookupEntry(559); // 53 seconds
                 break;
@@ -3718,22 +3718,22 @@ void SpellMgr::LoadSpellInfoCorrections()
                 break;
             // ENDOF ISLE OF CONQUEST SPELLS
             //
-			case 1822: // Rake 
-			case 1823:
-			case 1824:
-			case 9904:
-			case 27003:
-			case 48573:
-			case 48574:
-				spellInfo->AttributesCu |= SPELL_ATTR0_CU_IGNORE_ARMOR;
-				break;
+            case 1822: // Rake 
+            case 1823:
+            case 1824:
+            case 9904:
+            case 27003:
+            case 48573:
+            case 48574:
+                spellInfo->AttributesCu |= SPELL_ATTR0_CU_IGNORE_ARMOR;
+                break;
             default:
                 break;
         }
 
         switch (spellInfo->SpellFamilyName)
         {
-			case SPELLFAMILY_HUNTER:
+            case SPELLFAMILY_HUNTER:
                 switch (spellInfo->Id)
                 {
                     case 23601: // Scatter Shot
@@ -3750,8 +3750,8 @@ void SpellMgr::LoadSpellInfoCorrections()
                 // Seals of the Pure should affect Seal of Righteousness
                 if (spellInfo->SpellIconID == 25 && spellInfo->Attributes & SPELL_ATTR0_PASSIVE)
                     spellInfo->Effects[EFFECT_0].SpellClassMask[1] |= 0x20000000;
-				if (spellInfo->SpellFamilyFlags[1] & 0x00040000 /* Hammer of the Righteous */)
-					spellInfo->AttributesEx6 |= SPELL_ATTR6_NO_DONE_PCT_DAMAGE_MODS;
+                if (spellInfo->SpellFamilyFlags[1] & 0x00040000 /* Hammer of the Righteous */)
+                    spellInfo->AttributesEx6 |= SPELL_ATTR6_NO_DONE_PCT_DAMAGE_MODS;
                 break;
             case SPELLFAMILY_DEATHKNIGHT:
                 // Icy Touch - extend FamilyFlags (unused value) for Sigil of the Frozen Conscience to use

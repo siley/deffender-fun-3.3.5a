@@ -51,11 +51,11 @@ void WorldSession::HandleDuelAcceptedOpcode(WorldPacket& recvPacket)
 
     player->SendDuelCountdown(3000);
     plTarget->SendDuelCountdown(3000);
-	player->RemoveArenaSpellCooldowns(true);
+    player->RemoveArenaSpellCooldowns(true);
     player->ResetAllPowers();
     plTarget->RemoveArenaSpellCooldowns(true);
     plTarget->ResetAllPowers();
-	if (player->HasAura(57723))
+    if (player->HasAura(57723))
         player->RemoveAura(57723);
     if (player->HasAura(57724))
         player->RemoveAura(57724);

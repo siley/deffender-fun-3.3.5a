@@ -88,8 +88,8 @@ enum Spells
     SPELL_FROST_IMBUED_BLADE    = 72290,
     SPELL_FROST_INFUSION        = 72292,
 
-	//hack fix
-	SPELL_UNCONTROLLABLE_FRENZY = 70923,
+    //hack fix
+    SPELL_UNCONTROLLABLE_FRENZY = 70923,
 };
 
 enum Events
@@ -111,7 +111,7 @@ enum Events
     EVENT_THIRD_PHASE_CHECK         = 22,
     EVENT_AIR_MOVEMENT_FAR          = 23,
     EVENT_LAND_GROUND               = 24,
-	EVENT_CHECK_PLAYERS             = 25,
+    EVENT_CHECK_PLAYERS             = 25,
 
     // Spinestalker
     EVENT_BELLOWING_ROAR            = 13,
@@ -239,7 +239,7 @@ class boss_sindragosa : public CreatureScript
                 events.ScheduleEvent(EVENT_UNCHAINED_MAGIC, urand(9000, 14000), EVENT_GROUP_LAND_PHASE);
                 events.ScheduleEvent(EVENT_ICY_GRIP, 33500, EVENT_GROUP_LAND_PHASE);
                 events.ScheduleEvent(EVENT_AIR_PHASE, 50000);
-				events.ScheduleEvent(EVENT_CHECK_PLAYERS, 5000);
+                events.ScheduleEvent(EVENT_CHECK_PLAYERS, 5000);
                 _mysticBuffetStack = 0;
                 _isInAirPhase = false;
                 _isThirdPhase = false;
@@ -272,17 +272,17 @@ class boss_sindragosa : public CreatureScript
 
                 BossAI::EnterCombat(victim);
                 DoCast(me, SPELL_FROST_AURA);
-				instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_UNCONTROLLABLE_FRENZY);
+                instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_UNCONTROLLABLE_FRENZY);
                 DoCast(me, SPELL_PERMAEATING_CHILL);
                 Talk(SAY_AGGRO);
             }
-			bool CanAIAttack(Unit const* target) const
-			{
-				if (target->GetPositionZ() >= 211.0f && !me->IsWithinLOS(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ()))
-					return false;
-					
-				return true;
-			}
+            bool CanAIAttack(Unit const* target) const
+            {
+                if (target->GetPositionZ() >= 211.0f && !me->IsWithinLOS(target->GetPositionX(), target->GetPositionY(), target->GetPositionZ()))
+                    return false;
+                    
+                return true;
+            }
 
             void JustReachedHome() override
             {
@@ -346,17 +346,17 @@ class boss_sindragosa : public CreatureScript
                         me->RemoveByteFlag(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND | UNIT_BYTE1_FLAG_HOVER);
                         me->SetHomePosition(SindragosaLandPos);
                         me->SetSpeed(MOVE_FLIGHT, 2.5f);
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-						// Sindragosa should be in combat here, otherwise EnterEvadeMode and despawn
-						if (!me->IsInCombat())
-							EnterEvadeMode();	
-						
+                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        // Sindragosa should be in combat here, otherwise EnterEvadeMode and despawn
+                        if (!me->IsInCombat())
+                            EnterEvadeMode();    
+                        
                         break;
                     case POINT_TAKEOFF:
                         events.ScheduleEvent(EVENT_AIR_MOVEMENT, 1);
                         break;
                     case POINT_AIR_PHASE:
-						me->CastCustomSpell(SPELL_ICE_TOMB_TARGET, SPELLVALUE_MAX_TARGETS, RAID_MODE<int32>(2, 5, 2, 6), false);
+                        me->CastCustomSpell(SPELL_ICE_TOMB_TARGET, SPELLVALUE_MAX_TARGETS, RAID_MODE<int32>(2, 5, 2, 6), false);
                         me->SetFacingTo(float(M_PI));
                         events.ScheduleEvent(EVENT_AIR_MOVEMENT_FAR, 1);
                         events.ScheduleEvent(EVENT_FROST_BOMB, 9000);
@@ -366,7 +366,7 @@ class boss_sindragosa : public CreatureScript
                         events.ScheduleEvent(EVENT_LAND, 30000);
                         break;
                     case POINT_LAND:
-						events.ScheduleEvent(EVENT_LAND_GROUND, 5 * IN_MILLISECONDS);
+                        events.ScheduleEvent(EVENT_LAND_GROUND, 5 * IN_MILLISECONDS);
                         break;
                     case POINT_LAND_GROUND:
                     {
@@ -425,8 +425,8 @@ class boss_sindragosa : public CreatureScript
             }
 
             void CheckPlayerPositions()
-			{
-				Map* map = me->GetMap();
+            {
+                Map* map = me->GetMap();
                 if (map && map->IsDungeon())
                 {
                     Map::PlayerList const &PlayerList = map->GetPlayers();
@@ -443,7 +443,7 @@ class boss_sindragosa : public CreatureScript
                 }
             }
 
-			void UpdateAI(uint32 diff) override
+            void UpdateAI(uint32 diff) override
             {
                 if (!UpdateVictim() || !CheckInRoom())
                     return;
@@ -483,8 +483,8 @@ class boss_sindragosa : public CreatureScript
                             DoCast(me, SPELL_ICY_GRIP);
                             events.ScheduleEvent(EVENT_BLISTERING_COLD, 1000, EVENT_GROUP_LAND_PHASE);
                             break;
-							if (_isThirdPhase) // Need to reschedule in phase three, since it cannot be done via movement any longer
-								events.RescheduleEvent(EVENT_ICY_GRIP, 40000);
+                            if (_isThirdPhase) // Need to reschedule in phase three, since it cannot be done via movement any longer
+                                events.RescheduleEvent(EVENT_ICY_GRIP, 40000);
                         case EVENT_BLISTERING_COLD:
                             Talk(EMOTE_WARN_BLISTERING_COLD);
                             DoCast(me, SPELL_BLISTERING_COLD);
@@ -521,7 +521,7 @@ class boss_sindragosa : public CreatureScript
                             {
                                 Talk(EMOTE_WARN_FROZEN_ORB, target);
                                 DoCast(target, SPELL_ICE_TOMB_DUMMY, true);
-								DoCast(target, SPELL_FROST_BEACON, true);
+                                DoCast(target, SPELL_FROST_BEACON, true);
                             }
                             events.ScheduleEvent(EVENT_ICE_TOMB, urand(16000, 23000));
                             break;
@@ -563,10 +563,10 @@ class boss_sindragosa : public CreatureScript
                                 events.ScheduleEvent(EVENT_THIRD_PHASE_CHECK, 5000);
                             break;
                         }
-						case EVENT_CHECK_PLAYERS:
-							CheckPlayerPositions();
-							events.ScheduleEvent(EVENT_CHECK_PLAYERS, 3000);
-							break;
+                        case EVENT_CHECK_PLAYERS:
+                            CheckPlayerPositions();
+                            events.ScheduleEvent(EVENT_CHECK_PLAYERS, 3000);
+                            break;
                         default:
                             break;
                     }
@@ -1099,11 +1099,11 @@ class spell_sindragosa_s_fury : public SpellScriptLoader
             {
                 PreventHitDefaultEffect(effIndex);
 
-				// Hack - Beaconed players shouldn't get gripped with this
+                // Hack - Beaconed players shouldn't get gripped with this
 
-				if (Unit* unit = GetHitUnit())
-					if (unit->HasAura(SPELL_FROST_BEACON))
-						return;
+                if (Unit* unit = GetHitUnit())
+                    if (unit->HasAura(SPELL_FROST_BEACON))
+                        return;
 
                 if (!GetHitUnit()->IsAlive() || !_targetCount)
                     return;
@@ -1138,16 +1138,16 @@ class spell_sindragosa_s_fury : public SpellScriptLoader
 
 class UnchainedMagicTargetSelector
 {
-	enum CriticalSpells
-	{
-		// Paladin spells that identify a specc
-		SPELL_PALADIN_DIVINE_STORM            = 53385,
-		SPELL_PALADIN_HAMMER_OF_THE_RIGHTEOUS = 53595,
-		// Shaman spell that identifies an enhancer
-		SPELL_SHAMAN_SHAMANISTIC_RAGE         = 30823,
-		// Druid spell that identifies a feral (cat or bear)
-		SPELL_DRUID_BERSERK                   = 50334
-	};
+    enum CriticalSpells
+    {
+        // Paladin spells that identify a specc
+        SPELL_PALADIN_DIVINE_STORM            = 53385,
+        SPELL_PALADIN_HAMMER_OF_THE_RIGHTEOUS = 53595,
+        // Shaman spell that identifies an enhancer
+        SPELL_SHAMAN_SHAMANISTIC_RAGE         = 30823,
+        // Druid spell that identifies a feral (cat or bear)
+        SPELL_DRUID_BERSERK                   = 50334
+    };
 
     public:
         UnchainedMagicTargetSelector() { }

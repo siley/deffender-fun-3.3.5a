@@ -49,7 +49,7 @@ class npc_pet_dk_ebon_gargoyle : public CreatureScript
             {
                 // Not needed to be despawned now
                 _despawnTimer = 0;
-				_TargetCheck = 0;
+                _TargetCheck = 0;
 
                 CasterAI::InitializeAI();
                 uint64 ownerGuid = me->GetOwnerGUID();
@@ -121,7 +121,7 @@ class npc_pet_dk_ebon_gargoyle : public CreatureScript
 
                 CasterAI::UpdateAI(diff);
 
-				if (_TargetCheck <= diff)
+                if (_TargetCheck <= diff)
                     if (me->IsValidAssistTarget(me->GetOwner()))
                         me->Attack(me->GetOwner()->GetVictim(),false);
 
@@ -129,7 +129,7 @@ class npc_pet_dk_ebon_gargoyle : public CreatureScript
 
         private:
            uint32 _despawnTimer;
-		   uint32 _TargetCheck;
+           uint32 _TargetCheck;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
