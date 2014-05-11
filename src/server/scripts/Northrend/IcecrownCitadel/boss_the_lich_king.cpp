@@ -1948,12 +1948,12 @@ class npc_spirit_bomb : public CreatureScript
             {
                 float destX, destY, destZ, Z;
 				me->GetPosition(destX, destY, Z);
-				me->NearTeleportTo(destX, destY, Z+30.0f, me->GetOrientation());
-				me->Relocate(destX, destY, Z+30.0f);
+				me->NearTeleportTo(destX, destY, Z+5.0f, me->GetOrientation());
+				me->Relocate(destX, destY, Z+5.0f);
 				me->SendMovementFlagUpdate();
 				destZ = 1055.0f;    // approximation, gets more precise later
                 me->UpdateGroundPositionZ(destX, destY, destZ);
-				me->SetSpeed(MOVE_FLIGHT, 0.4f, true);
+				me->SetSpeed(MOVE_FLIGHT, 0.5f, true);
                 me->GetMotionMaster()->MovePoint(POINT_GROUND, destX, destY, destZ);
             }
 
@@ -2521,7 +2521,7 @@ class spell_the_lich_king_summon_into_air : public SpellScriptLoader
                 // spirit bombs get higher
                 if (GetSpellInfo()->Effects[effIndex].MiscValue == NPC_SPIRIT_BOMB)
                 {
-					static Position const offset = { 0.0f, 0.0f, 25.0f, 0.0f };
+					static Position const offset = { 0.0f, 0.0f, 15.0f, 0.0f };
                     dest->RelocateOffset(offset);
                     GetHitDest()->RelocateOffset(offset);
                 }
