@@ -754,7 +754,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
             continue;
 
         if (!CanUpdateCriteria(achievementCriteria, achievement))
-            continue;
+            return;
 
         switch (type)
         {
