@@ -754,7 +754,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
             continue;
 
         if (!CanUpdateCriteria(achievementCriteria, achievement))
-            return;
+            continue;
 
         switch (type)
         {
@@ -1875,6 +1875,9 @@ bool AchievementMgr::IsCompletedAchievement(AchievementEntry const* entry)
 
 CriteriaProgress* AchievementMgr::GetCriteriaProgress(AchievementCriteriaEntry const* entry)
 {
+    if (m_criteriaProgress.empty())
+        return NULL;
+
     CriteriaProgressMap::iterator iter = m_criteriaProgress.find(entry->ID);
 
     if (iter == m_criteriaProgress.end())
