@@ -3734,10 +3734,18 @@ void SpellMgr::LoadSpellInfoCorrections()
         switch (spellInfo->SpellFamilyName)
         {
 			case SPELLFAMILY_HUNTER:
-                // Silencing Shot / Scatter Shot
-                if (spellInfo->SpellFamilyFlags[0] & 0x40000)
-                    spellInfo->Speed = 0; // instant
-                break;
+                switch (spellInfo->Id)
+                {
+                    case 23601: // Scatter Shot
+                    case 19503: // Scatter Shot
+                    case 36732: // Scatter Shot
+                    case 46681: // Scatter Shot
+                    case 50733: // Scatter Shot
+                    case 42671: // Silencing Shot
+                    case 41084: // Silencing Shot
+                        spellInfo->Speed = 0;
+                        break;
+                }
             case SPELLFAMILY_PALADIN:
                 // Seals of the Pure should affect Seal of Righteousness
                 if (spellInfo->SpellIconID == 25 && spellInfo->Attributes & SPELL_ATTR0_PASSIVE)
