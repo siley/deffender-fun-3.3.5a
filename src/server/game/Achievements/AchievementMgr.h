@@ -43,6 +43,12 @@ struct CriteriaProgress
     uint32 counter;
     time_t date;                                            // latest update time.
     bool changed;
+    CriteriaProgress()
+    {
+        counter = 0;
+        date = NULL;
+        changed = false;
+    };
 };
 
 enum AchievementCriteriaDataType
