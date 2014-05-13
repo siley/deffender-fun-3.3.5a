@@ -211,7 +211,7 @@ std::string Warden::Penalty(WardenCheck* check /*= NULL*/)
             if (check)
                 banReason << ": " << check->Comment << " (CheckId: " << check->CheckId << ")";
 
-            sWorld->BanAccount(BAN_ACCOUNT, accountName, duration.str(), banReason.str(),"Warden");
+            sWorld->BanAccount(BAN_ACCOUNT, accountName, duration.str(), banReason.str(),"Anti-cheat FUN");
 
             return "Ban";
         }
