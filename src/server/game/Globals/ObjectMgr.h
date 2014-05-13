@@ -1051,7 +1051,7 @@ class ObjectMgr
         CreatureBaseStats const* GetCreatureBaseStats(uint8 level, uint8 unitClass);
 
         void SetHighestGuids();
-        uint64 GenerateLowGuid(HighGuid guidhigh);
+        uint32 GenerateLowGuid(HighGuid guidhigh);
         uint32 GenerateAuctionID();
         uint64 GenerateEquipmentSetGuid();
         uint32 GenerateMailID();

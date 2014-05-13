@@ -1777,7 +1777,7 @@ uint32 ObjectMgr::AddGOData(uint32 entry, uint32 mapId, float x, float y, float 
     if (!map)
         return 0;
 
-    uint64 guid = GenerateLowGuid(HIGHGUID_GAMEOBJECT);
+    uint32 guid = GenerateLowGuid(HIGHGUID_GAMEOBJECT);
     GameObjectData& data = NewGOData(guid);
     data.id             = entry;
     data.mapid          = mapId;
@@ -6284,7 +6284,7 @@ uint32 ObjectMgr::GenerateMailID()
     return _mailId++;
 }
 
-uint64 ObjectMgr::GenerateLowGuid(HighGuid guidhigh)
+uint32 ObjectMgr::GenerateLowGuid(HighGuid guidhigh)
 {
     switch (guidhigh)
     {
