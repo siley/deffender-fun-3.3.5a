@@ -54,8 +54,6 @@ class BattlegroundNA : public Battleground
 
         void RemovePlayer(Player* player, uint64 guid, uint32 team);
         void HandleAreaTrigger(Player* Source, uint32 Trigger);
-        bool HandlePlayerUnderMap(Player* player);
-        bool IsPlayerUnderMap(Player* player);
         bool SetupBattleground();
         void Reset();
         void FillInitialWorldStates(WorldPacket &d);
