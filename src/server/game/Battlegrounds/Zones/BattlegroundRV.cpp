@@ -154,6 +154,21 @@ void BattlegroundRV::HandleAreaTrigger(Player* player, uint32 trigger)
     }
 }
 
+bool BattlegroundRV::HandlePlayerUnderMap(Player* player)
+{
+    // Wait for elevators to Go up, before start checking for UnderMaped players
+    if(GetStartDelayTime() < (StartDelayTimes[BG_STARTING_EVENT_FIRST] + 20*IN_MILLISECONDS))
+       return true;
+
+    player->TeleportTo(GetMapId(), 763.5f, -284, 28.276f, 2.422f, false);
+    return true;
+}
+
+bool BattlegroundRV::IsPlayerUnderMap(Player* player)
+{
+    return player->GetPositionZ() < 28;
+}
+
 void BattlegroundRV::FillInitialWorldStates(WorldPacket &data)
 {
     data << uint32(BG_RV_WORLD_STATE_A) << uint32(GetAlivePlayersCountByTeam(ALLIANCE));
