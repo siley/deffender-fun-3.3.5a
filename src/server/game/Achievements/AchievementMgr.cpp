@@ -1875,13 +1875,12 @@ bool AchievementMgr::IsCompletedAchievement(AchievementEntry const* entry)
 
 CriteriaProgress* AchievementMgr::GetCriteriaProgress(AchievementCriteriaEntry const* entry)
 {
-    CriteriaProgress* progress = &(m_criteriaProgress[entry->ID]);
-    if (!progress->counter)
-    {
-        m_criteriaProgress.erase(entry->ID);
+    CriteriaProgressMap::iterator iter = m_criteriaProgress.find(entry->ID);
+
+    if (iter == m_criteriaProgress.end())
         return NULL;
-    }
-    return progress;
+
+    return &(iter->second);
 }
 
 void AchievementMgr::SetCriteriaProgress(AchievementCriteriaEntry const* entry, uint32 changeValue, ProgressType ptype)
