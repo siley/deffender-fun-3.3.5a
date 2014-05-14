@@ -331,6 +331,18 @@ class boss_lady_deathwhisper : public CreatureScript
                     }
                 }
 
+                //start custom code
+                std::list<Player*> PlayerList;
+                Trinity::AnyPlayerInObjectRangeCheck checker(me, 200.0f);
+                Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(me, PlayerList, checker);
+                me->VisitNearbyWorldObject(50.0f, searcher);
+                for (std::list<Player*>::const_iterator itr = PlayerList.begin(); itr != PlayerList.end(); ++itr)
+                    {
+                        (*itr)->GetMotionMaster()->Clear(false);
+                        (*itr)->GetMotionMaster()->MoveIdle();
+                    }
+                //end custom code
+
                 _JustDied();
             }
 
