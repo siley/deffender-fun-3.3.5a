@@ -1125,7 +1125,7 @@ class npc_meteor_strike : public CreatureScript
                                     {
                                     if (Creature* lEmber = flame->SummonCreature(40683, flame->GetPositionX(), flame->GetPositionY(), flame->GetPositionZ()))
                                         {
-                                        lEmberCount += 1;
+                                        lEmberCount += 9;
                                         DoZoneInCombat(lEmber, 100);
                                         }
                                     }
