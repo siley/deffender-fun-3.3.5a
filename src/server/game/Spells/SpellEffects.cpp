@@ -4674,9 +4674,129 @@ void Spell::EffectLeap(SpellEffIndex /*effIndex*/)
     if (!m_targets.HasDst())
         return;
 
-    Position pos = destTarget->GetPosition();
-    pos = unitTarget->GetFirstCollisionPosition(unitTarget->GetDistance(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ() + 2.0f), 0.0f);
-    unitTarget->NearTeleportTo(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ(), pos.GetOrientation(), unitTarget == m_caster);
+    if (m_spellInfo && (m_spellInfo->Id == 1953) && m_caster && unitTarget && unitTarget->GetTypeId() == TYPEID_PLAYER)    // Blink
+    {
+        float dis = 20; //vzdalenost
+        if (m_caster->ToPlayer() && m_caster->ToPlayer()->HasSpell(56365)) //Glyph of Blink
+            dis = 25;
+
+        // Start Info //
+        float cx, cy, cz;
+        float dx, dy, dz, zz;
+        float angle = unitTarget->GetOrientation();
+        unitTarget->GetPosition(cx, cy, cz);  // Start poloha
+
+        bool useVmap = false;
+        bool swapZone = true;
+        if (VMAP::VMapFactory::createOrGetVMapManager()->isHeightCalcEnabled()) // test Vmap
+            useVmap = true;
+
+        // Pri vyskoku/gripu apod zacneme na zemi..
+        if (cz - m_caster->GetMap()->GetHeight(cx, cy, cz, useVmap) < 5)
+            unitTarget->UpdateGroundPositionZ(cx, cy, cz);
+
+        dz = cz;
+        float bx, by, bz; // na zapamatovani posledniho pevneho bodu
+        bool air = false;
+
+        for (float i = 0.5f; i<dis; i += 0.5f) // posun dopredu po 0.5 yardu
+        {
+            if (!air)
+            {
+                bx = cx;
+                by = cy;
+                bz = cz;
+            }
+
+            unitTarget->GetNearPoint2D(dx, dy, i, angle);
+            zz = m_caster->GetMap()->GetHeight(dx, dy, cz, useVmap);
+
+            if ((zz - cz) < 2.0f && (zz - cz) > -2.0f)
+                dz = zz;
+
+            if ((zz - cz) < 2.0f && (unitTarget->IsWithinLOS(dx, dy, dz)))
+            {
+                if (air)
+                {
+                    if ((zz - cz) > -2.0f)
+                    {
+                        cx = dx;
+                        cy = dy;
+                        cz = dz;
+                        air = false;
+                    }
+                    else
+                    {
+                        cx = dx;
+                        cy = dy;
+                        cz = dz;
+                    }
+                }
+                else
+                {
+                    if ((zz - cz) > -2.0f)
+                    {
+                        cx = dx;
+                        cy = dy;
+                        cz = dz;
+                    }
+                    else
+                    {
+                        cx = dx;
+                        cy = dy;
+                        cz = dz;
+                        air = true;
+                    }
+                }
+            }
+            else
+            {
+                //Na hranicich map muzou blbnout vmapy
+                if (swapZone)
+                {
+                    // zkusit bez nich / s nima pokud se to obracene nepovedlo
+                    swapZone = false;
+                    useVmap = !useVmap;
+                    i -= 0.5f;
+                }
+                else
+                {
+                    // kdyz nic z toho nevyjde tak vyuzijem posledni souradnice
+                    dz += 0.5f;
+                    break;
+                }
+            }
+        }
+
+        uint32 mapid = m_caster->GetMapId();
+
+        //Nakonec postavit na zem a portnout
+        if (cz - m_caster->GetMap()->GetHeight(cx, cy, cz, useVmap) > 4)
+        {
+            cx = bx - 2.0f * cos(angle);
+            cy = by - 2.0f * sin(angle);
+            cz = bz;
+
+            if (cz - m_caster->GetMap()->GetHeight(cx, cy, cz, useVmap) < 3)
+            {
+                unitTarget->UpdateGroundPositionZ(cx, cy, cz);
+                unitTarget->ToPlayer()->TeleportTo(mapid, cx, cy, cz, unitTarget->GetOrientation(), TELE_TO_NOT_LEAVE_COMBAT | TELE_TO_NOT_UNSUMMON_PET | (unitTarget == m_caster ? TELE_TO_SPELL : 0));
+                return;
+            }
+        }
+
+        if (bz - m_caster->GetMap()->GetHeight(bx, by, bz, useVmap) < 7)
+            unitTarget->UpdateGroundPositionZ(bx, by, bz);
+
+        unitTarget->ToPlayer()->TeleportTo(mapid, bx, by, bz, unitTarget->GetOrientation(), TELE_TO_NOT_LEAVE_COMBAT | TELE_TO_NOT_UNSUMMON_PET | (unitTarget == m_caster ? TELE_TO_SPELL : 0));
+
+    }
+    else
+    {
+        Position pos = destTarget->GetPosition();
+        pos = unitTarget->GetFirstCollisionPosition(unitTarget->GetDistance(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ() + 2.0f), 0.0f);
+        unitTarget->NearTeleportTo(pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ(), pos.GetOrientation(), unitTarget == m_caster);
+    }
 }
 
 void Spell::EffectReputation(SpellEffIndex effIndex)
