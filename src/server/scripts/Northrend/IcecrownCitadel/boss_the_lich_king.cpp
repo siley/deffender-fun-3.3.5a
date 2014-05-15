@@ -3293,4 +3293,10 @@ void AddSC_boss_the_lich_king()
     new spell_the_lich_king_play_movie();
     new achievement_been_waiting_long_time();
     new achievement_neck_deep_in_vile();
+
+    //Allow healing in harvest soul
+	if (VehicleSeatEntry* vehSeat = const_cast<VehicleSeatEntry*>(sVehicleSeatStore.LookupEntry(6166)))
+        vehSeat->m_flags |= 0x400; 
+
+
 }
