@@ -905,6 +905,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
                     // reset if player missed one day.
                     if (progress && progress->date < (nextDailyResetTime - 2 * DAY))
                         SetCriteriaProgress(achievementCriteria, 0, PROGRESS_SET);
+                    mtx.release();
                     continue;
                 }
 
@@ -913,15 +914,18 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
                     // 1st time. Start count.
                     progressType = PROGRESS_SET;
                 else if (progress->date < (nextDailyResetTime - 2 * DAY))
-                    // last progress is older than 2 days. Player missed 1 day => Retart count.
+                    // last progress is older than 2 days. Player missed 1 day => Restart count.
                     progressType = PROGRESS_SET;
                 else if (progress->date < (nextDailyResetTime - DAY))
                     // last progress is between 1 and 2 days. => 1st time of the day.
                     progressType = PROGRESS_ACCUMULATE;
                 else
+                {
+                    mtx.release();
                     // last progress is within the day before the reset => Already counted today.
                     continue;
-
+                }
+                mtx.release();
                 SetCriteriaProgress(achievementCriteria, 1, progressType);
                 break;
             }
@@ -1633,6 +1637,13 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
 
 bool AchievementMgr::IsCompletedCriteria(AchievementCriteriaEntry const* achievementCriteria, AchievementEntry const* achievement)
 {
+    bool ret = _IsCompletedCriteria(achievementCriteria, achievement);
+    mtx.release();
+    return ret;
+}
+
+bool AchievementMgr::_IsCompletedCriteria(AchievementCriteriaEntry const* achievementCriteria, AchievementEntry const* achievement)
+{
     if (!achievement)
         return false;
 
@@ -1842,7 +1853,7 @@ bool AchievementMgr::IsCompletedAchievement(AchievementEntry const* entry)
                 continue;
 
             count += progress->counter;
-
+            mtx.release();
             // for counters, field4 contains the main count requirement
             if (count >= criteria->raw.count)
                 return true;
@@ -1878,14 +1889,14 @@ bool AchievementMgr::IsCompletedAchievement(AchievementEntry const* entry)
 
 CriteriaProgress* AchievementMgr::GetCriteriaProgress(AchievementCriteriaEntry const* entry)
 {
-    if (m_criteriaProgress.empty())
-        return NULL;
-
+    mtx.acquire();
     CriteriaProgressMap::iterator iter = m_criteriaProgress.find(entry->ID);
 
     if (iter == m_criteriaProgress.end())
+    {
+        mtx.release();
         return NULL;
-
+    }
     return &(iter->second);
 }
 
@@ -1938,7 +1949,7 @@ void AchievementMgr::SetCriteriaProgress(AchievementCriteriaEntry const* entry, 
 
     progress->changed = true;
     progress->date = time(NULL); // set the date to the latest update.
-
+    mtx.release();
     uint32 timeElapsed = 0;
     bool timedCompleted = false;
 
@@ -1961,16 +1972,19 @@ void AchievementMgr::RemoveCriteriaProgress(AchievementCriteriaEntry const* entr
 {
     if (!entry)
         return;
-
+    mtx.acquire();
     CriteriaProgressMap::iterator criteriaProgress = m_criteriaProgress.find(entry->ID);
     if (criteriaProgress == m_criteriaProgress.end())
+    {
+        mtx.release();
         return;
-
+    }
     WorldPacket data(SMSG_CRITERIA_DELETED, 4);
     data << uint32(entry->ID);
     m_player->SendDirectMessage(&data);
 
     m_criteriaProgress.erase(criteriaProgress);
+    mtx.release();
 }
 
 void AchievementMgr::UpdateTimedAchievements(uint32 timeDiff)
