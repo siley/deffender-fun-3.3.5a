@@ -688,8 +688,13 @@ class spell_marrowgar_bone_storm : public SpellScriptLoader
 
             void RecalculateDamage()
             {
-                SetHitDamage(int32(GetHitDamage() / std::max(sqrtf(GetHitUnit()->GetExactDist2d(GetCaster())), 1.0f)));
-            }
+                if (Unit* caster = GetCaster())
+                {
+                    const float distance = GetHitUnit()->GetExactDist2d(caster);
+                    const int32 damage   = GetHitDamage();
+                    SetHitDamage(int32(2 * (damage - (damage * distance / (distance + caster->GetObjectSize() / 2)))));
+                }
+			}
 
             void Register() override
             {
