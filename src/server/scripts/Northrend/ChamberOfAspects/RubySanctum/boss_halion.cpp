@@ -512,7 +512,17 @@ class boss_twilight_halion : public CreatureScript
             }
 
             // Never evade
-            void EnterEvadeMode() override { }
+            void EnterEvadeMode() override
+            {
+                if (Creature* halion = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_HALION)))
+                    if (events.IsInPhase(PHASE_TWO) || (events.IsInPhase(PHASE_THREE) && !halion->GetVictim()))
+                    {
+                        halion->AI()->SetData(DATA_EVADE_METHOD, 1);
+                        halion->SetHealth(halion->GetMaxHealth());
+                        halion->AI()->EnterEvadeMode();
+                        me->DespawnOrUnsummon();
+                    }
+            }
 
             void KilledUnit(Unit* victim) override
             {
