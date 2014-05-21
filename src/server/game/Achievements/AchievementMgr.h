@@ -21,6 +21,7 @@
 
 #include <map>
 #include <string>
+#include <ace/Thread_Mutex.h>
 
 #include "Common.h"
 #include <ace/Singleton.h>
@@ -296,7 +297,7 @@ class AchievementMgr
         bool IsCompletedAchievement(AchievementEntry const* entry);
         bool CanUpdateCriteria(AchievementCriteriaEntry const* criteria, AchievementEntry const* achievement);
         void BuildAllDataPacket(WorldPacket* data) const;
-        ACE_Mutex mtx;
+        ACE_Thread_Mutex mtx;
         Player* m_player;
         CriteriaProgressMap m_criteriaProgress;
         CompletedAchievementMap m_completedAchievements;
