@@ -394,6 +394,18 @@ bool LootItem::AllowedForPlayer(Player const* player) const
     if ((pProto->Flags2 & ITEM_FLAGS_EXTRA_ALLIANCE_ONLY) && player->GetTeam() != ALLIANCE)
         return false;
 
+    //anti-ninja Ruby
+    if(!player->GetGroup() && player->GetZoneId() == 4987 || (player->GetGroup() && player->GetGroup()->isRaidGroup() == false && player->GetZoneId() == 4987) || (player->GetZoneId() == 4987 && player->GetGroup()->GetMembersCount() <= 3))
+        return false;
+
+    //anti-ninja ToC
+    if(!player->GetGroup() && player->GetZoneId() == 4722 || (player->GetGroup() && player->GetGroup()->isRaidGroup() == false && player->GetZoneId() == 4722) || (player->GetZoneId() == 4722 && player->GetGroup()->GetMembersCount() <= 3))
+        return false;
+
+    //anti-ninja ICC
+    if(!player->GetGroup() && player->GetZoneId() == 4812 || (player->GetGroup() && player->GetGroup()->isRaidGroup() == false && player->GetZoneId() == 4812) || (player->GetZoneId() == 4812 && player->GetGroup()->GetMembersCount() <= 3))
+       return false;
+
     // check quest requirements
     if (!(pProto->FlagsCu & ITEM_FLAGS_CU_IGNORE_QUEST_STATUS) && ((needs_quest || (pProto->StartQuest && player->GetQuestStatus(pProto->StartQuest) != QUEST_STATUS_NONE)) && !player->HasQuestForItem(itemid)))
         return false;
