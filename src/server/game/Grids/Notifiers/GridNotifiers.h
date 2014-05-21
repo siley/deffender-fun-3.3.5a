@@ -127,11 +127,13 @@ namespace Trinity
         uint32 i_phaseMask;
         float i_distSq;
         uint32 team;
+        bool enemy;
         Player const* skipped_receiver;
-        MessageDistDeliverer(WorldObject* src, WorldPacket* msg, float dist, bool own_team_only = false, Player const* skipped = NULL)
+        MessageDistDeliverer(WorldObject* src, WorldPacket* msg, float dist, bool own_team_only = false, Player const* skipped = NULL, bool enemy_only = false)
             : i_source(src), i_message(msg), i_phaseMask(src->GetPhaseMask()), i_distSq(dist * dist)
             , team(0)
             , skipped_receiver(skipped)
+            , enemy(enemy_only)
         {
             if (own_team_only)
                 if (Player* player = src->ToPlayer())
@@ -146,7 +148,8 @@ namespace Trinity
         void SendPacket(Player* player)
         {
             // never send packet to self
-            if (player == i_source || (team && player->GetTeam() != team) || skipped_receiver == player)
+            if (player == i_source || (team && player->GetTeam() != team) || skipped_receiver == player
+                || (enemy && i_source->ToUnit() && !i_source->ToUnit()->IsHostileTo(player)))
                 return;
 
             if (!player->HaveAtClient(i_source))

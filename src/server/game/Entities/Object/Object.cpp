@@ -2065,9 +2065,9 @@ void WorldObject::SendMessageToSetInRange(WorldPacket* data, float dist, bool /*
     VisitNearbyWorldObject(dist, notifier);
 }
 
-void WorldObject::SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr)
+void WorldObject::SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr, bool enemy_only /* = false */ )
 {
-    Trinity::MessageDistDeliverer notifier(this, data, GetVisibilityRange(), false, skipped_rcvr);
+    Trinity::MessageDistDeliverer notifier(this, data, GetVisibilityRange(), false, skipped_rcvr, enemy_only);
     VisitNearbyWorldObject(GetVisibilityRange(), notifier);
 }
 

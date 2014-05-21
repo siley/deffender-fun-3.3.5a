@@ -648,7 +648,7 @@ class WorldObject : public Object, public WorldLocation
 
         virtual void SendMessageToSet(WorldPacket* data, bool self);
         virtual void SendMessageToSetInRange(WorldPacket* data, float dist, bool self);
-        virtual void SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr);
+        virtual void SendMessageToSet(WorldPacket* data, Player const* skipped_rcvr, bool enemy_only = false);
 
         virtual uint8 getLevelForTarget(WorldObject const* /*target*/) const { return 1; }
 
