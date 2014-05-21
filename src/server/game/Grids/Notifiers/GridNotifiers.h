@@ -149,7 +149,7 @@ namespace Trinity
         {
             // never send packet to self
             if (player == i_source || (team && player->GetTeam() != team) || skipped_receiver == player
-                || (enemy && i_source->ToUnit() && !i_source->ToUnit()->IsHostileTo(player)))
+                || (enemy && i_source->ToUnit() && i_source->ToUnit()->IsFriendlyTo(player)))
                 return;
 
             if (!player->HaveAtClient(i_source))
