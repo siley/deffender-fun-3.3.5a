@@ -559,12 +559,12 @@ void AuraEffect::CalculatePeriodic(Unit* caster, bool create, bool load)
     }
     else // aura just created or reapplied
     {
-        if (!IsPeriodic()) //do not reset timers on reapplying DoT's
+        m_tickNumber = 0;
+        if (!IsPeriodic() || (m_spellInfo->AttributesEx5 & SPELL_ATTR5_START_PERIODIC_AT_APPLY)) //do not reset timers on reapplying DoT's
         {
             m_periodicTimer = 0;
-            m_tickNumber = 0;
         }
-        else if (m_periodicTimer == 0 && !m_spellInfo->IsChanneled()) 
+        else if (m_periodicTimer == 0 || m_spellInfo->IsChanneled())
         {
             m_periodicTimer = m_amplitude;
         }

@@ -386,17 +386,12 @@ class spell_mage_ignite : public SpellScriptLoader
             {
                 PreventDefaultAction();
 
-                Unit* caster = GetCaster();
-                Unit* target = eventInfo.GetProcTarget();
                 SpellInfo const* igniteDot = sSpellMgr->EnsureSpellInfo(SPELL_MAGE_IGNITE);
                 int32 pct = 8 * GetSpellInfo()->GetRank();
 
-                int32 amount = int32(CalculatePct(eventInfo.GetDamageInfo()->GetDamage(), pct)); // base damage 
-                if (AuraEffect* aurEff = target->GetAuraEffect(SPELL_MAGE_IGNITE, EFFECT_0, caster->GetGUID()))
-                    amount += aurEff->GetAmount() * (aurEff->GetBase()->GetDuration()) / aurEff->GetAmplitude(); // get bonus damage from previous application
-                
-                amount /= igniteDot->GetMaxTicks(); // get tick damage
-                caster->CastCustomSpell(SPELL_MAGE_IGNITE, SPELLVALUE_BASE_POINT0, amount, target, true, NULL, aurEff);
+                int32 amount = int32(CalculatePct(eventInfo.GetDamageInfo()->GetDamage(), pct) / igniteDot->GetMaxTicks());
+                amount += eventInfo.GetProcTarget()->GetRemainingPeriodicAmount(eventInfo.GetActor()->GetGUID(), SPELL_MAGE_IGNITE, SPELL_AURA_PERIODIC_DAMAGE);
+                GetTarget()->CastCustomSpell(SPELL_MAGE_IGNITE, SPELLVALUE_BASE_POINT0, amount, eventInfo.GetProcTarget(), true, NULL, aurEff);
             }
 
             void Register() override
