@@ -1035,6 +1035,8 @@ class spell_item_shadowmourne : public SpellScriptLoader
             {
                 if (GetTarget()->HasAura(SPELL_SHADOWMOURNE_CHAOS_BANE_BUFF)) // cant collect shards while under effect of Chaos Bane buff
                     return false;
+                if (!eventInfo.GetDamageInfo()->GetSpellInfo() && roll_chance_f(80))
+                    return false;
                 return eventInfo.GetProcTarget() && eventInfo.GetProcTarget()->IsAlive();
             }
 
