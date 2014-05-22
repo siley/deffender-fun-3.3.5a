@@ -857,7 +857,7 @@ void World::LoadConfigSettings(bool reload)
     }
 
     rate_values[RATE_PVP_RANK_EXTRA_HONOR] = sConfigMgr->GetFloatDefault("PvPRank.Rate.ExtraHonor", 1);
-    std::string s_pvp_ranks = sConfigMgr->GetStringDefault("PvPRank.HKPerRank", "20,100,200,400,900,1500,2600,4000,7000,12000,15000,20000,25000,30000");
+    std::string s_pvp_ranks = sConfigMgr->GetStringDefault("PvPRank.HKPerRank", "20,100,200,400,900,1500,2600,4000,7000,12000,15000,20500,25000,30000");
     char *c_pvp_ranks = const_cast<char*>(s_pvp_ranks.c_str());
     for (int i = 0; i !=HKRANKMAX; i++)
     {
