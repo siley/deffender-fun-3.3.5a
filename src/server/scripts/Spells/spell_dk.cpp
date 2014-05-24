@@ -26,6 +26,7 @@
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
 #include "Containers.h"
+#include "Pet.h"
 
 enum DeathKnightSpells
 {
@@ -421,9 +422,20 @@ class spell_dk_corpse_explosion : public SpellScriptLoader
                     }
                 }
             }
+            SpellCastResult CheckCast()
+            {
+                if (Unit* caster = GetCaster())
+                    if (Player* plr = caster->ToPlayer())
+                        if (Pet* pet = plr->GetPet())
+                            if (CharmInfo* info = pet->GetCharmInfo())
+                                if (info->GetGlobalCooldownMgr().HasGlobalCooldown(GetSpellInfo()))
+                                    return SPELL_FAILED_NOT_READY;
+                return SPELL_CAST_OK;
+            }
 
             void Register() override
             {
+                OnCheckCast += SpellCheckCastFn(spell_dk_corpse_explosion_SpellScript::CheckCast);
                 OnObjectTargetSelect += SpellObjectTargetSelectFn(spell_dk_corpse_explosion_SpellScript::CheckTarget, EFFECT_0, TARGET_UNIT_TARGET_ANY);
                 OnObjectAreaTargetSelect += SpellObjectAreaTargetSelectFn(spell_dk_corpse_explosion_SpellScript::CheckTargets, EFFECT_1, TARGET_UNIT_DEST_AREA_ENTRY);
                 OnEffectHitTarget += SpellEffectFn(spell_dk_corpse_explosion_SpellScript::HandleCorpseExplosion, EFFECT_0, SPELL_EFFECT_DUMMY);
