@@ -1,0 +1,2 @@
+REPLACE INTO `spell_threat` (`entry`, `flatMod`, `pctMod`, `apPctMod`) VALUES ('52212', '1', '1.9', '0');
+REPLACE INTO `spell_threat` (`entry`, `flatMod`, `pctMod`, `apPctMod`) VALUES ('49938', '1', '1.9', '0');

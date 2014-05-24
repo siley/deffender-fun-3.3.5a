@@ -5434,7 +5434,10 @@ void AuraEffect::HandlePeriodicDummyAuraTick(Unit* target, Unit* caster) const
             if (GetSpellInfo()->SpellFamilyFlags[0] & 0x20)
             {
                 if (caster)
+                {
                     target->CastCustomSpell(target, 52212, &m_amount, NULL, NULL, true, 0, this, caster->GetGUID());
+                    target->CombatStart(caster);
+                }
                 break;
             }
             // Blood of the North
