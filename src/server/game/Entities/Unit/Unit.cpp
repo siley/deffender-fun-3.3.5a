@@ -8958,6 +8958,10 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
     if (!victim || victim == this)
         return false;
 
+    if (Creature* creature = ToCreature())
+        if (creature->IsInEvadeMode())
+            return false;
+
     // dead units can neither attack nor be attacked
     if (!IsAlive() || !victim->IsInWorld() || !victim->IsAlive())
         return false;
@@ -11717,7 +11721,7 @@ void Unit::SetInCombatWith(Unit* enemy)
 
 void Unit::CombatStart(Unit* target, bool initialAggro)
 {
-    if (initialAggro && !target->HasUnitState(UNIT_STATE_EVADE))
+    if (initialAggro)
     {
         if (!target->IsStandState())
             target->SetStandState(UNIT_STAND_STATE_STAND);
@@ -11863,6 +11867,10 @@ bool Unit::_IsValidAttackTarget(Unit const* target, SpellInfo const* bySpell, Wo
     if (target->HasUnitState(UNIT_STATE_UNATTACKABLE)
         || (target->GetTypeId() == TYPEID_PLAYER && target->ToPlayer()->IsGameMaster()))
         return false;
+
+    if (target->ToCreature())
+        if (target->ToCreature()->IsInEvadeMode())
+            return false;
 
     // can't attack own vehicle or passenger
     if (m_vehicle)
@@ -13079,21 +13087,6 @@ float Unit::GetSpellMinRangeForTarget(Unit const* target, SpellInfo const* spell
     if (spellInfo->RangeEntry->minRangeFriend == spellInfo->RangeEntry->minRangeHostile)
         return spellInfo->GetMinRange();
     return spellInfo->GetMinRange(!IsHostileTo(target));
-}
-
-Unit* Unit::GetUnit(WorldObject& object, uint64 guid)
-{
-    return ObjectAccessor::GetUnit(object, guid);
-}
-
-Player* Unit::GetPlayer(WorldObject& object, uint64 guid)
-{
-    return ObjectAccessor::GetPlayer(object, guid);
-}
-
-Creature* Unit::GetCreature(WorldObject& object, uint64 guid)
-{
-    return object.GetMap()->GetCreature(guid);
 }
 
 uint32 Unit::GetCreatureType() const
@@ -15363,8 +15356,8 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
 
     // update get killing blow achievements, must be done before setDeathState to be able to require auras on target
     // and before Spirit of Redemption as it also removes auras
-    if (player)
-        player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS, 1, 0, victim);
+    if (Player* killerPlayer = GetCharmerOrOwnerPlayerOrPlayerItself())
+        killerPlayer->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS, 1, 0, victim);
 
     // if talent known but not triggered (check priest class for speedup check)
     bool spiritOfRedemption = false;
@@ -15869,6 +15862,8 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
 
     if (GetTypeId() == TYPEID_UNIT)
     {
+        GetMotionMaster()->Clear(false);
+        //StopMoving();
         ToCreature()->AI()->OnCharmed(true);
         GetMotionMaster()->MoveIdle();
     }
