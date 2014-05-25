@@ -3772,7 +3772,7 @@ public:
                     const Group::MemberSlotList membersList = pGroup->GetMemberSlots();
                     for (Group::member_citerator itr = membersList.begin(); itr != membersList.end() && instant_exit; ++itr)
                     if (itr->guid != myGUID)
-                    if (Player *GroupMember = Unit::GetPlayer(*pCaster, itr->guid))
+                    if (Player *GroupMember = ObjectAccessor::GetPlayer(*pCaster, itr->guid))
                     if (GroupMember->IsInCombat() && pCaster->GetMap() == GroupMember->GetMap() && pCaster->IsWithinDistInMap(GroupMember, visibilityRange))
                         instant_exit = false;
                 }
