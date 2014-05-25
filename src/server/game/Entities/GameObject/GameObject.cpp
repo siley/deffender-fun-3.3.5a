@@ -312,8 +312,7 @@ void GameObject::Update(uint32 diff)
                         // Hardcoded tooltip value
                         m_cooldownTime = time(NULL) + 10;
                     else if (Unit* owner = GetOwner())
-                        if (owner->IsInCombat())
-                            m_cooldownTime = time(NULL) + goInfo->trap.startDelay;
+                        m_cooldownTime = time(NULL);
 
                     SetLootState(GO_READY);
                     break;
@@ -483,9 +482,9 @@ void GameObject::Update(uint32 diff)
 
                     // Pointer to appropriate target if found any
                     Unit* target = NULL;
-
+                    Unit* owner = GetOwner();
                     /// @todo this hack with search required until GO casting not implemented
-                    if (Unit* owner = GetOwner())
+                    if (owner)
                     {
                         // Hunter trap: Search units which are unfriendly to the trap's owner
                         Trinity::AnyUnfriendlyNoTotemUnitInObjectRangeCheck checker(this, owner, radius);
@@ -505,7 +504,11 @@ void GameObject::Update(uint32 diff)
                     }
 
                     if (target)
+                    {
+                        if (owner && target->IsInCombat() && m_cooldownTime + goInfo->trap.startDelay >= time(NULL))
+                            break;
                         SetLootState(GO_ACTIVATED, target);
+                    }
 
                 }
                 else if (uint32 max_charges = goInfo->GetCharges())
