@@ -534,7 +534,7 @@ class spell_pri_pain_and_suffering_proc : public SpellScriptLoader
                 // Refresh Shadow Word: Pain on target
                 if (Unit* unitTarget = GetHitUnit())
                     if (AuraEffect* aur = unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_PRIEST, 0x8000, 0, 0, GetCaster()->GetGUID()))
-                        aur->GetBase()->RefreshDuration();
+                        GetCaster()->CastSpell(unitTarget, aur->GetSpellInfo(), true);
             }
 
             void Register() override
