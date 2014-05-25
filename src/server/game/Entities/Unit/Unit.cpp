@@ -8958,6 +8958,10 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
     if (!victim || victim == this)
         return false;
 
+    if (Creature* creature = ToCreature())
+        if (creature->IsInEvadeMode())
+            return false;
+
     // dead units can neither attack nor be attacked
     if (!IsAlive() || !victim->IsInWorld() || !victim->IsAlive())
         return false;
@@ -11717,7 +11721,7 @@ void Unit::SetInCombatWith(Unit* enemy)
 
 void Unit::CombatStart(Unit* target, bool initialAggro)
 {
-    if (initialAggro && !target->HasUnitState(UNIT_STATE_EVADE))
+    if (initialAggro)
     {
         if (!target->IsStandState())
             target->SetStandState(UNIT_STAND_STATE_STAND);
@@ -11863,6 +11867,10 @@ bool Unit::_IsValidAttackTarget(Unit const* target, SpellInfo const* bySpell, Wo
     if (target->HasUnitState(UNIT_STATE_UNATTACKABLE)
         || (target->GetTypeId() == TYPEID_PLAYER && target->ToPlayer()->IsGameMaster()))
         return false;
+
+    if (target->ToCreature())
+        if (target->ToCreature()->IsInEvadeMode())
+            return false;
 
     // can't attack own vehicle or passenger
     if (m_vehicle)
@@ -15854,6 +15862,8 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
 
     if (GetTypeId() == TYPEID_UNIT)
     {
+        GetMotionMaster()->Clear(false);
+        //StopMoving();
         ToCreature()->AI()->OnCharmed(true);
         GetMotionMaster()->MoveIdle();
     }
