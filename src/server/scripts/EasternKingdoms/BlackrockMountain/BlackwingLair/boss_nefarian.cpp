@@ -153,7 +153,7 @@ Position const DrakeSpawnLoc[2] = // drakonid
 
 Position const NefarianLoc[2] =
 {
-    {-7449.763672f, -1387.816040f, 526.783691f, 3.0f}, // nefarian spawn
+    {-7535.456543f, -1279.562500f, 476.798706f, 3.0f}, // nefarian spawn
     {-7535.456543f, -1279.562500f, 476.798706f, 3.0f}  // nefarian move
 };
 
