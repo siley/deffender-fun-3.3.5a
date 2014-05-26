@@ -267,7 +267,7 @@ bool GameObject::Create(uint32 guidlow, uint32 name_id, Map* map, uint32 phaseMa
             if (GetGOInfo()->trap.stealthed)
             {
                 m_stealth.AddFlag(STEALTH_TRAP);
-                m_stealth.AddValue(STEALTH_TRAP, 70);
+                m_stealth.AddValue(STEALTH_TRAP, 50);
             }
 
             if (GetGOInfo()->trap.invisible)
