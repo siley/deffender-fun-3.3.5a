@@ -173,6 +173,8 @@ class instance_icecrown_citadel : public InstanceMapScript
 
             void OnPlayerEnter(Player* player) override
             {
+                player->AddAura(73828, player);
+
                 if (!TeamInInstance)
                     TeamInInstance = ALLIANCE;
 
