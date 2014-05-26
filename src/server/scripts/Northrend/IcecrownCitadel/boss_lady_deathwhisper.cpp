@@ -370,6 +370,7 @@ class boss_lady_deathwhisper : public CreatureScript
                 // phase transition
                 if (events.IsInPhase(PHASE_ONE) && damage > me->GetPower(POWER_MANA))
                 {
+                    DoResetThreat();
                     Talk(SAY_PHASE_2);
                     Talk(EMOTE_PHASE_2);
                     DoStartMovement(me->GetVictim());
