@@ -1860,6 +1860,15 @@ void Player::Update(uint32 p_time)
 
     if (!GetMapId() == 631)
         RemoveAura(73828);
+
+    if (!GetMapId() == 631)
+        RemoveAura(73762);
+
+    if (!GetMapId() == 631)
+        RemoveAura(73824);
+
+    if (!GetMapId() == 631)
+        RemoveAura(73825);
 }
 
 void Player::setDeathState(DeathState s)

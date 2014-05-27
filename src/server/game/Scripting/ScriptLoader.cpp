@@ -1457,6 +1457,7 @@ void AddSC_TW_boss_argent_challenge();
 void AddSC_TW_trial_of_the_champion();
 void AddSC_TW_boss_thorim();
 void AddSC_TW_boss_mimiron();
+void AddSC_npc_icc_buff();
 #endif
 
 void AddCustomScripts()
@@ -1478,5 +1479,6 @@ void AddCustomScripts()
     AddSC_TW_trial_of_the_champion();
     AddSC_TW_boss_thorim();
     AddSC_TW_boss_mimiron();
+    AddSC_npc_icc_buff();
 #endif
 }
