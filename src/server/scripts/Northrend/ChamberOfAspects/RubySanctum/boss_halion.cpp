@@ -1278,15 +1278,14 @@ class npc_living_ember : public CreatureScript
         {
             npc_living_emberAI(Creature* creature) : ScriptedAI(creature) { }
 
+            uint32 timer;
             void Reset() override
             {
-                _hasEnraged = false;
+                timer = 0;
             }
 
             void EnterCombat(Unit* /*who*/) override
             {
-                _enrageTimer = 20000;
-                _hasEnraged = false;
             }
 
             void IsSummonedBy(Unit* /*summoner*/) override
@@ -1306,19 +1305,36 @@ class npc_living_ember : public CreatureScript
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
-                if (!_hasEnraged && _enrageTimer <= diff)
+                float x, y, z;
+                me->GetPosition(x, y, z);
+                std::list<Creature*> templist;
+                CellCoord pair(Trinity::ComputeCellCoord(x,y));
+                Cell cell(pair);
+                cell.SetNoCreate();
+                Trinity::AllCreaturesOfEntryInRange check(me, NPC_LIVING_INFERNO, 15.0f);
+                Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange> searcher(me, templist, check);
+                TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInRange>, GridTypeMapContainer> cSearcher(searcher);
+                cell.Visit(pair, cSearcher, *(me->GetMap()), *me, me->GetGridActivationRange());
+
+                if (templist.empty())
                 {
-                    _hasEnraged = true;
-                    DoCast(me, SPELL_BERSERK);
+                    float pct = me->GetHealthPct();
+                    me->RemoveAura(75888);
+                    me->SetHealth(me->GetMaxHealth()*pct / 100);
                 }
-                else _enrageTimer -= diff;
+                else
+                if (timer < diff)
+                {
+                    float pct = me->GetHealthPct();
+                    me->AddAura(75888, me);
+                    me->SetHealth(me->GetMaxHealth()*pct / 100);
+                    timer += 1000;
+                }
+                else
+                    timer -= diff;
 
                 DoMeleeAttackIfReady();
             }
-
-        private:
-            uint32 _enrageTimer;
-            bool _hasEnraged;
         };
 
         CreatureAI* GetAI(Creature* creature) const override
