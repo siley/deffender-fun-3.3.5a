@@ -1858,16 +1858,16 @@ void Player::Update(uint32 p_time)
     if (IsHasDelayedTeleport() && IsAlive())
         TeleportTo(m_teleport_dest, m_teleport_options);
 
-    if (!GetMapId() == 631)
+    if (GetMapId() != 631)
         RemoveAura(73828);
 
-    if (!GetMapId() == 631)
+    if (GetMapId() != 631)
         RemoveAura(73762);
 
-    if (!GetMapId() == 631)
+    if (GetMapId() != 631)
         RemoveAura(73824);
 
-    if (!GetMapId() == 631)
+    if (GetMapId() != 631)
         RemoveAura(73825);
 }
 
