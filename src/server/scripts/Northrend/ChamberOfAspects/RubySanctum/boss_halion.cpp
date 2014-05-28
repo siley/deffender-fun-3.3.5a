@@ -337,7 +337,7 @@ class boss_halion : public CreatureScript
                 instance->SetBossState(DATA_HALION, IN_PROGRESS);
 
                 events.ScheduleEvent(EVENT_ACTIVATE_FIREWALL, 5000);
-                events.ScheduleEvent(EVENT_METEOR_STRIKE, urand(20000, 25000));
+                events.ScheduleEvent(EVENT_METEOR_STRIKE, urand(20000, 22000));
                 events.ScheduleEvent(EVENT_FIERY_COMBUSTION, urand(15000, 18000));
 
                 if (Creature* controller = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_HALION_CONTROLLER)))
@@ -422,7 +422,7 @@ class boss_halion : public CreatureScript
                             me->CastSpell(_meteorStrikePos.GetPositionX(), _meteorStrikePos.GetPositionY(), _meteorStrikePos.GetPositionZ(), SPELL_METEOR_STRIKE, true, NULL, NULL, me->GetGUID());
                             Talk(SAY_METEOR_STRIKE);
                         }
-                        events.ScheduleEvent(EVENT_METEOR_STRIKE, 40000);
+                        events.ScheduleEvent(EVENT_METEOR_STRIKE, 38000);
                         break;
                     }
                     case EVENT_FIERY_COMBUSTION:
