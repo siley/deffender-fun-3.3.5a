@@ -9,9 +9,15 @@ public:
 
     bool OnGossipHello(Player *player, Creature *npc)
     {
+        if(player->IsInCombat())
+        {
+            player->CLOSE_GOSSIP_MENU();
+            npc->MonsterWhisper("You are in combat!", player, true);
+            return true;
+        }
         player->ADD_GOSSIP_ITEM( 0, "Zrusit buff", GOSSIP_SENDER_MAIN, 1);
         player->ADD_GOSSIP_ITEM( 0, "5% buff", GOSSIP_SENDER_MAIN, 2);
-        player->ADD_GOSSIP_ITEM( 0, "10 buff%", GOSSIP_SENDER_MAIN, 3);
+        player->ADD_GOSSIP_ITEM( 0, "10% buff", GOSSIP_SENDER_MAIN, 3);
         player->ADD_GOSSIP_ITEM( 0, "15% buff", GOSSIP_SENDER_MAIN, 4);
         player->ADD_GOSSIP_ITEM( 0, "30% buff", GOSSIP_SENDER_MAIN, 5);          
         player->ADD_GOSSIP_ITEM(0, "Close", GOSSIP_SENDER_MAIN, 6);
