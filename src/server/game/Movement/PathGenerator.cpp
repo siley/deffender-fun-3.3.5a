@@ -349,7 +349,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
         uint32 suffixPolyLength = 0;
 
         dtStatus dtResult;
-        if (_straightLine)
+        /*if (_straightLine)
         {
             float hit = 0;
             float hitNormal[3];
@@ -374,7 +374,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                 return;
             }
         }
-        else
+        else*/
         {
             dtResult = _navMeshQuery->findPath(
                             suffixStartPoly,    // start polygon
@@ -412,7 +412,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
         Clear();
 
         dtStatus dtResult;
-        if (_straightLine)
+        /*if (_straightLine)
         {
             float hit = 0;
             float hitNormal[3];
@@ -437,7 +437,7 @@ void PathGenerator::BuildPolyPath(G3D::Vector3 const& startPos, G3D::Vector3 con
                 return;
             }
         }
-        else
+        else*/
         {
             dtResult = _navMeshQuery->findPath(
                             startPoly,          // start polygon
@@ -475,7 +475,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
     float pathPoints[MAX_POINT_PATH_LENGTH*VERTEX_SIZE];
     uint32 pointCount = 0;
     dtStatus dtResult = DT_FAILURE;
-    if (_straightLine)
+    /*if (_straightLine)
     {
         // if the path is a straight line then start and end position are enough
         dtResult = DT_SUCCESS;
@@ -483,7 +483,7 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
         memcpy(&pathPoints[0], startPoint, sizeof(float)* 3);
         memcpy(&pathPoints[3], endPoint, sizeof(float)* 3);
     }
-    else if (_useStraightPath)
+    else */if (_useStraightPath)
     {
         dtResult = _navMeshQuery->findStraightPath(
                 startPoint,         // start position
@@ -522,8 +522,11 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
     {
         TC_LOG_DEBUG("maps", "++ PathGenerator::BuildPointPath FAILED! path sized %d returned, lower than limit set to %d\n", pointCount, _pointPathLimit);
         BuildShortcut();
-        _type = PATHFIND_SHORT;
-        return;
+        if (_sourceUnit->GetMapId() != 562)
+        {
+            _type = PATHFIND_SHORT;
+            return;
+        }
     }
 
     _pathPoints.resize(pointCount);
@@ -552,6 +555,109 @@ void PathGenerator::BuildPointPath(const float *startPoint, const float *endPoin
         }
 
         _type = PathType(PATHFIND_NORMAL | PATHFIND_NOT_USING_PATH);
+    }
+    uint32 mapId = _sourceUnit->GetMapId();
+    if (mapId == 562 || mapId == 617)
+    {
+        bool fourth = false;
+        float x_s = startPoint[2];
+        float y_s = startPoint[0];
+        float z_s = startPoint[1];
+        float x_e = endPoint[2];
+        float y_e = endPoint[0];
+        float z_e = endPoint[1];
+        // 6216.5 316.5 5.0
+        // 6179 272 4.5
+        // 6258.5 206.5 4.5
+        // 6293 248 4.5
+        Map* map = _sourceUnit->GetMap();
+        float startFloor = map->GetHeight(_sourceUnit->GetPhaseMask(), x_s, y_s, z_s);
+        //Blade edge arena (mapid)
+        if (mapId == 562)
+        {
+            if (_straightLine && (startFloor <= 5.0f && z_e >= 10.5f))
+            {
+                if(_sourceUnit->GetDistance2d(6216.5f, 316.5f) > 16.5f
+                && _sourceUnit->GetDistance2d(6179.0f, 272.0f) > 16.5f
+                && _sourceUnit->GetDistance2d(6258.5f, 206.5f) > 16.5f
+                && _sourceUnit->GetDistance2d(6293.0f, 248.0f) > 16.5f
+                )
+                _type = PathType(_type | PATHFIND_NOPATH);
+                return;
+            }
+            //Your Position & Target Position
+            if (x_e <= 6230.803223f && x_s >= 6230.803223f && z_e >= 10.000000 && z_s >= 10.000000f && y_e >= 247.547917f && y_e <= 252.298940f)      // southeast pillar
+            {
+                //  Path X,y,z
+                _pathPoints.resize(4);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(6234.506836f, 256.696106f, 11.400018f);
+                _pathPoints[2] = G3D::Vector3(6231.472656f, 252.849335f, 11.400018f);
+                _pathPoints[3] = GetEndPosition();
+            }
+            else if (x_e >= 6246.201660f && x_s <= 6246.201660f && z_e >= 10.000000f && z_s >= 10.000000f && y_e >= 217.677917f && y_e <= 276.888794f) // northwest pillar
+            {
+                //  Path X,y,z
+                _pathPoints.resize(4);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(6242.146484f, 267.531030f, 11.400000f);
+                _pathPoints[2] = G3D::Vector3(6246.985352f, 271.076599f, 11.400000f);
+                _pathPoints[3] = GetEndPosition();
+            }
+            if (x_s <= 6230.803223f && x_e >= 6230.803223f && z_e >= 10.000000 && z_s >= 10.000000f && y_s >= 247.547917f && y_s <= 252.298940f)      // southeast pillar
+            {
+                //  Path X,y,z
+                _pathPoints.resize(4);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(6231.472656f, 252.849335f, 11.400018f);
+                _pathPoints[2] = G3D::Vector3(6234.506836f, 256.696106f, 11.400018f);
+                _pathPoints[3] = GetEndPosition();
+            }
+            else if (x_s >= 6246.201660f && x_e <= 6246.201660f && z_e >= 10.000000f && z_s >= 10.000000f && y_s >= 217.677917f && y_s <= 276.888794f) // northwest pillar
+            {
+                //  Path X,y,z
+                _pathPoints.resize(4);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(6246.985352f, 271.076599f, 11.400000f);
+                _pathPoints[2] = G3D::Vector3(6242.146484f, 267.531030f, 11.400000f);
+                _pathPoints[3] = GetEndPosition();
+            }
+        }
+        //Dalaran Sewer
+        else if (mapId == 617)
+        {
+            if (x_s >= 1330.033223f && z_s >= 9.000000f)      // Canal 1#
+            {
+                //  Path X,y,z
+                _pathPoints.resize(5);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(1332.749268f, 816.274780f, 8.355900f);
+                _pathPoints[2] = G3D::Vector3(1325.749268f, 816.602539f, 5.4000000f);
+                _pathPoints[3] = G3D::Vector3(1328.749268f, 816.602539f, 3.4000000f);
+                _pathPoints[4] = GetEndPosition();
+                fourth = true;
+            }
+            else if (x_s <= 1253.904785f && z_s >= 9.000000f)      // Canal 2#
+            {
+                //  Path X,y,z
+                _pathPoints.resize(5);
+                _pathPoints[0] = GetStartPosition();
+                _pathPoints[1] = G3D::Vector3(1252.425395f, 764.971680f, 8.000000f);
+                _pathPoints[3] = G3D::Vector3(1255.425395f, 764.971680f, 5.3559000f);
+                _pathPoints[3] = G3D::Vector3(1257.425395f, 764.971680f, 3.3559000f);
+                _pathPoints[4] = GetEndPosition();
+                fourth = true;
+            }
+        }
+        //Custom Point for Bugged Zone 
+    }
+    if (_straightLine && dtResult == DT_SUCCESS)
+    {
+        _type = PathType(_type &~PATHFIND_SHORT);
+        // if the path is a straight line then start and end position are enough
+        pointCount = 2;
+        _pathPoints.resize(2);
+        _pathPoints[1] = GetEndPosition();
     }
 
     TC_LOG_DEBUG("maps", "++ PathGenerator::BuildPointPath path type %d size %d poly-size %d\n", _type, pointCount, _polyLength);
