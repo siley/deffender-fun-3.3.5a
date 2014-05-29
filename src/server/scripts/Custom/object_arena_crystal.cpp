@@ -18,7 +18,6 @@ public:
         {
             player->m_clicked = true;
 
-            Battleground* bg = player->GetBattleground();
             Battleground* battleground = player->GetBattleground();
             uint8 numOfReadyPlrs = 0;
 
@@ -56,7 +55,7 @@ public:
             else
                 ChatHandler(player->GetSession()).PSendSysMessage("Je pripraveno %u hracu z %u potrebnych.", numOfReadyPlrs, battleground->GetArenaType()*2);
 
-            if ((bg->GetStartDelayTime() - player->timeDiff) <= 15000)
+            if ((battleground->GetStartDelayTime() - player->timeDiff) <= 15000)
             {
                 player->GetSession()->SendAreaTriggerMessage("Arena za chvili zacina");
             }

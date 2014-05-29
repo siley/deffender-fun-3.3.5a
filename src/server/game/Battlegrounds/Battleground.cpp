@@ -508,7 +508,7 @@ inline void Battleground::_ProcessJoin(uint32 diff)
         {
             if (everyoneReady && playersCount == 2)
             {
-                timeDiff = GetStartDelayTime() - 15000;
+                timeDiff = GetStartDelayTime();
 
                 for (BattlegroundPlayerMap::const_iterator itr = GetPlayers().begin(); itr != GetPlayers().end(); ++itr)
                 if (Player *plr = sObjectAccessor->FindPlayer(itr->first))
