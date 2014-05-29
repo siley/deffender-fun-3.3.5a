@@ -1253,7 +1253,7 @@ typedef std::unordered_map<uint32, uint32> PacketCooldowns;
 // delay time next attack to prevent client attack animation problems
 #define ATTACK_DISPLAY_DELAY 200
 #define MAX_PLAYER_STEALTH_DETECT_RANGE 30.0f               // max distance for detection targets by player
-
+#define AUTOATTACK_DIFF_TOLERANCE 750u
 struct SpellProcEventEntry;                                 // used only privately
 
 class Unit : public WorldObject
@@ -1304,10 +1304,10 @@ class Unit : public WorldObject
 
         virtual void Update(uint32 time);
 
-        void setAttackTimer(WeaponAttackType type, uint32 time) { m_attackTimer[type] = time; }
-        void resetAttackTimer(WeaponAttackType type = BASE_ATTACK);
+        void setAttackTimer(WeaponAttackType type, uint32 time, bool diffTolerance = true);
+        void resetAttackTimer(WeaponAttackType type = BASE_ATTACK, bool add = true);
         uint32 getAttackTimer(WeaponAttackType type) const { return m_attackTimer[type]; }
-        bool isAttackReady(WeaponAttackType type = BASE_ATTACK) const { return m_attackTimer[type] == 0; }
+        bool isAttackReady(WeaponAttackType type = BASE_ATTACK) const { return m_attackTimer[type] <= (delayedAttack[type] ? AUTOATTACK_DIFF_TOLERANCE-200 : AUTOATTACK_DIFF_TOLERANCE); }
         bool haveOffhandWeapon() const;
         bool CanDualWield() const { return m_canDualWield; }
         virtual void SetCanDualWield(bool value) { m_canDualWield = value; }
@@ -2168,6 +2168,8 @@ class Unit : public WorldObject
         bool m_AutoRepeatFirstCast;
 
         uint32 m_attackTimer[MAX_ATTACK];
+        bool   firstAttack[MAX_ATTACK];
+        bool   delayedAttack[MAX_ATTACK];
 
         float m_createStats[MAX_STATS];
 

@@ -1656,6 +1656,7 @@ void Player::Update(uint32 p_time)
                     {
                         SendAttackSwingNotInRange();
                         m_swingErrorMsg = 1;
+                        firstAttack[BASE_ATTACK] = true;
                     }
                 }
                 //120 degrees of radiant range
@@ -1666,6 +1667,7 @@ void Player::Update(uint32 p_time)
                     {
                         SendAttackSwingBadFacingAttack();
                         m_swingErrorMsg = 2;
+                        firstAttack[OFF_ATTACK] = true;
                     }
                 }
                 else
@@ -1674,12 +1676,16 @@ void Player::Update(uint32 p_time)
 
                     // prevent base and off attack in same time, delay attack at 0.2 sec
                     if (haveOffhandWeapon())
+                    {
                         if (getAttackTimer(OFF_ATTACK) < ATTACK_DISPLAY_DELAY)
-                            setAttackTimer(OFF_ATTACK, ATTACK_DISPLAY_DELAY);
-
+                        {
+                            delayedAttack[OFF_ATTACK] = true;
+                        }
+                    }
                     // do attack
                     AttackerStateUpdate(victim, BASE_ATTACK);
                     resetAttackTimer(BASE_ATTACK);
+                    delayedAttack[BASE_ATTACK] = false;
                 }
             }
 
@@ -1693,11 +1699,13 @@ void Player::Update(uint32 p_time)
                 {
                     // prevent base and off attack in same time, delay attack at 0.2 sec
                     if (getAttackTimer(BASE_ATTACK) < ATTACK_DISPLAY_DELAY)
-                        setAttackTimer(BASE_ATTACK, ATTACK_DISPLAY_DELAY);
-
+                    {
+                        delayedAttack[BASE_ATTACK] = true;
+                    }
                     // do attack
                     AttackerStateUpdate(victim, OFF_ATTACK);
                     resetAttackTimer(OFF_ATTACK);
+                    delayedAttack[OFF_ATTACK] = false;
                 }
             }
 

@@ -3605,10 +3605,10 @@ void Spell::finish(bool ok)
 
         if (!found && !(m_spellInfo->AttributesEx2 & SPELL_ATTR2_NOT_RESET_AUTO_ACTIONS))
         {
-            m_caster->resetAttackTimer(BASE_ATTACK);
+            m_caster->resetAttackTimer(BASE_ATTACK, true);
             if (m_caster->haveOffhandWeapon())
-                m_caster->resetAttackTimer(OFF_ATTACK);
-            m_caster->resetAttackTimer(RANGED_ATTACK);
+                m_caster->resetAttackTimer(OFF_ATTACK, true);
+            m_caster->resetAttackTimer(RANGED_ATTACK, true);
         }
     }
 

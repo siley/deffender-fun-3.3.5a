@@ -169,6 +169,12 @@ Unit::Unit(bool isWorldObject) :
 
     m_updateFlag = (UPDATEFLAG_LIVING | UPDATEFLAG_STATIONARY_POSITION);
 
+    firstAttack[BASE_ATTACK] = true;
+    firstAttack[OFF_ATTACK] = true;
+    firstAttack[RANGED_ATTACK] = true;
+    delayedAttack[BASE_ATTACK] = false;
+    delayedAttack[OFF_ATTACK] = false;
+    delayedAttack[RANGED_ATTACK] = false;
     m_attackTimer[BASE_ATTACK] = 0;
     m_attackTimer[OFF_ATTACK] = 0;
     m_attackTimer[RANGED_ATTACK] = 0;
@@ -340,11 +346,11 @@ void Unit::Update(uint32 p_time)
 
     // not implemented before 3.0.2
     if (uint32 base_att = getAttackTimer(BASE_ATTACK))
-        setAttackTimer(BASE_ATTACK, (p_time >= base_att ? 0 : base_att - p_time));
+        setAttackTimer(BASE_ATTACK, (p_time >= base_att ? 0 : base_att - p_time), false);
     if (uint32 ranged_att = getAttackTimer(RANGED_ATTACK))
-        setAttackTimer(RANGED_ATTACK, (p_time >= ranged_att ? 0 : ranged_att - p_time));
+        setAttackTimer(RANGED_ATTACK, (p_time >= ranged_att ? 0 : ranged_att - p_time), false);
     if (uint32 off_att = getAttackTimer(OFF_ATTACK))
-        setAttackTimer(OFF_ATTACK, (p_time >= off_att ? 0 : off_att - p_time));
+        setAttackTimer(OFF_ATTACK, (p_time >= off_att ? 0 : off_att - p_time), false);
 
     // update abilities available only for fraction of time
     UpdateReactives(p_time);
@@ -423,9 +429,24 @@ void Unit::DisableSpline()
     movespline->_Interrupt();
 }
 
-void Unit::resetAttackTimer(WeaponAttackType type)
+void Unit::setAttackTimer(WeaponAttackType type, uint32 time, bool diffTolerance)
 {
-    m_attackTimer[type] = uint32(GetAttackTime(type) * m_modAttackSpeedPct[type]);
+    m_attackTimer[type] = time;
+    if (diffTolerance)
+        m_attackTimer[type] += AUTOATTACK_DIFF_TOLERANCE;
+}
+
+void Unit::resetAttackTimer(WeaponAttackType type, bool add)
+{
+    if (add) // for autoattacks
+    {
+        m_attackTimer[type] += uint32(GetAttackTime(type) * m_modAttackSpeedPct[type]);
+        if (firstAttack[type])
+            m_attackTimer[type] += AUTOATTACK_DIFF_TOLERANCE;
+    }
+    else // for spells
+        m_attackTimer[type] = uint32(GetAttackTime(type) * m_modAttackSpeedPct[type]) + AUTOATTACK_DIFF_TOLERANCE;
+    firstAttack[type] = false;
 }
 
 float Unit::GetMeleeReach() const
@@ -9000,11 +9021,14 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
                 {
                     AddUnitState(UNIT_STATE_MELEE_ATTACKING);
                     SendMeleeAttackStart(victim);
+                    firstAttack[BASE_ATTACK] = true;
+                    firstAttack[OFF_ATTACK] = true;
                     return true;
                 }
             }
             else if (HasUnitState(UNIT_STATE_MELEE_ATTACKING))
             {
+                firstAttack[RANGED_ATTACK] = true;
                 ClearUnitState(UNIT_STATE_MELEE_ATTACKING);
                 SendMeleeAttackStop(victim);
                 return true;
@@ -9052,6 +9076,8 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
 
     if (meleeAttack)
         SendMeleeAttackStart(victim);
+    else
+        firstAttack[RANGED_ATTACK] = true;
 
     // Let the pet know we've started attacking someting. Handles melee attacks only
     // Spells such as auto-shot and others handled in WorldSession::HandleCastSpellOpcode
