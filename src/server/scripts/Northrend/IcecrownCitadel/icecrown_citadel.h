@@ -116,7 +116,8 @@ enum DataTypes
     DATA_HIGHLORD_TIRION_FORDRING   = 37,
     DATA_ARTHAS_PLATFORM            = 38,
     DATA_TERENAS_MENETHIL           = 39,
-    DATA_ENEMY_GUNSHIP              = 40
+    DATA_ENEMY_GUNSHIP              = 40,
+    DATA_BUFF                       = 41,
 };
 
 enum CreaturesIds

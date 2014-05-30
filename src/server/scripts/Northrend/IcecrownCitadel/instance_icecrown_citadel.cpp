@@ -153,6 +153,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                 FrozenThroneEdgeGUID = 0;
                 FrozenThroneWindGUID = 0;
                 FrozenThroneWarningGUID = 0;
+                BuffType = 0;
                 IsBonedEligible = true;
                 IsOozeDanceEligible = true;
                 IsNauseaEligible = true;
@@ -173,7 +174,23 @@ class instance_icecrown_citadel : public InstanceMapScript
 
             void OnPlayerEnter(Player* player) override
             {
-                player->AddAura(73828, player);
+                switch (GetData(DATA_BUFF))
+                {
+                case 0:
+                    player->AddAura(73828, player);
+                    break;
+                case 1:
+                    player->AddAura(73825, player);
+                    break;
+                case 2:
+                    player->AddAura(73824, player);
+                    break;
+                case 3:
+                    player->AddAura(73762, player);
+                    break;
+                case 4:
+                    break;
+                }
 
                 if (!TeamInInstance)
                     TeamInInstance = ALLIANCE;
@@ -697,6 +714,8 @@ class instance_icecrown_citadel : public InstanceMapScript
                         return BloodQuickeningState;
                     case DATA_HEROIC_ATTEMPTS:
                         return HeroicAttempts;
+                    case DATA_BUFF:
+                        return BuffType;
                     default:
                         break;
                 }
@@ -990,6 +1009,15 @@ class instance_icecrown_citadel : public InstanceMapScript
                         if (ColdflameJetsState == DONE)
                             SaveToDB();
                         break;
+                    case DATA_BUFF:
+                    {
+                        if (BuffType != data)
+                        {
+                            BuffType = data;
+                            SaveToDB();
+                        }
+                        break;
+                    }
                     case DATA_BLOOD_QUICKENING_STATE:
                     {
                         // skip if nothing changes
@@ -1227,7 +1255,7 @@ class instance_icecrown_citadel : public InstanceMapScript
 
                 std::ostringstream saveStream;
                 saveStream << "I C " << GetBossSaveData() << HeroicAttempts << ' '
-                    << ColdflameJetsState << ' ' << BloodQuickeningState << ' ' << BloodQuickeningMinutes;
+                    << ColdflameJetsState << ' ' << BloodQuickeningState << ' ' << BloodQuickeningMinutes << BuffType;
 
                 OUT_SAVE_INST_DATA_COMPLETE;
                 return saveStream.str();
@@ -1268,6 +1296,7 @@ class instance_icecrown_citadel : public InstanceMapScript
                     loadStream >> temp;
                     BloodQuickeningState = temp ? DONE : NOT_STARTED;   // DONE means finished (not success/fail)
                     loadStream >> BloodQuickeningMinutes;
+                    loadStream >> BuffType;
                 }
                 else
                     OUT_LOAD_INST_DATA_FAIL;
@@ -1451,6 +1480,7 @@ class instance_icecrown_citadel : public InstanceMapScript
             uint32 BloodQuickeningState;
             uint32 HeroicAttempts;
             uint16 BloodQuickeningMinutes;
+            uint8 BuffType;
             bool IsBonedEligible;
             bool IsOozeDanceEligible;
             bool IsNauseaEligible;
