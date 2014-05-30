@@ -19,6 +19,7 @@
 #include "CreatureTextMgr.h"
 #include "GridNotifiersImpl.h"
 #include "GossipDef.h"
+#include "Group.h"
 #include "MoveSpline.h"
 #include "MoveSplineInit.h"
 #include "PassiveAI.h"
@@ -1229,6 +1230,9 @@ class npc_muradin_bronzebeard_igb : public CreatureScript
 
             void sGossipSelect(Player* /*player*/, uint32 /*sender*/, uint32 /*action*/) override
             {
+                if ((!player->GetGroup() || !player->GetGroup()->IsLeader(player->GetGUID())) && !player->IsGameMaster())
+                    me->MonsterWhisper("You are not the raid leader", player, true);
+                else
                 me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
                 me->GetTransport()->EnableMovement(true);
                 _events.SetPhase(PHASE_INTRO);
