@@ -96,7 +96,6 @@ public:
                 break;
             case 6: //Close
                 {
-                    instance->SetData(DATA_BUFF, 5);
                     player->CLOSE_GOSSIP_MENU();
                     return true;
                 }
