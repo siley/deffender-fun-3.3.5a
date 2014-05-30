@@ -1,6 +1,6 @@
 #include "ScriptPCH.h"
 #include "../../scripts/Northrend/IcecrownCitadel/icecrown_citadel.h"
-#include "group.h"
+#include "Group.h"
 #define GOSSIP 11203
 
 class npc_icc_buff : public CreatureScript
