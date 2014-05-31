@@ -12349,6 +12349,9 @@ void Unit::UpdateSpeed(UnitMoveType mtype, bool forced)
             /// @todo possible affect only on MOVE_RUN
             if (int32 normalization = GetMaxPositiveAuraModifier(SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED))
             {
+                if (Creature* cre = ToCreature()) // Disable JoJ's effect on Elites ++
+                    if (cre->isElite() || cre->isWorldBoss())
+                        break;
                 // Use speed from aura
                 float max_speed = normalization / (IsControlledByPlayer() ? playerBaseMoveSpeed[mtype] : baseMoveSpeed[mtype]);
                 if (speed > max_speed)
