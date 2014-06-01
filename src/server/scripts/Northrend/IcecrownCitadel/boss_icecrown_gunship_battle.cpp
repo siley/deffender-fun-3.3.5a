@@ -1231,17 +1231,22 @@ class npc_muradin_bronzebeard_igb : public CreatureScript
             void sGossipSelect(Player* player, uint32 /*sender*/, uint32 /*action*/) override
             {
                 if ((!player->GetGroup() || !player->GetGroup()->IsLeader(player->GetGUID())) && !player->IsGameMaster())
+                {
                     me->MonsterWhisper("You are not the raid leader", player, true);
+                    player->CLOSE_GOSSIP_MENU();
+                }
                 else
-                me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
-                me->GetTransport()->EnableMovement(true);
-                _events.SetPhase(PHASE_INTRO);
-                _events.ScheduleEvent(EVENT_INTRO_A_1, 5000);
-                _events.ScheduleEvent(EVENT_INTRO_A_2, 10000, 0, PHASE_INTRO);
-                _events.ScheduleEvent(EVENT_INTRO_SUMMON_ORGRIMS_HAMMER, 28000, 0, PHASE_INTRO);
-                _events.ScheduleEvent(EVENT_INTRO_A_3, 33000, 0, PHASE_INTRO);
-                _events.ScheduleEvent(EVENT_INTRO_A_4, 39000, 0, PHASE_INTRO);
-                _events.ScheduleEvent(EVENT_INTRO_A_5, 45000, 0, PHASE_INTRO);
+                {
+                    me->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
+                    me->GetTransport()->EnableMovement(true);
+                    _events.SetPhase(PHASE_INTRO);
+                    _events.ScheduleEvent(EVENT_INTRO_A_1, 5000);
+                    _events.ScheduleEvent(EVENT_INTRO_A_2, 10000, 0, PHASE_INTRO);
+                    _events.ScheduleEvent(EVENT_INTRO_SUMMON_ORGRIMS_HAMMER, 28000, 0, PHASE_INTRO);
+                    _events.ScheduleEvent(EVENT_INTRO_A_3, 33000, 0, PHASE_INTRO);
+                    _events.ScheduleEvent(EVENT_INTRO_A_4, 39000, 0, PHASE_INTRO);
+                    _events.ScheduleEvent(EVENT_INTRO_A_5, 45000, 0, PHASE_INTRO);
+                }
             }
 
             void DamageTaken(Unit* , uint32& damage) override
