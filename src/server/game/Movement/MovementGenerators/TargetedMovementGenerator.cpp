@@ -35,6 +35,9 @@ void TargetedMovementGeneratorMedium<T, D>::_setTargetLocation(T* owner, bool up
 
     if (owner->HasUnitState(UNIT_STATE_NOT_MOVE))
         return;
+    
+    if (owner->GetTypeId() != TYPEID_PLAYER && owner->HasUnitState(UNIT_STATE_CASTING))
+        return;
 
     if (owner->GetTypeId() == TYPEID_UNIT && !i_target->isInAccessiblePlaceFor(owner->ToCreature()))
         return;
