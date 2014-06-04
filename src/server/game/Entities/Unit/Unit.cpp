@@ -169,6 +169,7 @@ Unit::Unit(bool isWorldObject) :
 
     m_updateFlag = (UPDATEFLAG_LIVING | UPDATEFLAG_STATIONARY_POSITION);
 
+    deletingAuras = false;
     firstAttack[BASE_ATTACK] = true;
     firstAttack[OFF_ATTACK] = true;
     firstAttack[RANGED_ATTACK] = true;
@@ -3559,7 +3560,13 @@ void Unit::_RegisterAuraEffect(AuraEffect* aurEff, bool apply)
     if (apply)
         m_modAuras[aurEff->GetAuraType()].push_back(aurEff);
     else
+    {
+        if (deletingAura)
+            return;
+        deletingAura = true;
         m_modAuras[aurEff->GetAuraType()].remove(aurEff);
+        deletingAura = false;
+    }
 }
 
 // All aura base removes should go threw this function!

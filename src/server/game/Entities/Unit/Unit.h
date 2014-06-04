@@ -2196,6 +2196,7 @@ class Unit : public WorldObject
         AuraMap::iterator m_auraUpdateIterator;
         uint32 m_removedAurasCount;
 
+        bool deletingAuras;
         AuraEffectList m_modAuras[TOTAL_AURAS];
         AuraList m_scAuras;                        // cast singlecast auras
         AuraApplicationList m_interruptableAuras;  // auras which have interrupt mask applied on unit
