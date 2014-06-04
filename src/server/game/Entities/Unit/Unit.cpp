@@ -3559,11 +3559,11 @@ void Unit::_RegisterAuraEffect(AuraEffect* aurEff, bool apply)
         m_modAuras[aurEff->GetAuraType()].push_back(aurEff);
     else
     {
-        if (deletingAura)
+        if (deletingAuras)
             return;
-        deletingAura = true;
+        deletingAuras = true;
         m_modAuras[aurEff->GetAuraType()].remove(aurEff);
-        deletingAura = false;
+        deletingAuras = false;
     }
 }
 
