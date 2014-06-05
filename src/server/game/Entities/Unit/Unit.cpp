@@ -169,7 +169,6 @@ Unit::Unit(bool isWorldObject) :
 
     m_updateFlag = (UPDATEFLAG_LIVING | UPDATEFLAG_STATIONARY_POSITION);
 
-    deletingAuras = false;
     firstAttack[BASE_ATTACK] = true;
     firstAttack[OFF_ATTACK] = true;
     firstAttack[RANGED_ATTACK] = true;
@@ -3565,11 +3564,8 @@ void Unit::_RegisterAuraEffect(AuraEffect* aurEff, bool apply)
         m_modAuras[aurEff->GetAuraType()].push_back(aurEff);
     else
     {
-        if (deletingAuras)
-            return;
-        deletingAuras = true;
+        TRINITY_GUARD(ACE_Thread_Mutex, UnitAuraLock);
         m_modAuras[aurEff->GetAuraType()].remove(aurEff);
-        deletingAuras = false;
     }
 }
 

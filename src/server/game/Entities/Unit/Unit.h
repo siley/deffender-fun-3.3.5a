@@ -28,7 +28,7 @@
 #include "Object.h"
 #include "SpellAuraDefines.h"
 #include "ThreatManager.h"
-
+#include "ace/Thread_Mutex.h"
 #define WORLD_TRIGGER   12999
 
 enum SpellInterruptFlags
@@ -2196,7 +2196,7 @@ class Unit : public WorldObject
         AuraMap::iterator m_auraUpdateIterator;
         uint32 m_removedAurasCount;
 
-        bool deletingAuras;
+        ACE_Thread_Mutex UnitAuraLock;
         AuraEffectList m_modAuras[TOTAL_AURAS];
         AuraList m_scAuras;                        // cast singlecast auras
         AuraApplicationList m_interruptableAuras;  // auras which have interrupt mask applied on unit
