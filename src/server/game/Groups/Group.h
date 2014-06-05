@@ -24,6 +24,7 @@
 #include "LootMgr.h"
 #include "QueryResult.h"
 #include "SharedDefines.h"
+#include "ace/Thread_Mutex.h"
 
 class Battlefield;
 class Battleground;
@@ -320,6 +321,7 @@ class Group
         void SubGroupCounterDecrease(uint8 subgroup);
         void ToggleGroupMemberFlag(member_witerator slot, uint8 flag, bool apply);
 
+        ACE_Thread_Mutex mutable  GroupMtx;
         MemberSlotList      m_memberSlots;
         GroupRefManager     m_memberMgr;
         InvitesList         m_invitees;

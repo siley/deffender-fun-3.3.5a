@@ -260,10 +260,7 @@ void WorldSession::HandleGroupDeclineOpcode(WorldPacket & /*recvData*/)
     Player* leader = ObjectAccessor::FindPlayer(group->GetLeaderGUID());
 
     // uninvite, group can be deleted
-    if (ObjectAccessor::FindPlayer(GetPlayer()->GetGUID()) && group->IsMember(GetPlayer()->GetGUID())) // check if player is online and member of group
-    {
-        GetPlayer()->UninviteFromGroup(group);
-    }
+    GetPlayer()->UninviteFromGroup();
 
     if (!leader || !leader->GetSession())
         return;
@@ -278,7 +275,7 @@ void WorldSession::HandleGroupUninviteGuidOpcode(WorldPacket& recvData)
 {
     TC_LOG_DEBUG("network", "WORLD: Received CMSG_GROUP_UNINVITE_GUID");
 
-    uint64 guid = NULL;
+    uint64 guid;
     std::string reason;
     recvData >> guid;
     recvData >> reason;
@@ -314,16 +311,10 @@ void WorldSession::HandleGroupUninviteGuidOpcode(WorldPacket& recvData)
         return;
     }
 
-    if (Player * pl = ObjectAccessor::FindPlayer(guid)) // this way its also checked if player is in world
+    if (Player* player = grp->GetInvited(guid))
     {
-        if (Group * invgroup = pl->GetGroupInvite())
-        {
-           if(invgroup->GetInvited(guid)) // two side check for invite
-            {
-                pl->UninviteFromGroup(invgroup);
-                return;
-            }
-        }
+        player->UninviteFromGroup();
+        return;
     }
 
     SendPartyResult(PARTY_OP_UNINVITE, "", ERR_TARGET_NOT_IN_GROUP_S);
@@ -367,7 +358,7 @@ void WorldSession::HandleGroupUninviteOpcode(WorldPacket& recvData)
 
     if (Player* player = grp->GetInvited(membername))
     {
-        player->UninviteFromGroup(grp);
+        player->UninviteFromGroup();
         return;
     }
 
