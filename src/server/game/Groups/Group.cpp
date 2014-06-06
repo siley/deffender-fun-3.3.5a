@@ -326,10 +326,13 @@ Player* Group::GetInvited(uint64 guid) const
     for (InvitesList::const_iterator itr = m_invitees.begin(); itr != m_invitees.end(); ++itr)
     {
         if ((*itr) && (*itr)->GetGUID() == guid)
+        {
+            GroupMtx.release();
             return (*itr);
+        }
     }
-    return NULL;
     GroupMtx.release();
+    return NULL;
 }
 
 Player* Group::GetInvited(const std::string& name) const
@@ -338,10 +341,14 @@ Player* Group::GetInvited(const std::string& name) const
     for (InvitesList::const_iterator itr = m_invitees.begin(); itr != m_invitees.end(); ++itr)
     {
         if ((*itr) && (*itr)->GetName() == name)
-            return (*itr);
+        {
+            Player* plr = *itr;
+            GroupMtx.release();
+            return plr;
+        }
     }
-    return NULL;
     GroupMtx.release();
+    return NULL;
 }
 
 bool Group::AddMember(Player* player)
