@@ -327,8 +327,9 @@ Player* Group::GetInvited(uint64 guid) const
     {
         if ((*itr) && (*itr)->GetGUID() == guid)
         {
+            Player* plr = *itr;
             GroupMtx.release();
-            return (*itr);
+            return plr;
         }
     }
     GroupMtx.release();
