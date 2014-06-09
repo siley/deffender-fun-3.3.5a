@@ -2332,6 +2332,8 @@ class Player : public Unit, public GridObject<Player>
         bool m_clicked;
         int32 timeDiff;
 
+        bool IsLoading() const;
+
     protected:
         // Gamemaster whisper whitelist
         WhisperListContainer WhisperList;
