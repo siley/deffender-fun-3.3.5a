@@ -416,7 +416,7 @@ class spell_warl_everlasting_affliction : public SpellScriptLoader
                         sScriptMgr->ModifyPeriodicDamageAurasTick(target, caster, damage);
                         aur->SetDamage(caster->SpellDamageBonusDone(target, aur->GetSpellInfo(), damage, DOT) * aur->GetDonePct());
                         aur->CalculatePeriodic(caster, false, false);
-                        aur->GetBase()->RefreshDuration(true);
+                        GetCaster()->CastSpell(target, aur->GetSpellInfo(), true);
                     }
             }
 
