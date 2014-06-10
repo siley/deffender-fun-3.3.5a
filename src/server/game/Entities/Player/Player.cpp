@@ -12321,6 +12321,9 @@ Item* Player::StoreNewItem(ItemPosCountVec const& dest, uint32 item, bool update
             stmt->setString(1, ss.str());
             CharacterDatabase.Execute(stmt);
         }
+
+        Player* pPlayer = m_session->GetPlayer();
+        pPlayer->SaveToDB();
     }
     return pItem;
 }
