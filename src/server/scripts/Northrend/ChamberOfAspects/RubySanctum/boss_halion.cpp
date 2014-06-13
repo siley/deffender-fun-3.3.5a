@@ -337,7 +337,7 @@ class boss_halion : public CreatureScript
                 instance->SetBossState(DATA_HALION, IN_PROGRESS);
 
                 events.ScheduleEvent(EVENT_ACTIVATE_FIREWALL, 5000);
-                events.ScheduleEvent(EVENT_METEOR_STRIKE, urand(18500, 19500));
+                events.ScheduleEvent(EVENT_METEOR_STRIKE, urand(20000, 25000));
                 events.ScheduleEvent(EVENT_FIERY_COMBUSTION, urand(15000, 18000));
 
                 if (Creature* controller = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_HALION_CONTROLLER)))
@@ -422,7 +422,7 @@ class boss_halion : public CreatureScript
                             me->CastSpell(_meteorStrikePos.GetPositionX(), _meteorStrikePos.GetPositionY(), _meteorStrikePos.GetPositionZ(), SPELL_METEOR_STRIKE, true, NULL, NULL, me->GetGUID());
                             Talk(SAY_METEOR_STRIKE);
                         }
-                        events.ScheduleEvent(EVENT_METEOR_STRIKE, 34000);
+                        events.ScheduleEvent(EVENT_METEOR_STRIKE, 40000);
                         break;
                     }
                     case EVENT_FIERY_COMBUSTION:
@@ -1256,6 +1256,14 @@ class npc_living_inferno : public CreatureScript
                         controller->AI()->JustSummoned(me);
             }
 
+            void UpdateAI(uint32 diff) override
+            {
+                if (!UpdateVictim())
+                    me->DespawnOrUnsummon();
+
+                DoMeleeAttackIfReady();
+            }
+
             void JustDied(Unit* /*killer*/) override
             {
                 me->DespawnOrUnsummon(1);
@@ -1302,6 +1310,9 @@ class npc_living_ember : public CreatureScript
 
             void UpdateAI(uint32 diff) override
             {
+                if (!UpdateVictim())
+                    me->DespawnOrUnsummon();
+
                 if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
                     return;
 
