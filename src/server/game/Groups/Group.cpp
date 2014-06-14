@@ -302,19 +302,23 @@ bool Group::AddLeaderInvite(Player* player)
 
 void Group::RemoveInvite(Player* player)
 {
-    #ifdef WIN32
+#ifdef WIN32
     if (GroupMtx.acquire())
         #else
         // this should only time out if group is no longer available and is deleted
         // mtx should be released anywhere else correctly
-        if (GroupMtx.acquire(&(ACE_Time_Value(time(NULL), 100000))) != -1)
-         #endif
+        ACE_Time_Value* aceTime = new ACE_Time_Value(time(NULL), 100000);
+    if (GroupMtx.acquire(aceTime) != -1)
+#endif
     {
         m_invitees.erase(player);
         GroupMtx.release();
     }
-        // can be set even if mtx is locked
-        player->SetGroupInvite(NULL);
+    // can be set even if mtx is locked
+    player->SetGroupInvite(NULL);
+#ifndef WIN32
+    delete aceTime;
+#endif
 }
 
 void Group::RemoveAllInvites()
