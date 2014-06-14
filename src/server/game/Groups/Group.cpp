@@ -307,7 +307,7 @@ void Group::RemoveInvite(Player* player)
         #else
         // this should only time out if group is no longer available and is deleted
         // mtx should be released anywhere else correctly
-        if (GroupMtx.acquire(ACE_Time_Value(time(NULL), 100000)) != -1)
+        if (GroupMtx.acquire(&(ACE_Time_Value(time(NULL), 100000))) != -1)
          #endif
     {
         m_invitees.erase(player);
