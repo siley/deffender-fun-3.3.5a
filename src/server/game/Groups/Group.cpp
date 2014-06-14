@@ -277,6 +277,8 @@ bool Group::AddInvite(Player* player)
     if (group)
         return false;
 
+    RemoveInvite(player);
+
     GroupMtx.acquire();
     m_invitees.insert(player);
     GroupMtx.release();
@@ -300,13 +302,19 @@ bool Group::AddLeaderInvite(Player* player)
 
 void Group::RemoveInvite(Player* player)
 {
-    if (player)
+    #ifdef WIN32
+    if (GroupMtx.acquire())
+        #else
+        // this should only time out if group is no longer available and is deleted
+        // mtx should be released anywhere else correctly
+        if (GroupMtx.acquire(ACE_Time_Value(time(NULL), 100000)) != -1)
+         #endif
     {
-        GroupMtx.acquire();
         m_invitees.erase(player);
         GroupMtx.release();
-        player->SetGroupInvite(NULL);
     }
+        // can be set even if mtx is locked
+        player->SetGroupInvite(NULL);
 }
 
 void Group::RemoveAllInvites()
