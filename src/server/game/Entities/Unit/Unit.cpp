@@ -3299,6 +3299,14 @@ Aura* Unit::_TryStackingOrRefreshingExistingAura(SpellInfo const* newAura, uint8
                 *oldGUID = castItemGUID;
             }
 
+			uint8 charges = foundAura->GetSpellInfo()->ProcCharges;
+			if (caster)
+			if (Player* modOwner = caster->GetSpellModOwner())
+				modOwner->ApplySpellMod(foundAura->GetId(), SPELLMOD_CHARGES, charges);
+
+			// Refresh charges
+			foundAura->SetCharges(charges);
+
             // try to increase stack amount
             foundAura->ModStackAmount(1);
             return foundAura;
