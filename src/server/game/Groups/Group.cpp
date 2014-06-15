@@ -280,7 +280,10 @@ bool Group::AddInvite(Player* player)
     RemoveInvite(player);
 
     GroupMtx.acquire();
-    m_invitees.emplace(player->GetGUID(),player->GetName());
+    std::pair<uint64, std::string> p;
+    p.first = player->GetGUID();
+    p.second = player->GetName();
+    m_invitees.insert(p);
     GroupMtx.release();
 
     player->SetGroupInvite(this);
