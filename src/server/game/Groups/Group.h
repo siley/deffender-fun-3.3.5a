@@ -175,7 +175,7 @@ class Group
         typedef std::unordered_map< uint32 /*mapId*/, InstanceGroupBind> BoundInstancesMap;
     protected:
         typedef MemberSlotList::iterator member_witerator;
-        typedef std::set<Player*> InvitesList;
+        typedef std::map<uint64,const std::string> InvitesList;
 
         typedef std::vector<Roll*> Rolls;
 
@@ -188,7 +188,7 @@ class Group
         void   LoadGroupFromDB(Field* field);
         void   LoadMemberFromDB(uint32 guidLow, uint8 memberFlags, uint8 subgroup, uint8 roles);
         bool   AddInvite(Player* player);
-        void   RemoveInvite(Player* player);
+        bool   RemoveInvite(Player* player);
         void   RemoveAllInvites();
         bool   AddLeaderInvite(Player* player);
         bool   AddMember(Player* player);
@@ -321,7 +321,7 @@ class Group
         void SubGroupCounterDecrease(uint8 subgroup);
         void ToggleGroupMemberFlag(member_witerator slot, uint8 flag, bool apply);
 
-        ACE_Thread_Mutex mutable  GroupMtx;
+        ACE_Thread_Mutex mutable GroupMtx;
         MemberSlotList      m_memberSlots;
         GroupRefManager     m_memberMgr;
         InvitesList         m_invitees;

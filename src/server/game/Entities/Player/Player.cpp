@@ -2935,18 +2935,19 @@ void Player::UninviteFromGroup()
     if (!group)
         return;
 
-    group->RemoveInvite(this);
-
-    if (group->GetMembersCount() <= 1)                       // group has just 1 member => disband
+    if (group->RemoveInvite(this)) // do not try to delete group twice
     {
-        if (group->IsCreated())
+        if (group->GetMembersCount() <= 1)                       // group has just 1 member => disband
         {
-            group->Disband(true);
-        }
-        else
-        {
-            group->RemoveAllInvites();
-            delete group;
+            if (group->IsCreated())
+            {
+                group->Disband(true);
+            }
+            else
+            {
+                group->RemoveAllInvites();
+                delete group;
+            }
         }
     }
 }
