@@ -39,7 +39,6 @@ INSERT INTO `smart_scripts` VALUES
 
 DELETE FROM `conditions` WHERE `SourceTypeOrReferenceId`=15 AND `SourceGroup`=10389;
 INSERT INTO `conditions` (`SourceTypeOrReferenceId`, `SourceGroup`, `SourceEntry`, `SourceId`, `ElseGroup`, `ConditionTypeOrReference`, `ConditionTarget`, `ConditionValue1`, `ConditionValue2`, `ConditionValue3`, `NegativeCondition`, `ErrorType`, `ErrorTextId`, `ScriptName`, `Comment`) VALUES
-(15, 10389, 1, 0, 0, 13, 1, 20, 2, 0, 0, 0, 0, '', 'Show options for gossip only if 2 Collossus death'),
 (15, 10389, 3, 0, 0, 13, 1, 0, 3, 2, 0, 0, 0, '', 'Show options for gossip only if BOSS_LEVIATHAN done'),
 (15, 10389, 4, 0, 0, 13, 1, 3, 3, 2, 0, 0, 0, '', 'Show options for gossip only if BOSS_XT002 done'),
 (15, 10389, 5, 0, 0, 13, 1, 3, 3, 2, 0, 0, 0, '', 'Show options for gossip only if BOSS_XT002 done'),
