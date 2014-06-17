@@ -2453,6 +2453,9 @@ void Player::AddToWorld()
 
 void Player::RemoveFromWorld()
 {
+    if (RemoveFromWorldPlrMtx.tryacquire() == -1)
+        return; // do not remove player twice from world
+
     // cleanup
     if (IsInWorld())
     {
@@ -2487,6 +2490,7 @@ void Player::RemoveFromWorld()
             SetViewpoint(viewpoint, false);
         }
     }
+    RemoveFromWorldPlrMtx.release();
 }
 
 void Player::RegenerateAll()
