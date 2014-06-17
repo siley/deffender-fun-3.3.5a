@@ -10564,6 +10564,8 @@ float Unit::GetUnitSpellCriticalChance(Unit* victim, SpellInfo const* spellProto
                 case 64844: // Divine Hymn
                 case 71607: // Item - Bauble of True Blood 10m
                 case 71646: // Item - Bauble of True Blood 25m
+                case 71610: // Item - Althor's Abacus 10m 
+                case 71641: // Item - Althor's Abacus 25m
                     break;
                 default:
                     return 0.0f;
