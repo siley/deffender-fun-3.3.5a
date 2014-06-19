@@ -7202,14 +7202,14 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                     if ((*itr)->GetEntry() == 27893)
                     {
                         pPet = *itr;
+                        triggered_spell_id = 50707;
                         break;
                     }
-
+                // special abilities damage
                 if (pPet && pPet->GetVictim() && damage && procSpell)
                 {
                     pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-
                     uint32 procDmg = damage / 2;
                     pPet->SendSpellNonMeleeDamageLog(pPet->GetVictim(), procSpell->Id, procDmg, procSpell->GetSchoolMask(), 0, 0, false, 0, false);
                     pPet->DealDamage(pPet->GetVictim(), procDmg, NULL, SPELL_DIRECT_DAMAGE, procSpell->GetSchoolMask(), procSpell, true);
@@ -10376,8 +10376,30 @@ float Unit::SpellDamagePctDone(Unit* victim, SpellInfo const* spellProto, Damage
         case SPELLFAMILY_DEATHKNIGHT:
             // Improved Icy Touch
             if (spellProto->SpellFamilyFlags[0] & 0x2)
+            {
                 if (AuraEffect* aurEff = GetDummyAuraEffect(SPELLFAMILY_DEATHKNIGHT, 2721, 0))
                     AddPct(DoneTotalMod, aurEff->GetAmount());
+
+                Unit* pPet = NULL;
+                for (Unit::ControlList::const_iterator itr = m_Controlled.begin(); itr != m_Controlled.end(); ++itr) //Find Rune Weapon
+                if ((*itr)->GetEntry() == 27893)
+                {
+                    pPet = (*itr);
+                    break;
+                }
+                if (pPet && GetVictim())
+                {
+                    pPet->CastSpell(GetVictim(), 55095, true);
+                    Aura *aur = GetVictim()->GetAura(55095, pPet->GetGUID());
+
+                    if (AuraEffect const* epidemic = GetAuraEffect(SPELL_AURA_ADD_FLAT_MODIFIER, SPELLFAMILY_DEATHKNIGHT, 234, EFFECT_0))
+                    {
+
+                        aur->SetMaxDuration(epidemic->GetAmount() + aur->GetMaxDuration());
+                        aur->SetDuration(aur->GetMaxDuration());
+                    }
+                }
+            }
 
             // Glacier Rot
             if (spellProto->SpellFamilyFlags[0] & 0x2 || spellProto->SpellFamilyFlags[1] & 0x6)

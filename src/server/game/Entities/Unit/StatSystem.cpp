@@ -1096,6 +1096,7 @@ void Creature::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, 
 #define ENTRY_FIRE_ELEMENTAL    15438
 #define ENTRY_GHOUL             26125
 #define ENTRY_BLOODWORM         28017
+#define ENTRY_RUNIC_WEAPON      27893
 
 bool Guardian::UpdateStats(Stats stat)
 {
@@ -1331,6 +1332,10 @@ void Guardian::UpdateAttackPowerAndDamage(bool ranged)
             bonusAP = owner->GetTotalAttackPowerValue(BASE_ATTACK) * 0.22f;
             SetBonusDamage(int32(owner->GetTotalAttackPowerValue(BASE_ATTACK) * 0.1287f));
         }
+        else if (GetEntry() == ENTRY_RUNIC_WEAPON)
+        {
+            bonusAP = owner->GetTotalAttackPowerValue(BASE_ATTACK);
+        }
         else if (IsSpiritWolf()) //wolf benefit from shaman's attack power
         {
             float dmg_multiplier = 0.31f;
@@ -1417,6 +1422,16 @@ void Guardian::UpdateDamagePhysical(WeaponAttackType attType)
     float mindamage = ((base_value + weapon_mindamage) * base_pct + total_value) * total_pct;
     float maxdamage = ((base_value + weapon_maxdamage) * base_pct + total_value) * total_pct;
 
+    if (GetEntry() == ENTRY_RUNIC_WEAPON)
+    {
+        weapon_mindamage = m_owner->GetWeaponDamageRange(BASE_ATTACK, MINDAMAGE) / 2.0;
+        weapon_maxdamage = m_owner->GetWeaponDamageRange(BASE_ATTACK, MAXDAMAGE) / 2.0;
+    }
+    else
+    {
+        weapon_mindamage = GetWeaponDamageRange(BASE_ATTACK, MINDAMAGE);
+        weapon_maxdamage = GetWeaponDamageRange(BASE_ATTACK, MAXDAMAGE);
+    }
     //  Pet's base damage changes depending on happiness
     if (IsHunterPet() && attType == BASE_ATTACK)
     {
