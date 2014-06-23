@@ -9,7 +9,7 @@ class AnticheatScripts: public PlayerScript
         AnticheatScripts();
 
         void OnLogout(Player* player);
-        void OnLogin(Player* player);
+        void OnLogin(Player* player, bool);
 };
 
 #endif

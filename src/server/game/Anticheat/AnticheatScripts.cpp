@@ -8,7 +8,7 @@ void AnticheatScripts::OnLogout(Player* player)
     sAnticheatMgr->HandlePlayerLogout(player);
 }
 
-void AnticheatScripts::OnLogin(Player* player)
+void AnticheatScripts::OnLogin(Player* player, bool)
 {
     sAnticheatMgr->HandlePlayerLogin(player);
 }
