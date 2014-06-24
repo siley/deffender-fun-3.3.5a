@@ -8,27 +8,11 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+file(GLOB_RECURSE sources_Custom Custom/*.cpp Custom/*.h)
+
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
-  Custom/dynamic_teleporter.cpp
-  Custom/vip_npc.cpp
-  Custom/guildporter.cpp
-  Custom/BountyHunter.cpp
-  Custom/npc_ashen_ring_restorer.cpp
-  Custom/object_arena_crystal.cpp
-  Custom/command_mmr.cpp
-  Custom/Transmogrification.h
-	Custom/Transmogrification.cpp
-	Custom/Transmogrifier.cpp
-  Custom/TrialOfTheChampion/TW_instance_trial_of_the_champion.cpp
-  Custom/TrialOfTheChampion/TW_trial_of_the_champion.h
-  Custom/TrialOfTheChampion/TW_boss_argent_challenge.cpp
-  Custom/TrialOfTheChampion/TW_boss_grand_champions.cpp
-  Custom/TrialOfTheChampion/TW_boss_black_knight.cpp
-  Custom/TrialOfTheChampion/TW_trial_of_the_champion.cpp
-  Custom/Ulduar/TW_boss_thorim.cpp
-  Custom/Ulduar/TW_boss_mimiron.cpp
-  Custom/npc_icc_buff.cpp
+  ${sources_Custom}
 )
 
 message("  -> Prepared: Custom")

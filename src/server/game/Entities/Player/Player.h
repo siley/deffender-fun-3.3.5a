@@ -939,7 +939,7 @@ class PlayerTaxi
         bool SetTaximaskNode(uint32 nodeidx)
         {
             uint8  field   = uint8((nodeidx - 1) / 32);
-            uint32 submask = 1 << ((nodeidx-1) % 32);
+            uint32 submask = 1 << ((nodeidx - 1) % 32);
             if ((m_taximask[field] & submask) != submask)
             {
                 m_taximask[field] |= submask;
@@ -972,7 +972,7 @@ class PlayerTaxi
         std::deque<uint32> m_TaxiDestinations;
 };
 
-std::ostringstream& operator<< (std::ostringstream& ss, PlayerTaxi const& taxi);
+std::ostringstream& operator << (std::ostringstream& ss, PlayerTaxi const& taxi);
 
 class Player;
 
@@ -2694,8 +2694,8 @@ class Player : public Unit, public GridObject<Player>
         uint32 _activeCheats;
 };
 
-void AddItemsSetItem(Player*player, Item* item);
-void RemoveItemsSetItem(Player*player, ItemTemplate const* proto);
+void AddItemsSetItem(Player* player, Item* item);
+void RemoveItemsSetItem(Player* player, ItemTemplate const* proto);
 
 // "the bodies of template functions must be made available in a header file"
 template <class T> T Player::ApplySpellMod(uint32 spellId, SpellModOp op, T &basevalue, Spell* spell)
