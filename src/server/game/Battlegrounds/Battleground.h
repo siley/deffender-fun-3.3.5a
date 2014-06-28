@@ -173,14 +173,6 @@ struct BattlegroundObjectInfo
     uint32      spellid;
 };
 
-enum ScoreType
-{
-    /** World of Warcraft Armory **/
-    SCORE_DAMAGE_TAKEN          = 20,
-    SCORE_HEALING_TAKEN         = 21
-    /** World of Warcraft Armory **/
-};
-
 enum ArenaType
 {
     ARENA_TYPE_2v2          = 2,
@@ -220,14 +212,6 @@ enum BattlegroundStartingEventsIds
     BG_STARTING_EVENT_FOURTH    = 3
 };
 #define BG_STARTING_EVENT_COUNT 4
-
-struct BattlegroundScore
-{
-    /** World of Warcraft Armory **/
-    uint32 DamageTaken;
-    uint32 HealingTaken;
-    /** World of Warcraft Armory **/
-};
 
 enum BGHonorMode
 {

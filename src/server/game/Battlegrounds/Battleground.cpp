@@ -869,48 +869,7 @@ void Battleground::EndBattleground(uint32 winner)
                 _arenaTeamScores[winnerId]->Assign(winnerChange, winnerMatchmakerRating + winnerMatchmakerChange, winnerArenaTeam->GetName());
                 _arenaTeamScores[loserId]->Assign(loserChange, loserMatchmakerRating + loserMatchmakerChange, loserArenaTeam->GetName());
 
-                /** World of Warcraft Armory **/
-                uint32 maxChartID;
-                QueryResult result = CharacterDatabase.PQuery("SELECT MAX(gameid) FROM armory_game_chart");
-                if (!result)
-                    maxChartID = 0;
-                else
-                {
-                    maxChartID = (*result)[0].GetUInt32();
-                }
-                uint32 gameID = maxChartID+1;
-
-                for (BattlegroundScoreMap::const_iterator itr = GetPlayerScoresBegin(); itr != GetPlayerScoresEnd(); ++itr)
-                {
-                    Player *plr = ObjectAccessor::FindPlayer(itr->first);
-                    if (!plr)
-                        continue;
-                    uint32 plTeamID = plr->GetArenaTeamId(winnerArenaTeam->GetSlot());
-                    int changeType;
-                    uint32 resultRating;
-                    uint32 resultTeamID;
-                    int32 ratingChange;
-                    if (plTeamID == winnerArenaTeam->GetId())
-                    {
-                        changeType = 1; //win
-                        resultRating = winnerTeamRating;
-                        resultTeamID = plTeamID;
-                        ratingChange = winnerChange;
-                    }
-                    else
-                    {
-                        changeType = 2; //lose
-                        resultRating = loserTeamRating;
-                        resultTeamID = loserArenaTeam->GetId();
-                        ratingChange = loserChange;
-                    }
-                    std::ostringstream sql_query;
-                    //                                                        gameid,              teamid,                     guid,                    changeType,             ratingChange,               teamRating,                  damageDone,                          deaths,                          healingDone,                           damageTaken,,                           healingTaken,                         killingBlows,                      mapId,                 start,                   end
-                    sql_query << "INSERT INTO armory_game_chart (`gameid`,`teamid`,`guid`,`changeType`,`ratingChange`,`teamRating`,`damageDone`,`deaths`,`healingDone`,`damageTaken`,`healingTaken`,`killingBlows`,`mapId`,`start`,`end`) VALUES ('" << gameID << "', '" << resultTeamID << "', '" << plr->GetGUID() << "', '" << changeType << "', '" << ratingChange << "', '" << resultRating << "', '" << itr->second->DamageDone << "', '" << itr->second->Deaths << "', '" << itr->second->HealingDone << "', '" << itr->second->DamageTaken << "', '" << itr->second->HealingTaken << "', '" << itr->second->KillingBlows << "', '" << m_MapId << "', '" << m_StartTime << "', '" << m_EndTime << "')";
-                    CharacterDatabase.Execute(sql_query.str().c_str());
-                }
-                /** World of Warcraft Armory **/
-				TC_LOG_DEBUG("bg.arena", "Arena match Type: %u for Team1Id: %u - Team2Id: %u ended. WinnerTeamId: %u. Winner rating: +%d, Loser rating: %d", m_ArenaType, m_ArenaTeamIds[TEAM_ALLIANCE], m_ArenaTeamIds[TEAM_HORDE], winnerArenaTeam->GetId(), winnerChange, loserChange);
+                TC_LOG_DEBUG("bg.arena", "Arena match Type: %u for Team1Id: %u - Team2Id: %u ended. WinnerTeamId: %u. Winner rating: +%d, Loser rating: %d", m_ArenaType, m_ArenaTeamIds[TEAM_ALLIANCE], m_ArenaTeamIds[TEAM_HORDE], winnerArenaTeam->GetId(), winnerChange, loserChange);
                 if (sWorld->getBoolConfig(CONFIG_ARENA_LOG_EXTENDED_INFO))
                     for (auto const& score : PlayerScores)
                         if (Player* player = ObjectAccessor::FindPlayer(MAKE_NEW_GUID(score.first, 0, HIGHGUID_PLAYER)))
