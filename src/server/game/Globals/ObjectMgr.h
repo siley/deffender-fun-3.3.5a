@@ -1311,6 +1311,8 @@ class ObjectMgr
         void LoadFactionChangeSpells();
         void LoadFactionChangeTitles();
 
+        bool IsTransportMap(uint32 mapId) const { return _transportMaps.count(mapId); }
+
     private:
         // first free id for selected id type
         uint32 _auctionId;
