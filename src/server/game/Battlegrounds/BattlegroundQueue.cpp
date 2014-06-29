@@ -149,6 +149,26 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
 
     ginfo->Players.clear();
 
+    if (!isRated && (ginfo->BgTypeId == BATTLEGROUND_AV || ginfo->BgTypeId == BATTLEGROUND_WS || ginfo->BgTypeId == BATTLEGROUND_EY
+		|| ginfo->BgTypeId == BATTLEGROUND_RB || ginfo->BgTypeId == BATTLEGROUND_AB))
+	{
+		uint32 alliQueueSize = 0;
+		uint32 hordeQueueSize = 0;
+		
+		GroupsQueueType::const_iterator itr;
+		for (itr = m_QueuedGroups[bracketId][BG_QUEUE_NORMAL_ALLIANCE].begin(); itr != m_QueuedGroups[bracketId][BG_QUEUE_NORMAL_ALLIANCE].end(); ++itr)
+			if (!(*itr)->IsInvitedToBGInstanceGUID)
+			alliQueueSize += (*itr)->Players.size();
+		for (itr = m_QueuedGroups[bracketId][BG_QUEUE_NORMAL_HORDE].begin(); itr != m_QueuedGroups[bracketId][BG_QUEUE_NORMAL_HORDE].end(); ++itr)
+			if (!(*itr)->IsInvitedToBGInstanceGUID)
+			hordeQueueSize += (*itr)->Players.size();
+		
+			if (alliQueueSize > hordeQueueSize)
+			ginfo->Team = HORDE;
+		else if (alliQueueSize < hordeQueueSize)
+			ginfo->Team = ALLIANCE;
+	}
+
     //compute index (if group is premade or joined a rated match) to queues
     uint32 index = 0;
     if (!isRated && !isPremade)
@@ -797,8 +817,10 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
     }
 
     // get the min. players per team, properly for larger arenas as well. (must have full teams for arena matches!)
-    uint32 MinPlayersPerTeam = bg_template->GetMinPlayersPerTeam();
-    uint32 MaxPlayersPerTeam = bg_template->GetMaxPlayersPerTeam();
+    /*uint32 MinPlayersPerTeam = bg_template->GetMinPlayersPerTeam();
+	  uint32 MaxPlayersPerTeam = bg_template->GetMaxPlayersPerTeam();*/
+	uint32 MinPlayersPerTeam = 2;
+	uint32 MaxPlayersPerTeam = 10;
 
     if (bg_template->isArena())
     {

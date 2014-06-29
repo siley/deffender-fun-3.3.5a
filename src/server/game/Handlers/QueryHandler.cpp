@@ -45,10 +45,14 @@ void WorldSession::SendNameQueryOpcode(uint64 guid)
         return;
     }
 
+    bool InBG = false;
+	if (player && GetPlayer())
+		InBG = player->InBattleground() && GetPlayer()->InBattleground();
+
     data << uint8(0);                               // name known
     data << nameData->m_name;                       // played name
     data << uint8(0);                               // realm name - only set for cross realm interaction (such as Battlegrounds)
-    data << uint8(nameData->m_race);
+    data << uint8(InBG ? player->GetFakeRace() : nameData->m_race);
     data << uint8(nameData->m_gender);
     data << uint8(nameData->m_class);
 

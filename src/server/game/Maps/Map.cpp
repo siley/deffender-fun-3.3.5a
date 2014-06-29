@@ -3248,11 +3248,20 @@ bool BattlegroundMap::AddPlayerToMap(Player* player)
 void BattlegroundMap::RemovePlayerFromMap(Player* player, bool remove)
 {
 	if (player && player->isSpectator() && !player->isSpectateCanceled())
-	{
 		player->SetSpectate(false);
-	}
 
-    TC_LOG_INFO("maps", "MAP: Removing player '%s' from bg '%u' of map '%s' before relocating to another map", player->GetName().c_str(), GetInstanceId(), GetMapName());
+    if (IsBattleground() && player)
+ 	{
+        player->_updatedScore = false;
+		player->_fakeLeader = NULL;
+		player->setFactionForRace(player->getRace());
+		if (player->IsAlliance())
+			player->SetTeam(ALLIANCE);
+		else
+			player->SetTeam(HORDE);
+ 	}
+
+        TC_LOG_INFO("maps", "MAP: Removing player '%s' from bg '%u' of map '%s' before relocating to another map", player->GetName().c_str(), GetInstanceId(), GetMapName());
     Map::RemovePlayerFromMap(player, remove);
 }
 

@@ -925,6 +925,17 @@ void Battleground::EndBattleground(uint32 winner)
         if (player->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION))
             player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
 
+        if (isBattleground())
+		{
+			player->_updatedScore = false;
+			player->_fakeLeader = NULL;
+			player->setFactionForRace(player->getRace());
+			if (player->IsAlliance())
+				player->SetTeam(ALLIANCE);
+			else
+				player->SetTeam(HORDE);
+		}
+
         if (isArena())
         {
             player->m_clicked = false;
@@ -1094,6 +1105,17 @@ void Battleground::RemovePlayerAtLeave(uint64 guid, bool Transport, bool SendPac
     else // try to resurrect the offline player. If he is alive nothing will happen
         sObjectAccessor->ConvertCorpseForPlayer(guid);
 
+    if (isBattleground() && player)
+	{
+		player->_updatedScore = false;
+		player->_fakeLeader = NULL;
+		player->setFactionForRace(player->getRace());
+		if (player->IsAlliance())
+			player->SetTeam(ALLIANCE);
+		else
+			player->SetTeam(HORDE);
+	}
+
     RemovePlayer(player, guid, team);                           // BG subclass specific code
 
     if (participant) // if the player was a match participant, remove auras, calc rating, update queue
@@ -1248,11 +1270,23 @@ void Battleground::AddPlayer(Player* player)
     // Add to list/maps
     m_Players[guid] = bp;
 
-    UpdatePlayersCountByTeam(team, false);                  // +1 player
+    if (!player->_updatedScore)
+		UpdatePlayersCountByTeam(team, false);                  // +1 player
 
     WorldPacket data;
     sBattlegroundMgr->BuildPlayerJoinedBattlegroundPacket(&data, player);
     SendPacketToTeam(team, &data, player, false);
+
+    for (BattlegroundPlayerMap::const_iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
+		if (Player* tmpPlayer = _GetPlayer(itr, "SendPacketToAll"))
+		{
+			tmpPlayer->GetSession()->SendNameQueryOpcode(guid);
+			for (BattlegroundPlayerMap::const_iterator citr = m_Players.begin(); citr != m_Players.end(); ++citr)
+			{
+				if (Player* tmpPlayer2 = _GetPlayer(citr, "SendPacketToAll"))
+					tmpPlayer2->GetSession()->SendNameQueryOpcode(tmpPlayer->GetGUID());
+			}
+		}
 
     player->RemoveAurasByType(SPELL_AURA_MOUNTED);
 
@@ -1380,6 +1414,17 @@ void Battleground::EventPlayerLoggedOut(Player* player)
 					EndBattleground(GetOtherTeam(player->GetBGTeam()));
 		}
     }
+
+    if (isBattleground())
+	{
+		player->_updatedScore = false;
+		player->_fakeLeader = NULL;
+		player->setFactionForRace(player->getRace());
+		if (player->IsAlliance())
+			player->SetTeam(ALLIANCE);
+		else
+			player->SetTeam(HORDE);
+	}
 
 	if (!player->isSpectator())
 		player->LeaveBattleground();

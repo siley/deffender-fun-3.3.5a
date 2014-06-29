@@ -910,6 +910,10 @@ Player::Player(WorldSession* session): Unit(true)
     // Arena Crystal
     m_clicked = false;
     timeDiff = 0;
+
+    _fakeLeader = NULL;
+	_updatedScore = false;
+
 	//Arena Spectator
 	spectatorFlag = false;
 	spectateCanceled = false;
@@ -27090,4 +27094,60 @@ Pet* Player::SummonPet(uint32 entry, float x, float y, float z, float ang, PetTy
 bool Player::IsLoading() const
 {
     return GetSession()->PlayerLoading();
+}
+
+// Cross-faction BG methods.. it might have been handled in somewhat better manner probably
+uint8 Player::GetFakeRace()
+{
+	if (IsAlliance() && GetTeam() == HORDE)
+	{
+		// Player is Alliance faction but he has HORDE team
+		switch (getClass())
+		{
+			case CLASS_ROGUE:			return RACE_UNDEAD_PLAYER;
+			case CLASS_WARRIOR:			return RACE_UNDEAD_PLAYER;
+			case CLASS_MAGE:			return RACE_UNDEAD_PLAYER;
+			case CLASS_PALADIN:			return RACE_BLOODELF;
+			case CLASS_DRUID:			return RACE_TAUREN;
+			case CLASS_WARLOCK:			return RACE_UNDEAD_PLAYER;
+			case CLASS_HUNTER:			return RACE_ORC;
+			case CLASS_PRIEST:			return RACE_UNDEAD_PLAYER;
+			case CLASS_DEATH_KNIGHT:	return RACE_UNDEAD_PLAYER;
+			case CLASS_SHAMAN:			return RACE_ORC;
+		}
+	}
+	else if (!IsAlliance() && GetTeam() == ALLIANCE)
+	{
+		// Player is Horde faction but he has ALLIANCE team
+		switch (getClass())
+		{
+			case CLASS_ROGUE:			return RACE_HUMAN;
+			case CLASS_WARRIOR:			return RACE_HUMAN;
+			case CLASS_MAGE:			return RACE_HUMAN;
+			case CLASS_PALADIN:			return RACE_HUMAN;
+			case CLASS_DRUID:			return RACE_NIGHTELF;
+			case CLASS_WARLOCK:			return RACE_HUMAN;
+			case CLASS_HUNTER:			return RACE_NIGHTELF;
+			case CLASS_PRIEST:			return RACE_HUMAN;
+			case CLASS_DEATH_KNIGHT:	return RACE_HUMAN;
+			case CLASS_SHAMAN:			return RACE_DRAENEI;
+		}
+	}
+	return getRace();
+}
+
+bool Player::IsAlliance()
+{
+	switch (getRace())
+	{
+		case RACE_HUMAN:
+		case RACE_NIGHTELF:
+		case RACE_GNOME:
+		case RACE_DWARF:
+		case RACE_DRAENEI:
+			return true;
+				default:
+		return false;
+	}
+	return false;
 }

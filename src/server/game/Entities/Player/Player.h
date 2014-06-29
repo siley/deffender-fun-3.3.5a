@@ -1923,6 +1923,7 @@ class Player : public Unit, public GridObject<Player>
 
         static uint32 TeamForRace(uint8 race);
         uint32 GetTeam() const { return m_team; }
+        void SetTeam(uint32 team) { m_team = team; }
         TeamId GetTeamId() const { return m_team == ALLIANCE ? TEAM_ALLIANCE : TEAM_HORDE; }
         void setFactionForRace(uint8 race);
 
@@ -2334,7 +2335,15 @@ class Player : public Unit, public GridObject<Player>
 
         std::string GetMapAreaAndZoneString();
         std::string GetCoordsMapAreaAndZoneString();
-        bool m_clicked;
+        uint8 GetFakeRace();
+
+		bool IsAlliance();
+		
+		Player* _fakeLeader;
+		bool _updatedScore;
+		
+		// Arena Crystal
+		bool m_clicked;
         int32 timeDiff;
 
         bool IsLoading() const;

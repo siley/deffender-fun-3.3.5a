@@ -734,13 +734,15 @@ void BattlegroundMgr::SendToBattleground(Player* player, uint32 instanceId, Batt
     {
         float x, y, z, O;
         uint32 mapid = bg->GetMapId();
-        uint32 team = player->GetBGTeam();
+        uint32 team = player->GetTeam();
         if (team == 0)
             team = player->GetTeam();
 
         bg->GetTeamStartLoc(team, x, y, z, O);
         TC_LOG_DEBUG("bg.battleground", "BattlegroundMgr::SendToBattleground: Sending %s to map %u, X %f, Y %f, Z %f, O %f (bgType %u)", player->GetName().c_str(), mapid, x, y, z, O, bgTypeId);
         player->TeleportTo(mapid, x, y, z, O);
+
+        // player->RestoreDefaultRace();
     }
     else
         TC_LOG_ERROR("bg.battleground", "BattlegroundMgr::SendToBattleground: Instance %u (bgType %u) not found while trying to teleport player %s", instanceId, bgTypeId, player->GetName().c_str());
