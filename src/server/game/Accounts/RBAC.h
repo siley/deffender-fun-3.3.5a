@@ -684,8 +684,8 @@ enum RBACPermissions
     RBAC_PERM_COMMAND_MAILBOX                                = 777,
 
     // custom permissions 1000+
-    RBAC_PERM_COMMAND_U                                      = 1000,
     RBAC_PERM_COMMAND_U_MMR                                  = 1001,
+    RBAC_PERM_COMMAND_SPEC_LEAVE                             = 1002,
 
     RBAC_PERM_MAX
 };

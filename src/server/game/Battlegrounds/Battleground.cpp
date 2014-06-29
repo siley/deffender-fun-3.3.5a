@@ -896,6 +896,9 @@ void Battleground::EndBattleground(uint32 winner)
 
     BattlegroundQueueTypeId bgQueueTypeId = BattlegroundMgr::BGQueueTypeId(GetTypeID(), GetArenaType());
 
+	// I need to send packet to spectators only once
+	bool spectPacketSent = false;
+
     uint8 aliveWinners = GetAlivePlayersCountByTeam(winner);
     for (BattlegroundPlayerMap::iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
     {
@@ -1000,6 +1003,28 @@ void Battleground::EndBattleground(uint32 winner)
         sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, this, player->GetBattlegroundQueueIndex(bgQueueTypeId), STATUS_IN_PROGRESS, TIME_TO_AUTOREMOVE, GetStartTime(), GetArenaType(), player->GetBGTeam());
         player->SendDirectMessage(&data);
         player->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_BATTLEGROUND, 1);
+
+		if (!spectPacketSent)
+		{
+			for (SpectatorList::const_iterator citer = m_Spectators.begin(); citer != m_Spectators.end(); citer++)
+			{
+				if (Player* tmpPlr = sObjectAccessor->FindPlayer(*citer))
+				{
+					for (BattlegroundPlayerMap::iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
+					{
+						Player* plr = _GetPlayer(itr, "EndBattleground");
+						if (!plr)
+							continue;
+						tmpPlr->GetSession()->SendNameQueryOpcode(plr->GetGUID());
+					}
+					WorldPacket tableData;
+					sBattlegroundMgr->BuildBattlegroundStatusPacket(&tableData, this, player->GetBattlegroundQueueIndex(bgQueueTypeId), STATUS_IN_PROGRESS, TIME_TO_AUTOREMOVE, GetStartTime(), GetArenaType(), player->GetBGTeam());
+					tmpPlr->GetSession()->SendPacket(&pvpLogData);
+					tmpPlr->GetSession()->SendPacket(&tableData);
+				}
+			}
+			spectPacketSent = true;
+		}
     }
 
     if (isArena() && isRated() && winnerArenaTeam && loserArenaTeam && winnerArenaTeam != loserArenaTeam)
@@ -1344,14 +1369,26 @@ void Battleground::EventPlayerLoggedOut(Player* player)
     m_Players[guid].OfflineRemoveTime = sWorld->GetGameTime() + MAX_OFFLINE_TIME;
     if (GetStatus() == STATUS_IN_PROGRESS)
     {
-        // drop flag and handle other cleanups
-        RemovePlayer(player, guid, GetPlayerTeam(guid));
+		if (!player->isSpectator())
+		{
+			// drop flag and handle other cleanups
+			RemovePlayer(player, guid, GetPlayerTeam(guid));
 
-        // 1 player is logging out, if it is the last, then end arena!
-        if (isArena())
-            if (GetAlivePlayersCountByTeam(player->GetBGTeam()) <= 1 && GetPlayersCountByTeam(GetOtherTeam(player->GetBGTeam())))
-                EndBattleground(GetOtherTeam(player->GetBGTeam()));
+			// 1 player is logging out, if it is the last, then end arena!
+			if (isArena())
+				if (GetAlivePlayersCountByTeam(player->GetBGTeam()) <= 1 && GetPlayersCountByTeam(GetOtherTeam(player->GetBGTeam())))
+					EndBattleground(GetOtherTeam(player->GetBGTeam()));
+		}
     }
+
+	if (!player->isSpectator())
+		player->LeaveBattleground();
+	else
+	{
+		player->TeleportToBGEntryPoint();
+		RemoveSpectator(player->GetGUID());
+	
+	}
 }
 
 // This method should be called only once ... it adds pointer to queue

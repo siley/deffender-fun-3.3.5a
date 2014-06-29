@@ -1463,6 +1463,7 @@ void AddSC_TW_boss_thorim();
 void AddSC_TW_boss_mimiron();
 void AddSC_npc_icc_buff();
 void AddSC_evento_midsummer();
+void AddSC_ArenaWatcher();
 #endif
 
 void AddCustomScripts()
@@ -1486,5 +1487,6 @@ void AddCustomScripts()
     AddSC_TW_boss_mimiron();
     AddSC_npc_icc_buff();
     AddSC_evento_midsummer();
+    AddSC_ArenaWatcher();
 #endif
 }

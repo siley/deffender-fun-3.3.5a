@@ -62,6 +62,8 @@ struct BattlegroundData
     BGFreeSlotQueueContainer BGFreeSlotQueue;
 };
 
+typedef std::map<BattlegroundTypeId, BattlegroundData> BattlegroundDataContainer;
+
 class BattlegroundMgr
 {
     friend class ACE_Singleton<BattlegroundMgr, ACE_Null_Mutex>;
@@ -134,13 +136,14 @@ class BattlegroundMgr
             return BATTLEGROUND_TYPE_NONE;
         }
 
+		BattlegroundDataContainer GetAllBattlegrounds() { return bgDataStore; };
+
     private:
         bool CreateBattleground(CreateBattlegroundData& data);
         uint32 CreateClientVisibleInstanceId(BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id);
         static bool IsArenaType(BattlegroundTypeId bgTypeId);
         BattlegroundTypeId GetRandomBG(BattlegroundTypeId id);
 
-        typedef std::map<BattlegroundTypeId, BattlegroundData> BattlegroundDataContainer;
         BattlegroundDataContainer bgDataStore;
         void DynamicMMR(uint32 diff);
 
