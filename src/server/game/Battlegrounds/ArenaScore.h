@@ -40,6 +40,12 @@ struct ArenaScore : public BattlegroundScore
             data << uint8(TeamId);
             data << uint32(DamageDone);
             data << uint32(HealingDone);
+
+            BuildObjectivesBlock(data);
+        }
+
+        void BuildObjectivesBlock(WorldPacket& data) final
+        {
             data << uint32(0); // Objectives Count
         }
 
@@ -51,43 +57,7 @@ struct ArenaScore : public BattlegroundScore
             return stream.str();
         }
 
-        uint8 TeamId; // TEAM_ALLIANCE or TEAM_HORDE
-};
-
-struct ArenaTeamScore
-{
-    friend class Battleground;
-
-    protected:
-        ArenaTeamScore() : RatingChange(0), MatchmakerRating(0) { }
-
-        virtual ~ArenaTeamScore() { }
-
-        void Assign(int32 ratingChange, uint32 matchMakerRating, std::string const& teamName)
-        {
-            RatingChange = ratingChange;
-            MatchmakerRating = matchMakerRating;
-            TeamName = teamName;
-        }
-
-        void BuildRatingInfoBlock(WorldPacket& data)
-        {
-            uint32 ratingLost = std::abs(std::min(RatingChange, 0));
-            uint32 ratingWon = std::max(RatingChange, 0);
-
-            data << uint32(ratingLost);
-            data << uint32(ratingWon);
-            data << uint32(MatchmakerRating);
-        }
-
-        void BuildTeamInfoBlock(WorldPacket& data)
-        {
-            data << TeamName;
-        }
-
-        int32 RatingChange;
-        uint32 MatchmakerRating;
-        std::string TeamName;
+        uint8 TeamId; // bgTeamId
 };
 
 #endif // TRINITY_ARENA_SCORE_H
