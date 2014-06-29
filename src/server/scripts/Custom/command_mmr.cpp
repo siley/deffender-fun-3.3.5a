@@ -17,7 +17,7 @@ public:
     {
         static ChatCommand commandTable[] =
         {
-            { "mmr",            SEC_PLAYER,  false, &HandleMMRCommand,             "", NULL },
+            { "mmr",            rbac::RBAC_PERM_COMMAND_U_MMR, false, &HandleMMRCommand, "", NULL },
             { NULL,             0,                  false, NULL,                              "", NULL }
         };
         return commandTable;
