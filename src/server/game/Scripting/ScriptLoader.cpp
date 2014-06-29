@@ -1464,6 +1464,7 @@ void AddSC_TW_boss_mimiron();
 void AddSC_npc_icc_buff();
 void AddSC_evento_midsummer();
 void AddSC_ArenaWatcher();
+void AddSC_arena_top_teams();
 #endif
 
 void AddCustomScripts()
@@ -1488,5 +1489,6 @@ void AddCustomScripts()
     AddSC_npc_icc_buff();
     AddSC_evento_midsummer();
     AddSC_ArenaWatcher();
+    AddSC_arena_top_teams();
 #endif
 }
