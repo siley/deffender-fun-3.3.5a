@@ -141,7 +141,7 @@ void BattlegroundAB::PostUpdateImpl(uint32 diff)
 
                 if (m_ReputationScoreTics[team] >= m_ReputationTics)
                 {
-                    RewardReputationToTeam(509, 510, 10, team == ALLIANCE ? ALLIANCE : HORDE);
+                    (team == TEAM_ALLIANCE) ? RewardReputationToTeam(509, 10, ALLIANCE) : RewardReputationToTeam(510, 10, HORDE);
                     m_ReputationScoreTics[team] -= m_ReputationTics;
                 }
 
