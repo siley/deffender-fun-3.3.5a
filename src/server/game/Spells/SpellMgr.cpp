@@ -2382,7 +2382,7 @@ void SpellMgr::LoadPetLevelupSpellMap()
                 if (skillLine->skillId != creatureFamily->skillLine[j])
                     continue;
 
-                if (skillLine->AutolearnType != SKILL_LINE_ABILITY_LEARNED_ON_SKILL_LEARN)
+                if (skillLine->learnOnGetSkill != ABILITY_LEARNED_ON_GET_RACE_OR_CLASS_SKILL)
                     continue;
 
                 SpellInfo const* spell = GetSpellInfo(skillLine->spellId);

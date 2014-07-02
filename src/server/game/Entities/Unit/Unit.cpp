@@ -2873,10 +2873,12 @@ uint32 Unit::GetWeaponSkillValue (WeaponAttackType attType, Unit const* target) 
         if (IsInFeralForm())
             return GetMaxSkillValueForLevel();              // always maximized SKILL_FERAL_COMBAT in fact
 
-        // weapon skill or (unarmed for base attack)
-        uint32 skill = SKILL_UNARMED;
-        if (item)
+        // weapon skill or (unarmed for base attack and fist weapons)
+        uint32 skill;
+        if (item && item->GetSkill() != SKILL_FIST_WEAPONS)
             skill = item->GetSkill();
+        else
+            skill = SKILL_UNARMED;
 
         // in PvP use full skill instead current skill value
         value = (target && target->IsControlledByPlayer())
@@ -7802,8 +7804,7 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
         ? ToPlayer()->GetItemByGuid(triggeredByAura->GetBase()->GetCastItemGUID()) : NULL;
 
     // Try handle unknown trigger spells
-    // triggered spells exists only in serverside spell_dbc
-    /// @todo: reverify and move these spells to spellscripts
+    if (sSpellMgr->GetSpellInfo(trigger_spell_id) == NULL)
     {
         switch (auraSpellInfo->SpellFamilyName)
         {
@@ -15470,7 +15471,7 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
                     group->SendLooter(creature, NULL);
 
                 // Update round robin looter only if the creature had loot
-                if (!loot->empty())
+                if (!creature->loot.empty())
                     group->UpdateLooterGuid(creature);
             }
         }
