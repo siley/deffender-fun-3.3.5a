@@ -65,7 +65,7 @@ void BattlegroundBE::StartingEventOpenDoors()
 void BattlegroundBE::AddPlayer(Player* player)
 {
     Battleground::AddPlayer(player);
-    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetBGTeam());
+    PlayerScores[player->GetGUIDLow()] = new ArenaScore(player->GetGUID(), player->GetTeam());
     UpdateArenaWorldState();
 }
 
