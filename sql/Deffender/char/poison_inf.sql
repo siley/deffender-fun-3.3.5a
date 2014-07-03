@@ -1,0 +1,1 @@
+UPDATE `item_instance` SET `count` = 1 WHERE `ItemEntry` IN (43232,43230,3775,43237,43235);

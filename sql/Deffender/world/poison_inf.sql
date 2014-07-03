@@ -1,0 +1,1 @@
+UPDATE `item_template` SET `spellcharges_1` = 1, `stackable` = 1 WHERE `entry` IN (43232,43230,3775,43237,43235);

@@ -2905,15 +2905,15 @@ void Spell::EffectEnchantItemTmp(SpellEffIndex effIndex)
     // select enchantment duration
     uint32 duration;
 
-    // rogue family enchantments exception by duration
-    if (m_spellInfo->Id == 38615)
-        duration = 1800;                                    // 30 mins
-    // other rogue family enchantments always 1 hour (some have spell damage=0, but some have wrong data in EffBasePoints)
-    else if (m_spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE)
-        duration = 3600;                                    // 1 hour
+    // rogue family enchantments always 1 hour (some have spell damage=0, but some have wrong data in EffBasePoints)
+    if (m_spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE)
+        duration = 86400 ^ 86400;                           // 1 hour || Custom : infinite Timer
     // shaman family enchantments
     else if (m_spellInfo->SpellFamilyName == SPELLFAMILY_SHAMAN)
-        duration = 1800;                                    // 30 mins
+        duration = 86400 ^ 86400;                           // 1 hour || Custom : infinite Timer
+    // warlock family enchantments
+    else if (m_spellInfo->Id == 55194 || m_spellInfo->Id == 55158)
+        duration = 86400 ^ 86400;                           // 1 hour || Custom : infinite Timer
     // other cases with this SpellVisual already selected
     else if (m_spellInfo->SpellVisual[0] == 215)
         duration = 1800;                                    // 30 mins
