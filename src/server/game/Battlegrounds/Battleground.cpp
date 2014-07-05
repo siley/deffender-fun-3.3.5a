@@ -781,18 +781,18 @@ void Battleground::RewardReputationToTeam(uint32 a_faction_id, uint32 h_faction_
         if (itr->second.OfflineRemoveTime)
             continue;
 
-        Player* player = ObjectAccessor::FindPlayer(itr->first);
+        Player* plr = ObjectAccessor::FindPlayer(itr->first);
 
-        if (!player)
+        if (!plr)
         {
-            TC_LOG_ERROR("misc", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
+            TC_LOG_ERROR("bg.battleground", "BattleGround:RewardReputationToTeam: %u not found!", itr->first);
             continue;
         }
 
-        uint32 team = player->GetTeam();
+        uint32 team = plr->GetTeam();
 
         if (team == teamId)
-            player->GetReputationMgr().ModifyReputation(player->GetOTeam() == ALLIANCE ? a_factionEntry : h_factionEntry, Reputation);
+            plr->GetReputationMgr().ModifyReputation(plr->GetOTeam() == ALLIANCE ? a_factionEntry : h_factionEntry, Reputation);
     }
 }
 
@@ -1397,7 +1397,7 @@ void Battleground::EventPlayerLoggedOut(Player* player)
 			// 1 player is logging out, if it is the last, then end arena!
 			if (isArena())
 				if (GetAlivePlayersCountByTeam(player->GetTeam()) <= 1 && GetPlayersCountByTeam(GetOtherTeam(player->GetTeam())))
-                EndBattleground(GetOtherTeam(player->GetTeam()));
+                   EndBattleground(GetOtherTeam(player->GetTeam()));
 		}
     }
 

@@ -5,20 +5,24 @@
 #include "Chat.h"
 #include "BattlegroundQueue.h"
 
+/*####################################################################################
+###############################CROSSFACTION BATTLEGROUNDS#############################
+####################################################################################*/
+
 uint8 Unit::getRace(bool forceoriginal) const
 {
     if (GetTypeId() == TYPEID_PLAYER)
     {
-        Player* player = ((Player*)this);
+        Player* pPlayer = ((Player*)this);
 
         if (forceoriginal)
-            return player->getORace();
+            return pPlayer->getORace();
 
-        if (player->InArena())
+        if (pPlayer->InArena())
             return GetByteValue(UNIT_FIELD_BYTES_0, 0);
 
-        if (!player->IsPlayingNative())
-            return player->getFRace();
+        if (!pPlayer->IsPlayingNative())
+            return pPlayer->getFRace();
     }
 
     return GetByteValue(UNIT_FIELD_BYTES_0, 0);
@@ -28,15 +32,16 @@ bool Player::SendRealNameQuery()
 {
     if (IsPlayingNative())
         return false;
-    WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8+1+1+1+1+1+10));
-    data.appendPackGUID(GetGUID());                                          // player guid
-    data << uint8(0);                                                        // added in 3.1; if > 1, then end of packet
-    data << GetName();                                                       // played name
-    data << uint8(0);                                                        // realm name for cross realm BG usage
+
+    WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 10));
+    data.appendPackGUID(GetGUID());                             // player guid
+    data << uint8(0);                                       // added in 3.1; if > 1, then end of packet
+    data << GetName();                                   // played name
+    data << uint8(0);                                       // realm name for cross realm BG usage
     data << uint8(getORace());
     data << uint8(getGender());
     data << uint8(getClass());
-    data << uint8(0);                                                        // is not declined
+    data << uint8(0);                                   // is not declined
     GetSession()->SendPacket(&data);
 
     return true;
@@ -44,56 +49,7 @@ bool Player::SendRealNameQuery()
 
 void Player::SetFakeRaceAndMorph()
 {
-    if (getClass() == CLASS_DRUID)
-    {
-        if (GetOTeam() == ALLIANCE)
-        {
-            if (getGender() == GENDER_MALE)
-            {
-                m_FakeMorph = FAKE_M_TAUREN;
-            }
-            else
-            {
-                m_FakeMorph = FAKE_F_TAUREN;
-            }
-            m_FakeRace = RACE_TAUREN;
-        }
-        else if (getGender() == GENDER_MALE) // HORDE PLAYER, ONLY HAVE MALE NELF ID
-        {
-            m_FakeMorph = FAKE_M_NELF;
-            m_FakeRace = RACE_NIGHTELF;
-        }
-        else
-            m_FakeRace = GetOTeam() == ALLIANCE ? RACE_BLOODELF : RACE_HUMAN;
-    }
-    else if (getClass() == CLASS_SHAMAN && GetOTeam() == HORDE && getGender() == GENDER_FEMALE)
-    {
-        m_FakeMorph = FAKE_F_DRANAEI; // Female Draenei
-        m_FakeRace = RACE_DRAENEI;
-    }
-    else
-    {
-        m_FakeRace = GetOTeam() == ALLIANCE ? RACE_BLOODELF : RACE_HUMAN;
-
-        if (GetOTeam() == HORDE)
-        {
-            if (getGender() == GENDER_MALE)
-            {
-                m_FakeMorph = 19723;
-            }
-            else
-            {
-                m_FakeMorph = 19724;
-            }
-        }
-        else
-        {
-            if (getGender() == GENDER_MALE)
-                m_FakeMorph = 20578;
-            else
-                m_FakeMorph = 20579;
-        }
-    }
+m_FakeRace = GetOTeam() == ALLIANCE ? RACE_BLOODELF : RACE_HUMAN;
 }
 
 bool Player::SendBattleGroundChat(uint32 msgtype, std::string message)
@@ -101,25 +57,25 @@ bool Player::SendBattleGroundChat(uint32 msgtype, std::string message)
     // Select distance to broadcast to.
     float distance = msgtype == CHAT_MSG_SAY ? sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_SAY) : sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_YELL);
 
-    if (Battleground* bg = GetBattleground())
+    if (Battleground* pBattleGround = GetBattleground())
     {
-        if (bg->isArena()) // Only fake chat in BG's. CFBG should not interfere with arenas.
+        if (pBattleGround->isArena()) // Only fake chat in BG's. CFBG should not interfere with arenas.
             return false;
 
-        for (Battleground::BattlegroundPlayerMap::const_iterator itr = bg->GetPlayers().begin(); itr != bg->GetPlayers().end(); ++itr)
+        for (Battleground::BattlegroundPlayerMap::const_iterator itr = pBattleGround->GetPlayers().begin(); itr != pBattleGround->GetPlayers().end(); ++itr)
         {
-            if (Player* player = ObjectAccessor::FindPlayer(itr->first))
+            if (Player* pPlayer = ObjectAccessor::FindPlayer(itr->first))
             {
-                if (GetDistance2d(player->GetPositionX(), player->GetPositionY()) <= distance)
+                if (GetDistance2d(pPlayer->GetPositionX(), pPlayer->GetPositionY()) <= distance)
                 {
                     WorldPacket data(SMSG_MESSAGECHAT, 200);
 
-                    if (GetTeam() == player->GetTeam())
-                        ChatHandler::BuildChatPacket(data, (ChatMsg)msgtype, LANG_UNIVERSAL, this, player, message);
+                    if (GetTeam() == pPlayer->GetTeam())
+                        BuildPlayerChat(&data, msgtype, message, LANG_UNIVERSAL);
                     else if (msgtype != CHAT_MSG_EMOTE)
-                        ChatHandler::BuildChatPacket(data, (ChatMsg)msgtype, player->GetTeam() == ALLIANCE ? LANG_ORCISH : LANG_COMMON, this, player, message);
+                       BuildPlayerChat(&data, msgtype, message, pPlayer->GetTeam() == ALLIANCE ? LANG_ORCISH : LANG_COMMON);
 
-                    player->GetSession()->SendPacket(&data);
+                    pPlayer->GetSession()->SendPacket(&data);
                 }
             }
         }
@@ -133,19 +89,43 @@ void Player::MorphFit(bool value)
 {
     if (!IsPlayingNative() && value)
     {
-        SetDisplayId(GetFakeMorph());
-        SetNativeDisplayId(GetFakeMorph());
+        if (GetOTeam() == HORDE)
+        {
+            if (getGender() == GENDER_MALE)
+            {
+                SetDisplayId(19723);
+                SetNativeDisplayId(19723);
+            }
+            else
+            {
+                SetDisplayId(19724);
+                SetNativeDisplayId(19724);
+            }
+        }
+        else
+        {
+            if (getGender() == GENDER_MALE)
+            {
+                SetDisplayId(20578);
+                SetNativeDisplayId(20578);
+            }
+            else
+            {
+                SetDisplayId(20579);
+                SetNativeDisplayId(20579);
+            }
+        }
     }
     else
         InitDisplayIds();
 }
 
-void Player::FitPlayerInTeam(bool action, Battleground* bg)
+void Player::FitPlayerInTeam(bool action, Battleground* pBattleGround)
 {
-    if (!bg)
-        bg = GetBattleground();
+    if (!pBattleGround)
+        pBattleGround = GetBattleground();
 
-    if ((!bg || bg->isArena()) && action)
+    if ((!pBattleGround || pBattleGround->isArena()) && action)
         return;
 
     if(!IsPlayingNative() && action)
@@ -160,8 +140,8 @@ void Player::FitPlayerInTeam(bool action, Battleground* bg)
 
     MorphFit(action);
 
-    if (bg && action)
-        SendChatMessage("%sYou are playing for the %s%s in this %s", MSG_COLOR_WHITE, GetTeam() == ALLIANCE ? MSG_COLOR_DARKBLUE"alliance" : MSG_COLOR_RED"horde", MSG_COLOR_WHITE, bg->GetName());
+    if (pBattleGround && action)
+        SendChatMessage("%sYou are playing for the %s%s in this %s", MSG_COLOR_WHITE, GetTeam() == ALLIANCE ? MSG_COLOR_DARKBLUE"alliance" : MSG_COLOR_RED"horde", MSG_COLOR_WHITE, pBattleGround->GetName());
 }
 
 void Player::DoForgetPlayersInList()
@@ -173,29 +153,29 @@ void Player::DoForgetPlayersInList()
         WorldPacket data(SMSG_INVALIDATE_PLAYER, 8);
         data << *itr;
         GetSession()->SendPacket(&data);
-        if (Player* player = ObjectAccessor::FindPlayer(*itr))
-            GetSession()->SendNameQueryOpcode(player->GetGUID());
+        if (Player* pPlayer = ObjectAccessor::FindPlayer(*itr))
+            GetSession()->SendNameQueryOpcode(pPlayer->GetGUID());
     }
     m_FakePlayers.clear();
 }
 
-void Player::DoForgetPlayersInBG(Battleground* bg)
+void Player::DoForgetPlayersInBG(Battleground* pBattleGround)
 {
-    for (Battleground::BattlegroundPlayerMap::const_iterator itr = bg->GetPlayers().begin(); itr != bg->GetPlayers().end(); ++itr)
+    for (Battleground::BattlegroundPlayerMap::const_iterator itr = pBattleGround->GetPlayers().begin(); itr != pBattleGround->GetPlayers().end(); ++itr)
     {
         // Here we invalidate players in the bg to the added player
         WorldPacket data1(SMSG_INVALIDATE_PLAYER, 8);
         data1 << itr->first;
         GetSession()->SendPacket(&data1);
 
-        if (Player* player = ObjectAccessor::FindPlayer(itr->first))
+        if (Player* pPlayer = ObjectAccessor::FindPlayer(itr->first))
         {
-            GetSession()->SendNameQueryOpcode(player->GetGUID()); // Send namequery answer instantly if player is available
+            GetSession()->SendNameQueryOpcode(pPlayer->GetGUID()); // Send namequery answer instantly if player is available
             // Here we invalidate the player added to players in the bg
             WorldPacket data2(SMSG_INVALIDATE_PLAYER, 8);
             data2 << GetGUID();
-            player->GetSession()->SendPacket(&data2);
-            player->GetSession()->SendNameQueryOpcode(GetGUID());
+            pPlayer->GetSession()->SendPacket(&data2);
+            pPlayer->GetSession()->SendNameQueryOpcode(GetGUID());
         }
     }
 }

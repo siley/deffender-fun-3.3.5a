@@ -17555,7 +17555,7 @@ bool Player::LoadFromDB(uint32 guid, SQLQueryHolder *holder)
     SetORace();
     m_team = TeamForRace(getORace());
     SetFakeRaceAndMorph(); // m_team must be set before this can be used.
-    setFactionForRace(getORace());
+    setFactionForRace(getORace());//Need to call it to initialize m_team (m_team can be calculated from race)
 
     SetUInt32Value(UNIT_FIELD_LEVEL, fields[6].GetUInt8());
     SetUInt32Value(PLAYER_XP, fields[7].GetUInt32());
@@ -20848,6 +20848,18 @@ void Player::StopCastingCharm()
     }
 }
 
+void Player::BuildPlayerChat(WorldPacket* data, uint8 msgtype, const std::string& text, uint32 language) const
+{
+    *data << uint8(msgtype);
+    *data << uint32(language);
+    *data << uint64(GetGUID());
+    *data << uint32(0);                                      // constant unknown time
+    *data << uint64(GetGUID());
+    *data << uint32(text.length() + 1);
+    *data << text;
+    *data << uint8(GetChatTag());
+}
+
 void Player::Say(const std::string& text, const uint32 language)
 {
     std::string _text(text);
@@ -21868,26 +21880,22 @@ void Player::InitDataForForm(bool reapplyMods)
 
 void Player::InitDisplayIds()
 {
-    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getORace(), getClass());
+    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
     if (!info)
     {
         TC_LOG_ERROR("entities.player", "Player %u has incorrect race/class pair. Can't init display ids.", GetGUIDLow());
         return;
     }
 
-    bool isMorphed = GetNativeDisplayId() != GetDisplayId();
-
     uint8 gender = getGender();
     switch (gender)
     {
         case GENDER_FEMALE:
-            if (!isMorphed)
-                SetDisplayId(info->displayId_f);
+            SetDisplayId(info->displayId_f);
             SetNativeDisplayId(info->displayId_f);
             break;
         case GENDER_MALE:
-            if (!isMorphed)
-                SetDisplayId(info->displayId_m);
+            SetDisplayId(info->displayId_m);
             SetNativeDisplayId(info->displayId_m);
             break;
         default:
@@ -22741,7 +22749,7 @@ void Player::ReportedAfkBy(Player* reporter)
 
 WorldLocation Player::GetStartPosition() const
 {
-    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
+    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getORace(), getClass());
     uint32 mapId = info->mapId;
     if (getClass() == CLASS_DEATH_KNIGHT && HasSpell(50977))
         mapId = 0;
@@ -23420,11 +23428,11 @@ void Player::resetSpells(bool myClassOnly)
 void Player::learnDefaultSpells()
 {
     // learn default race/class spells
-    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getORace(), getClass());
+    PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
     for (PlayerCreateInfoSpells::const_iterator itr = info->spell.begin(); itr != info->spell.end(); ++itr)
     {
         uint32 tspell = *itr;
-        TC_LOG_DEBUG("entities.player.loading", "PLAYER (Class: %u Race: %u): Adding initial spell, id = %u", uint32(getClass()), uint32(getORace()), tspell);
+        TC_LOG_DEBUG("entities.player.loading", "PLAYER (Class: %u Race: %u): Adding initial spell, id = %u", uint32(getClass()), uint32(getRace()), tspell);
         if (!IsInWorld())                                    // will send in INITIAL_SPELLS in list anyway at map add
             addSpell(tspell, true, true, true, false);
         else                                                // but send in normal spell in game learn case

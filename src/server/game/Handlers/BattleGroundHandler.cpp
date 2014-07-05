@@ -35,7 +35,7 @@
 #include "DisableMgr.h"
 #include "Group.h"
 
-#include "Cfbg.h"
+#include "Cfbg/Cfbg.h"
 
 void WorldSession::HandleBattlemasterHelloOpcode(WorldPacket& recvData)
 {
@@ -283,22 +283,14 @@ void WorldSession::HandleBattlegroundPlayerPositionsOpcode(WorldPacket& /*recvDa
     data << flagCarrierCount;
     if (allianceFlagCarrier)
     {
-        if (allianceFlagCarrier->SendRealNameQuery())
-            data << uint64(allianceFlagCarrier->GetGUID() + LIMIT_UINT32);
-        else
-            data << uint64(allianceFlagCarrier->GetGUID());
-
+        data << uint64(allianceFlagCarrier->GetGUID());
         data << float(allianceFlagCarrier->GetPositionX());
         data << float(allianceFlagCarrier->GetPositionY());
     }
 
     if (hordeFlagCarrier)
     {
-        if (hordeFlagCarrier->SendRealNameQuery())
-            data << uint64(hordeFlagCarrier->GetGUID() + LIMIT_UINT32);
-        else
-            data << uint64(hordeFlagCarrier->GetGUID());
-
+        data << uint64(hordeFlagCarrier->GetGUID());
         data << float(hordeFlagCarrier->GetPositionX());
         data << float(hordeFlagCarrier->GetPositionY());
     }

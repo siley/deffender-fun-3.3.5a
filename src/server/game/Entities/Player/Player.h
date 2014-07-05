@@ -1091,7 +1091,6 @@ class Player : public Unit, public GridObject<Player>
     public:
         explicit Player(WorldSession* session);
         ~Player();
-
     private:
         bool m_ForgetBGPlayers;
         bool m_ForgetInListPlayers;
@@ -1101,11 +1100,12 @@ class Player : public Unit, public GridObject<Player>
     public:
         typedef std::vector<uint64> FakePlayers;
         void SendChatMessage(const char *format, ...);
-        void FitPlayerInTeam(bool action, Battleground* bg = NULL);
+        void FitPlayerInTeam(bool action, Battleground* pBattleGround = NULL);
         void DoForgetPlayersInList();
-        void DoForgetPlayersInBG(Battleground* bg);
+        void DoForgetPlayersInBG(Battleground* pBattleGround);
         uint8 getORace() const { return m_RealRace; }
         void SetORace() { m_RealRace = GetByteValue(UNIT_FIELD_BYTES_0, 0); }; // SHOULD ONLY BE CALLED ON LOGIN
+        void SetFakeRace(); // SHOULD ONLY BE CALLED ON LOGIN
         void SetFakeRaceAndMorph(); // SHOULD ONLY BE CALLED ON LOGIN
         uint32 GetFakeMorph() { return m_FakeMorph; };
         uint8 getFRace() const { return m_FakeRace; }
@@ -1246,6 +1246,8 @@ class Player : public Unit, public GridObject<Player>
         void TextEmote(std::string const& text);
         /// Handles whispers from Addons and players based on sender, receiver's guid and language.
         void Whisper(std::string const& text, const uint32 language, uint64 receiver);
+        /// Constructs the player Chat data for the specific functions to use
+        void BuildPlayerChat(WorldPacket* data, uint8 msgtype, std::string const& text, uint32 language) const;
 
         /*********************************************************/
         /***                    STORAGE SYSTEM                 ***/
