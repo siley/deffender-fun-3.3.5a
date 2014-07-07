@@ -2618,8 +2618,37 @@ SpellMissInfo Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask, bool scaleA
 
                     // Haste modifies duration of channeled spells
                     if (m_spellInfo->IsChanneled())
-                        if (m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
-                            m_caster->ModSpellCastTime(aurSpellInfo, duration, this);
+                    {
+                        // Seduction with Improved Succubus talent - fix duration. 
+                        if (m_spellInfo->Id == 6358 && unit->GetTypeId() == TYPEID_PLAYER && m_originalCaster->GetOwner()) 
+                        { 
+                            float mod = 1.0f; 
+                            float durationadd = 0.0f; 
+
+                            if (m_originalCaster->GetOwner()->HasAura(18754)) 
+                                durationadd += float(1.5*IN_MILLISECONDS*0.22); 
+                            else if (m_originalCaster->GetOwner()->HasAura(18755)) 
+                                durationadd += float(1.5*IN_MILLISECONDS*0.44); 
+                            else if (m_originalCaster->GetOwner()->HasAura(18756)) 
+                                durationadd += float(1.5*IN_MILLISECONDS*0.66); 
+
+                            if (durationadd) 
+                            { 
+                                switch (m_diminishLevel) 
+                                { 
+                                case DIMINISHING_LEVEL_1: break; 
+                                    // lol, we lost 1 second here 
+                                case DIMINISHING_LEVEL_2: duration += 1000; mod = 0.5f; break;
+                                case DIMINISHING_LEVEL_3: duration += 1000; mod = 0.25f; break; 
+                                case DIMINISHING_LEVEL_IMMUNE: { m_spellAura->Remove(); return SPELL_MISS_IMMUNE; } 
+                                default: break; 
+                                } 
+                                durationadd *= mod; 
+                                duration += int32(durationadd); 
+                            } 
+                        } 
+                        m_originalCaster->ModSpellCastTime(aurSpellInfo, duration, this);
+                    }
                     // and duration of auras affected by SPELL_AURA_PERIODIC_HASTE
                     else if (m_originalCaster->HasAuraTypeWithAffectMask(SPELL_AURA_PERIODIC_HASTE, aurSpellInfo) || m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
                         duration = int32(duration * m_originalCaster->GetFloatValue(UNIT_MOD_CAST_SPEED));
@@ -3245,8 +3274,7 @@ void Spell::handle_immediate()
                 modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_DURATION, duration);
 
             // Apply haste mods
-            if (m_spellInfo->AttributesEx5 & SPELL_ATTR5_HASTE_AFFECT_DURATION)
-                m_caster->ModSpellCastTime(m_spellInfo, duration, this);
+            m_caster->ModSpellCastTime(m_spellInfo, duration, this);
 
             m_spellState = SPELL_STATE_CASTING;
             m_caster->AddInterruptMask(m_spellInfo->ChannelInterruptFlags);
