@@ -957,13 +957,8 @@ bool AuthSocket::_HandleRealmList()
         uint32 flag = realm.flag;
         RealmBuildInfo const* buildInfo = AuthHelper::GetBuildInfo(realm.gamebuild);
         if (!okBuild)
-        {
-            if (!buildInfo)
-                continue;
-
-            flag |= REALM_FLAG_OFFLINE | REALM_FLAG_SPECIFYBUILD;   // tell the client what build the realm is for
-        }
-
+            continue;
+    
         if (!buildInfo)
             flag &= ~REALM_FLAG_SPECIFYBUILD;
 
