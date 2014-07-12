@@ -14623,23 +14623,7 @@ void Unit::ProcDamageAndSpellFor(bool isVictim, Unit* target, uint32 procFlag, u
 
         // Remove charge (aura can be removed by triggers)
         if (prepare && useCharges && takeCharges)
-        {
-            if (GetTypeId() == TYPEID_PLAYER)
-            {
-                // Check dummy Proc Cooldown
-                if (!this->ToPlayer()->HasSpellCooldown(0x80000000 | Id))
-                {
-                    i->aura->DropCharge();
-                    // Add Dummy Proc Cooldown (if any) if spell procs form it's own aura
-                    if (cooldown && spellInfo->Id == Id)
-                        this->ToPlayer()->AddSpellCooldown(0x80000000 | Id, 0, time(NULL) + cooldown);
-                }
-            }
-            else
-            {
-                i->aura->DropCharge();
-            }
-        }
+            i->aura->DropCharge();
 
         i->aura->CallScriptAfterProcHandlers(aurApp, eventInfo);
 
