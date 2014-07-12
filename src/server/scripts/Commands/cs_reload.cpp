@@ -25,7 +25,6 @@ EndScriptData */
 #include "AccountMgr.h"
 #include "AchievementMgr.h"
 #include "AuctionHouseMgr.h"
-#include "BattlegroundMgr.h"
 #include "Chat.h"
 #include "CreatureTextMgr.h"
 #include "DisableMgr.h"
@@ -75,7 +74,6 @@ public:
             { "areatrigger_tavern",            rbac::RBAC_PERM_COMMAND_RELOAD_AREATRIGGER_TAVERN,               true,  &HandleReloadAreaTriggerTavernCommand,          "", NULL },
             { "areatrigger_teleport",          rbac::RBAC_PERM_COMMAND_RELOAD_AREATRIGGER_TELEPORT,             true,  &HandleReloadAreaTriggerTeleportCommand,        "", NULL },
             { "autobroadcast",                 rbac::RBAC_PERM_COMMAND_RELOAD_AUTOBROADCAST,                    true,  &HandleReloadAutobroadcastCommand,              "", NULL },
-            { "battleground_template",         rbac::RBAC_PERM_COMMAND_RELOAD_BATTLEGROUND_TEMPLATE,            true,  &HandleReloadBattlegroundTemplate,              "", NULL },
             { "broadcast_text",                rbac::RBAC_PERM_COMMAND_RELOAD_BROADCAST_TEXT,                   true,  &HandleReloadBroadcastTextCommand,              "", NULL },
             { "command",                       rbac::RBAC_PERM_COMMAND_RELOAD_COMMAND,                          true,  &HandleReloadCommandCommand,                    "", NULL },
             { "conditions",                    rbac::RBAC_PERM_COMMAND_RELOAD_CONDITIONS,                       true,  &HandleReloadConditions,                        "", NULL },
@@ -204,7 +202,6 @@ public:
         HandleReloadVehicleTemplateAccessoryCommand(handler, "");
 
         HandleReloadAutobroadcastCommand(handler, "");
-        HandleReloadBattlegroundTemplate(handler, "");
         return true;
     }
 
@@ -378,14 +375,6 @@ public:
         TC_LOG_INFO("misc", "Re-Loading Autobroadcasts...");
         sWorld->LoadAutobroadcasts();
         handler->SendGlobalGMSysMessage("DB table `autobroadcast` reloaded.");
-        return true;
-    }
-
-    static bool HandleReloadBattlegroundTemplate(ChatHandler* handler, char const* /*args*/)
-    {
-        TC_LOG_INFO("misc", "Re-Loading Battleground Templates...");
-        sBattlegroundMgr->LoadBattlegroundTemplates();
-        handler->SendGlobalGMSysMessage("DB table `battleground_template` reloaded.");
         return true;
     }
 

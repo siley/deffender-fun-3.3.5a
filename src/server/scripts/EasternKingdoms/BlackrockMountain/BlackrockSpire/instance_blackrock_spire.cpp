@@ -410,24 +410,24 @@ public:
 
         void Dragonspireroomstore()
         {
-            uint8 creatureCount;
+            uint8 creaturecount;
 
             for (uint8 i = 0; i < 7; ++i)
             {
-                creatureCount = 0;
+                creaturecount = 0;
 
                 if (GameObject* rune = instance->GetGameObject(go_roomrunes[i]))
                 {
-                    for (uint8 j = 0; j < 3; ++j)
+                    for (uint8 ii = 0; ii < 3; ++ii)
                     {
                         std::list<Creature*> creatureList;
-                        GetCreatureListWithEntryInGrid(creatureList, rune, DragonspireMobs[j], 15.0f);
+                        GetCreatureListWithEntryInGrid(creatureList, rune, DragonspireMobs[ii], 15.0f);
                         for (std::list<Creature*>::iterator itr = creatureList.begin(); itr != creatureList.end(); ++itr)
                         {
-                            if (Creature* creature = *itr)
+                            if (Creature* creatureList = *itr)
                             {
-                                runecreaturelist[i][creatureCount] = creature->GetGUID();
-                                ++creatureCount;
+                                runecreaturelist[i] [creaturecount] = creatureList->GetGUID();
+                                ++creaturecount;
                             }
                         }
                     }

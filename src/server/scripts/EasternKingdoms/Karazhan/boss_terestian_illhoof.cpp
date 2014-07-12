@@ -84,20 +84,29 @@ public:
 
         InstanceScript* instance;
 
+        uint64 TerestianGUID;
+
         uint32 AmplifyTimer;
 
         void Reset() override
         {
+            TerestianGUID = 0;
             AmplifyTimer = 2000;
         }
 
-        void EnterCombat(Unit* /*who*/) override { }
+        void EnterCombat(Unit* /*who*/) override
+        {
+        }
 
         void JustDied(Unit* /*killer*/) override
         {
-            Creature* Terestian = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_TERESTIAN));
-            if (Terestian && Terestian->IsAlive())
-                DoCast(Terestian, SPELL_BROKEN_PACT, true);
+            uint64 TerestianGUID = instance->GetData64(DATA_TERESTIAN);
+            if (TerestianGUID)
+            {
+                Unit* Terestian = ObjectAccessor::GetUnit(*me, TerestianGUID);
+                if (Terestian && Terestian->IsAlive())
+                    DoCast(Terestian, SPELL_BROKEN_PACT, true);
+            }
         }
 
         void UpdateAI(uint32 diff) override

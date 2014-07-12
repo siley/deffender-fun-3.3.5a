@@ -30,8 +30,7 @@ enum DataTypes
     DATA_HORSEMAN_EVENT             = 5,
     GAMEOBJECT_PUMPKIN_SHRINE       = 6,
 
-    DATA_VORREL                     = 7,
-    DATA_ARCANIST_DOAN              = 8
+    DATA_VORREL                     = 7
 };
 
 #endif // SCARLET_M_

@@ -435,6 +435,7 @@ bool Group::AddMember(Player* player)
         stmt->setUInt8(4, member.roles);
 
         CharacterDatabase.Execute(stmt);
+
     }
 
     SendUpdate();

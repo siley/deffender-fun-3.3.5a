@@ -355,6 +355,7 @@ void LFGMgr::Update(uint32 diff)
     if (m_QueueTimer > LFG_QUEUEUPDATE_INTERVAL)
     {
         m_QueueTimer = 0;
+        time_t currTime = time(NULL);
         for (LfgQueueContainer::iterator it = QueuesStore.begin(); it != QueuesStore.end(); ++it)
             it->second.UpdateQueueTimers(currTime);
     }
@@ -1706,13 +1707,14 @@ void LFGMgr::RemoveGroupData(uint64 guid)
     LfgState state = GetState(guid);
     // If group is being formed after proposal success do nothing more
     LfgGuidSet const& players = it->second.GetPlayers();
-    for (uint64 playerGUID : players)
+    for (LfgGuidSet::const_iterator it = players.begin(); it != players.end(); ++it)
     {
-        SetGroup(playerGUID, 0);
+        uint64 guid = (*it);
+        SetGroup(*it, 0);
         if (state != LFG_STATE_PROPOSAL)
         {
-            SetState(playerGUID, LFG_STATE_NONE);
-            SendLfgUpdateParty(playerGUID, LfgUpdateData(LFG_UPDATETYPE_REMOVED_FROM_QUEUE));
+            SetState(*it, LFG_STATE_NONE);
+            SendLfgUpdateParty(guid, LfgUpdateData(LFG_UPDATETYPE_REMOVED_FROM_QUEUE));
         }
     }
     GroupsStore.erase(it);

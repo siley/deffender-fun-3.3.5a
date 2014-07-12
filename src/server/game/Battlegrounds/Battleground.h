@@ -23,7 +23,6 @@
 #include "SharedDefines.h"
 #include "DBCEnums.h"
 #include "WorldPacket.h"
-#include "Object.h"
 
 class Creature;
 class GameObject;
@@ -35,6 +34,7 @@ class WorldPacket;
 class BattlegroundMap;
 
 struct BattlegroundScore;
+struct Position;
 struct PvPDifficultyEntry;
 struct WorldSafeLocsEntry;
 
@@ -256,7 +256,7 @@ class Battleground
 
         /* Battleground */
         // Get methods:
-        std::string const& GetName() const  { return m_Name; }
+        char const* GetName() const         { return m_Name; }
         BattlegroundTypeId GetTypeID(bool GetRandom = false) const { return GetRandom ? m_RandomTypeID : m_TypeID; }
         BattlegroundBracketId GetBracketId() const { return m_BracketId; }
         uint32 GetInstanceID() const        { return m_InstanceID; }
@@ -282,7 +282,7 @@ class Battleground
         bool IsRandom() const { return m_IsRandom; }
 
         // Set methods:
-        void SetName(std::string const& name) { m_Name = name; }
+        void SetName(char const* Name)      { m_Name = Name; }
         void SetTypeID(BattlegroundTypeId TypeID) { m_TypeID = TypeID; }
         void SetRandomTypeID(BattlegroundTypeId TypeID) { m_RandomTypeID = TypeID; }
         //here we can count minlevel and maxlevel for players
@@ -357,8 +357,15 @@ class Battleground
         BattlegroundMap* GetBgMap() const { ASSERT(m_Map); return m_Map; }
         BattlegroundMap* FindBgMap() const { return m_Map; }
 
-        void SetTeamStartPosition(TeamId teamId, Position const& pos);
-        Position const* GetTeamStartPosition(TeamId teamId) const;
+        void SetTeamStartLoc(uint32 TeamID, float X, float Y, float Z, float O);
+        void GetTeamStartLoc(uint32 TeamID, float &X, float &Y, float &Z, float &O) const
+        {
+            TeamId idx = GetTeamIndexByTeamId(TeamID);
+            X = m_TeamStartLocX[idx];
+            Y = m_TeamStartLocY[idx];
+            Z = m_TeamStartLocZ[idx];
+            O = m_TeamStartLocO[idx];
+        }
 
         void SetStartMaxDist(float startMaxDist) { m_StartMaxDist = startMaxDist; }
         float GetStartMaxDist() const { return m_StartMaxDist; }
@@ -560,7 +567,7 @@ class Battleground
         bool   m_IsRated;                                   // is this battle rated?
         bool   m_PrematureCountDown;
         uint32 m_PrematureCountDownTimer;
-        std::string m_Name;
+        char const* m_Name;
 
         /* Pre- and post-update hooks */
 
@@ -673,7 +680,10 @@ class Battleground
         // Start location
         uint32 m_MapId;
         BattlegroundMap* m_Map;
-        Position StartPosition[BG_TEAMS_COUNT];
+        float m_TeamStartLocX[BG_TEAMS_COUNT];
+        float m_TeamStartLocY[BG_TEAMS_COUNT];
+        float m_TeamStartLocZ[BG_TEAMS_COUNT];
+        float m_TeamStartLocO[BG_TEAMS_COUNT];
         float m_StartMaxDist;
         uint32 ScriptId;
 };

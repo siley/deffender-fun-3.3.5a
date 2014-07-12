@@ -95,34 +95,32 @@ public:
     {
         npc_wrathbone_flayerAI(Creature* creature) : ScriptedAI(creature)
         {
-            _instance = creature->GetInstanceScript();
+            instance = creature->GetInstanceScript();
         }
 
         void Reset() override
         {
-            _events.ScheduleEvent(EVENT_GET_CHANNELERS, 3000);
-            _enteredCombat = false;
-            _bloodmageList.clear();
-            _deathshaperList.clear();
+            events.ScheduleEvent(EVENT_GET_CHANNELERS, 3000);
+            enteredCombat = false;
         }
 
         void JustDied(Unit* /*killer*/) override { }
 
         void EnterCombat(Unit* /*who*/) override
         {
-            _events.ScheduleEvent(EVENT_CLEAVE, 5000);
-            _events.ScheduleEvent(EVENT_IGNORED, 7000);
-            _enteredCombat = true;
+            events.ScheduleEvent(EVENT_CLEAVE, 5000);
+            events.ScheduleEvent(EVENT_IGNORED, 7000);
+            enteredCombat = true;
         }
 
         void UpdateAI(uint32 diff) override
         {
 
-            if (!_enteredCombat)
+            if (!enteredCombat)
             {
-                _events.Update(diff);
+                events.Update(diff);
 
-                while (uint32 eventId = _events.ExecuteEvent())
+                while (uint32 eventId = events.ExecuteEvent())
                 {
                     switch (eventId)
                     {
@@ -134,7 +132,7 @@ public:
                             if (!BloodMageList.empty())
                                 for (std::list<Creature*>::const_iterator itr = BloodMageList.begin(); itr != BloodMageList.end(); ++itr)
                                 {
-                                    _bloodmageList.push_back((*itr)->GetGUID());
+                                    bloodmage.push_back((*itr)->GetGUID());
                                     if ((*itr)->isDead())
                                         (*itr)->Respawn();
                                 }
@@ -145,26 +143,26 @@ public:
                             if (!DeathShaperList.empty())
                                 for (std::list<Creature*>::const_iterator itr = DeathShaperList.begin(); itr != DeathShaperList.end(); ++itr)
                                 {
-                                    _deathshaperList.push_back((*itr)->GetGUID());
+                                    deathshaper.push_back((*itr)->GetGUID());
                                     if ((*itr)->isDead())
                                         (*itr)->Respawn();
                                 }
 
-                            _events.ScheduleEvent(EVENT_SET_CHANNELERS, 3000);
+                            events.ScheduleEvent(EVENT_SET_CHANNELERS, 3000);
 
                             break;
                         }
                         case EVENT_SET_CHANNELERS:
                         {
-                            for (uint64 guid : _bloodmageList)
-                                if (Creature* bloodmage = ObjectAccessor::GetCreature(*me, guid))
+                            for (std::list<uint64>::const_iterator itr = bloodmage.begin(); itr != bloodmage.end(); ++itr)
+                                if (Creature* bloodmage = (ObjectAccessor::GetCreature(*me, *itr)))
                                     bloodmage->CastSpell((Unit*)NULL, SPELL_SUMMON_CHANNEL);
 
-                            for (uint64 guid : _deathshaperList)
-                                if (Creature* deathshaper = ObjectAccessor::GetCreature(*me, guid))
+                            for (std::list<uint64>::const_iterator itr = deathshaper.begin(); itr != deathshaper.end(); ++itr)
+                                if (Creature* deathshaper = (ObjectAccessor::GetCreature(*me, *itr)))
                                     deathshaper->CastSpell((Unit*)NULL, SPELL_SUMMON_CHANNEL);
 
-                            _events.ScheduleEvent(EVENT_SET_CHANNELERS, 12000);
+                            events.ScheduleEvent(EVENT_SET_CHANNELERS, 12000);
 
                             break;
                         }
@@ -177,20 +175,20 @@ public:
             if (!UpdateVictim())
                 return;
 
-            _events.Update(diff);
+            events.Update(diff);
 
-            while (uint32 eventId = _events.ExecuteEvent())
+            while (uint32 eventId = events.ExecuteEvent())
             {
                 switch (eventId)
                 {
                     case EVENT_CLEAVE:
                         DoCastVictim(SPELL_CLEAVE);
-                        _events.ScheduleEvent(EVENT_CLEAVE, urand (1000, 2000));
+                        events.ScheduleEvent(EVENT_CLEAVE, urand (1000, 2000));
                         break;
                     case EVENT_IGNORED:
                         if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
                             DoCast(target, SPELL_IGNORED);
-                        _events.ScheduleEvent(EVENT_IGNORED, 10000);
+                        events.ScheduleEvent(EVENT_IGNORED, 10000);
                         break;
                     default:
                         break;
@@ -200,12 +198,12 @@ public:
         }
 
         private:
-            InstanceScript* _instance;
-            EventMap _events;
-            std::list<uint64> _bloodmageList;
-            std::list<uint64> _deathshaperList;
-            bool _enteredCombat;
-        };
+            InstanceScript* instance;
+            EventMap events;
+            std::list<uint64> bloodmage;
+            std::list<uint64> deathshaper;
+            bool enteredCombat;
+    };
 
     CreatureAI* GetAI(Creature* creature) const override
     {

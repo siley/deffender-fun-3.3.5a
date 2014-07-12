@@ -283,6 +283,8 @@ public:
 
         InstanceScript* instance;
 
+        uint64 TarethaGUID;
+
         bool LowHp;
         bool HadMount;
 
@@ -398,8 +400,11 @@ public:
                     me->SummonCreature(NPC_INN_GUARDSMAN, 2656.39f, 659.77f, 61.93f, 2.61f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000);
                     break;
                 case 94:
-                    if (Creature* Taretha = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_TARETHA)))
-                        Taretha->AI()->Talk(SAY_TA_ESCAPED, me);
+                    if (uint64 TarethaGUID = instance->GetData64(DATA_TARETHA))
+                    {
+                        if (Creature* Taretha = ObjectAccessor::GetCreature(*me, TarethaGUID))
+                            Taretha->AI()->Talk(SAY_TA_ESCAPED, me);
+                    }
                     break;
                 case 95:
                     Talk(SAY_TH_MEET_TARETHA);

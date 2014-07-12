@@ -1810,7 +1810,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize Battlegrounds
     TC_LOG_INFO("server.loading", "Starting Battleground System");
-    sBattlegroundMgr->LoadBattlegroundTemplates();
+    sBattlegroundMgr->CreateInitialBattlegrounds();
     sBattlegroundMgr->InitAutomaticArenaPointDistribution();
 
     ///- Initialize outdoor pvp
