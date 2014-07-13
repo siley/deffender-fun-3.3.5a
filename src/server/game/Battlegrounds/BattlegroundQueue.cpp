@@ -206,7 +206,6 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
             {
                 if (sWorld->getBoolConfig(BATTLEGROUND_CROSSFACTION_ENABLED))
                 {
-                    char const* bgName = bg->GetName();
                     uint32 MinPlayers = bg->GetMinPlayersPerTeam()*2;
                     uint32 qPlayers = 0;
                     uint32 q_min_level = bracketEntry->minLevel;
@@ -217,18 +216,17 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
 
                     if (sWorld->getBoolConfig(CONFIG_BATTLEGROUND_QUEUE_ANNOUNCER_PLAYERONLY))
                     {
-                        ChatHandler(leader->GetSession()).PSendSysMessage("Queue status for %s (Lvl: %u to %u) Queued players: %u (Need at least %u more)", bgName, q_min_level, q_max_level, qPlayers, MinPlayers - qPlayers);
+                        ChatHandler(leader->GetSession()).PSendSysMessage("Queue status for %s (Lvl: %u to %u) Queued players: %u (Need at least %u more)", bg->GetName().c_str(), q_min_level, q_max_level, qPlayers, MinPlayers - qPlayers);
                     }
                     else
                     {
                         std::ostringstream ss;
-                        ss << "|cffff0000[BG Queue Announcer]:|r " << bgName << " -- [" << q_min_level << "-" << q_max_level << "] " << qPlayers << "/" << MinPlayers;
+                        ss << "|cffff0000[BG Queue Announcer]:|r " << bg->GetName().c_str() << " -- [" << q_min_level << "-" << q_max_level << "] " << qPlayers << "/" << MinPlayers;
                         sWorld->SendGlobalText(ss.str().c_str(), NULL);
                     }
                 }
                 else
                 {
-                    char const* bgName = bg->GetName();
                     uint32 MinPlayers = bg->GetMinPlayersPerTeam();
                     uint32 qHorde = 0;
                     uint32 qAlliance = 0;
@@ -245,13 +243,13 @@ GroupQueueInfo* BattlegroundQueue::AddGroup(Player* leader, Group* grp, Battlegr
                     // Show queue status to player only (when joining queue)
                     if (sWorld->getBoolConfig(CONFIG_BATTLEGROUND_QUEUE_ANNOUNCER_PLAYERONLY))
                     {
-                        ChatHandler(leader->GetSession()).PSendSysMessage(LANG_BG_QUEUE_ANNOUNCE_SELF, bgName, q_min_level, q_max_level,
+                    ChatHandler(leader->GetSession()).PSendSysMessage(LANG_BG_QUEUE_ANNOUNCE_SELF, bg->GetName().c_str(), q_min_level, q_max_level,
                             qAlliance, (MinPlayers > qAlliance) ? MinPlayers - qAlliance : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers - qHorde : (uint32)0);
                     }
                     // System message
                     else
                     {
-                        sWorld->SendWorldText(LANG_BG_QUEUE_ANNOUNCE_WORLD, bgName, q_min_level, q_max_level,
+                    sWorld->SendWorldText(LANG_BG_QUEUE_ANNOUNCE_WORLD, bg->GetName().c_str(), q_min_level, q_max_level,
                             qAlliance, (MinPlayers > qAlliance) ? MinPlayers - qAlliance : (uint32)0, qHorde, (MinPlayers > qHorde) ? MinPlayers - qHorde : (uint32)0);
                     }
                 }
