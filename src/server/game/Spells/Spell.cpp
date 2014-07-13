@@ -2692,25 +2692,24 @@ void Spell::DoTriggersOnSpellHit(Unit* unit, uint8 effMask)
 {
     // Apply additional spell effects to target
     /// @todo move this code to scripts
+    if (m_spellInfo->SpellFamilyName == SPELLFAMILY_PALADIN && (m_spellInfo->SpellFamilyFlags[0] & 0x00000080 || m_spellInfo->SpellFamilyFlags[0] & 0x00400000))
+    {
+        unit->CastSpell(unit, 61987, true);
+        m_caster->CastSpell(unit, 25771, true);
+    }
+    else if (m_spellInfo->Id == 31884)
+    {
+        unit->CastSpell(unit, 61988, true);
+        // unit->CastSpell(unit, 61987, true);
+    }
     if (m_preCastSpell)
     {
-        // Paladin immunity shields
-        if (m_preCastSpell == 61988)
-        {
-            // Cast Forbearance
-            m_caster->CastSpell(unit, 25771, true);
-            // Cast Avenging Wrath Marker
-            unit->CastSpell(unit, 61987, true);
-        }
-
         // Avenging Wrath
         if (m_preCastSpell == 61987)
+        {
             // Cast the serverside immunity shield marker
             m_caster->CastSpell(unit, 61988, true);
-
-        if (sSpellMgr->GetSpellInfo(m_preCastSpell))
-            // Blizz seems to just apply aura without bothering to cast
-            m_caster->AddAura(m_preCastSpell, unit);
+        }
     }
 
     // handle SPELL_AURA_ADD_TARGET_TRIGGER auras
