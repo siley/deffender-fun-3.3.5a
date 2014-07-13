@@ -3801,6 +3801,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 48574:
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_IGNORE_ARMOR;
                 break;
+                // Custom Ignore full resist
+            case 70337:
+                spellInfo->AttributesEx3 & SPELL_ATTR3_IGNORE_HIT_RESULT;
             default:
                 break;
         }
