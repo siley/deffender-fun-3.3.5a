@@ -3027,6 +3027,9 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
                 spellInfo->Effects[EFFECT_0].TargetB = SpellImplicitTargetInfo();
                 break;
+            case 50526: // Wandering Plague (DK) 
+                spellInfo->AttributesEx4 |= SPELL_ATTR4_FIXED_DAMAGE;
+                // break tu nie je naschvál!
             case 31344: // Howl of Azgalor
                 spellInfo->Effects[EFFECT_0].RadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_100_YARDS); // 100yards instead of 50000?!
                 break;
@@ -3808,7 +3811,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 break;
                 // Custom Ignore full resist
             case 70337:
-                spellInfo->AttributesEx3 & SPELL_ATTR3_IGNORE_HIT_RESULT;
+                spellInfo->AttributesEx3 |= SPELL_ATTR3_IGNORE_HIT_RESULT;
                 break;
             default:
                 break;
