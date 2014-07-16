@@ -3801,9 +3801,14 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 48574:
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_IGNORE_ARMOR;
                 break;
+            case 59630: // Black Magic
+            case 72968: // Precious's Ribbon
+                spellInfo->AttributesEx3 |= SPELL_ATTR3_DEATH_PERSISTENT;
+                break;
                 // Custom Ignore full resist
             case 70337:
                 spellInfo->AttributesEx3 & SPELL_ATTR3_IGNORE_HIT_RESULT;
+                break;
             default:
                 break;
         }
