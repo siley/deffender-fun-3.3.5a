@@ -3027,9 +3027,6 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
                 spellInfo->Effects[EFFECT_0].TargetB = SpellImplicitTargetInfo();
                 break;
-            case 50526: // Wandering Plague (DK) 
-                spellInfo->AttributesEx4 |= SPELL_ATTR4_FIXED_DAMAGE;
-                // break tu nie je naschvál!
             case 31344: // Howl of Azgalor
                 spellInfo->Effects[EFFECT_0].RadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_100_YARDS); // 100yards instead of 50000?!
                 break;
@@ -3304,6 +3301,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_1].Effect = 0;
                 break;
             case 63675: // Improved Devouring Plague
+            case 50526: // Wandering Plague
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_DONE_BONUS;
                 break;
             case 12721: // Deep Wounds shouldnt ignore resillience or damage taken auras because its damage is not based off a spell.
