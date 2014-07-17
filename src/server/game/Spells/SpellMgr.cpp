@@ -3298,6 +3298,11 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->Effects[EFFECT_1].Effect = SPELL_EFFECT_MODIFY_THREAT_PERCENT;
                 spellInfo->Effects[EFFECT_1].BasePoints = -6; // -5%
                 break;
+            case 67188: // Item - Paladin T9 Retribution 2P Bonus (Righteous Vengeance)
+            case 67118: // Item - Death Knight T9 Melee 4P Bonus
+            case 67150: // Item - Hunter T9 2P Bonus
+                spellInfo->Effects[EFFECT_1].Effect = 0;
+                break;
             case 63675: // Improved Devouring Plague
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_DONE_BONUS;
                 break;
