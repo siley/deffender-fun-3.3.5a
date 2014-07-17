@@ -1623,6 +1623,13 @@ uint32 Unit::CalcSpellResistance(Unit* victim, SpellSchoolMask schoolMask, bool 
     if (spellInfo && spellInfo->AttributesEx3 & SPELL_ATTR3_IGNORE_HIT_RESULT && (!spellInfo || (spellInfo->AttributesEx4 & SPELL_ATTR4_IGNORE_RESISTANCES)))
         return 0;
 
+    Map* instanceMap = victim->GetMap();
+    if (instanceMap->IsDungeon())
+        return SPELL_MISS_RESIST;
+
+    if (instanceMap->IsRaidOrHeroicDungeon())
+        return SPELL_MISS_RESIST;
+
     if (victim->GetTypeId() == TYPEID_UNIT)
         return 0;
 

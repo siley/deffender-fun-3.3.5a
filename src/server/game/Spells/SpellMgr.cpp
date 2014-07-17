@@ -3809,10 +3809,6 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 72968: // Precious's Ribbon
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_DEATH_PERSISTENT;
                 break;
-                // Custom Ignore full resist
-            case 70337:
-                spellInfo->AttributesEx3 |= SPELL_ATTR3_IGNORE_HIT_RESULT;
-                break;
             default:
                 break;
         }
