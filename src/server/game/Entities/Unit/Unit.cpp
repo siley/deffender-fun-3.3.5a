@@ -1624,10 +1624,10 @@ uint32 Unit::CalcSpellResistance(Unit* victim, SpellSchoolMask schoolMask, bool 
         return 0;
 
     Map* instanceMap = victim->GetMap();
-    if (instanceMap->IsDungeon())
+    if (instanceMap->IsDungeon() && (victim->GetTypeId() == TYPEID_PLAYER))
         return SPELL_MISS_RESIST;
 
-    if (instanceMap->IsRaidOrHeroicDungeon())
+    if (instanceMap->IsRaidOrHeroicDungeon() && (victim->GetTypeId() == TYPEID_PLAYER))
         return SPELL_MISS_RESIST;
 
     if (victim->GetTypeId() == TYPEID_UNIT)
