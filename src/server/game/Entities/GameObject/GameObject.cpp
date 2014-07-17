@@ -304,7 +304,10 @@ void GameObject::Update(uint32 diff)
                         // Hardcoded tooltip value
                         m_cooldownTime = time(NULL) + 10;
                     else if (Unit* owner = GetOwner())
-                        m_cooldownTime = time(NULL);
+                        if (owner->IsInCombat())
+                            m_cooldownTime = time(NULL) + goInfo->trap.startDelay;
+                        else
+                            m_cooldownTime = time(NULL) + goInfo->trap.startDelay + 1; // Fix for traps being instantly activated 
 
                     SetLootState(GO_READY);
                     break;
