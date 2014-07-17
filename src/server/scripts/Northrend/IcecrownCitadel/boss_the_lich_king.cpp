@@ -1565,15 +1565,11 @@ class npc_valkyr_shadowguard : public CreatureScript
                     // On stun point motion is finalized, if position is really reached, distance is null
                         if (!me->GetDistance(_dropPoint))
                         {
-                            _events.ScheduleEvent(EVENT_MOVE_TO_DROP_POS, 0);
-                            break;
-                        }
-                        else
-                        {
-                            _movementWasStopped = true;
                             DoCastAOE(SPELL_EJECT_ALL_PASSENGERS);
                             me->DespawnOrUnsummon(1000);
                         }
+                        else
+                            _movementWasStopped = true;
                         break;
                     case POINT_CHARGE:
                         if (Player* target = ObjectAccessor::GetPlayer(*me, _grabbedPlayer))
