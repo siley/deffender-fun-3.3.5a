@@ -3441,6 +3441,15 @@ void SpellMgr::LoadSpellInfoCorrections()
                 // that will be clear if we get more spells with problem like this
                 spellInfo->AttributesEx |= SPELL_ATTR1_DISPEL_AURAS_ON_IMMUNITY;
                 break;
+            case 62483: // Freya HM buff range
+            case 62484:
+            case 62485:
+            case 62713:
+            case 62387:
+            case 65586:
+            case 62968:
+            case 65761:
+                spellInfo->Effects[EFFECT_0].RadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_200_YARDS); // 200yd
             case 64468: // Empowering Shadows (Yogg-Saron)
             case 64486: // Empowering Shadows (Yogg-Saron)
                 spellInfo->MaxAffectedTargets = 3;  // same for both modes?
