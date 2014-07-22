@@ -3837,6 +3837,7 @@ void SpellMgr::LoadSpellInfoCorrections()
                     case 50733: // Scatter Shot
                     case 42671: // Silencing Shot
                     case 41084: // Silencing Shot
+                    case 34490: // Silencing Shot
                         spellInfo->Speed = 0;
                         break;
                 }
