@@ -149,6 +149,7 @@ enum Events
 
     // Living Constellation
     EVENT_ARCANE_BARRAGE            = 39,
+    EVENT_SUMMON_CONSTELLATION      = 40,
 };
 
 enum Actions
@@ -218,7 +219,13 @@ Position const ConstellationPos[LIVING_CONSTELLATION_COUNT] =
     {1672.188f, -357.2484f, 436.7337f, 2.338741f},
     {1615.800f, -348.0065f, 442.9586f, 1.134464f},
 };
-
+#define LIVING_CONSTELLATION_COUNT1 3
+Position const ConstellationPos1[LIVING_CONSTELLATION_COUNT1] =
+{
+    { 1659.492920f, -287.224304f, 417.321198f, 0.0f },
+    { 1623.465210f, -343.633881f, 417.321198f, 0.0f },
+    { 1596.020020f, -313.642731f, 417.322144f, 0.0f },
+};
 #define COLLAPSING_STAR_COUNT 4
 Position const CollapsingStarPos[COLLAPSING_STAR_COUNT] =
 {
@@ -412,6 +419,7 @@ class boss_algalon_the_observer : public CreatureScript
                 events.ScheduleEvent(EVENT_QUANTUM_STRIKE, 3500 + introDelay);
                 events.ScheduleEvent(EVENT_PHASE_PUNCH, 15500 + introDelay);
                 events.ScheduleEvent(EVENT_SUMMON_COLLAPSING_STAR, 18000 + introDelay);
+                events.ScheduleEvent(EVENT_SUMMON_CONSTELLATION, 50000 + introDelay);
                 events.ScheduleEvent(EVENT_BIG_BANG, 90000 + introDelay);
                 events.ScheduleEvent(EVENT_ASCEND_TO_THE_HEAVENS, 360000 + introDelay);
                 events.ScheduleEvent(EVENT_COSMIC_SMASH, 25000 + introDelay);
@@ -511,6 +519,7 @@ class boss_algalon_the_observer : public CreatureScript
                     summons.DespawnEntry(NPC_BLACK_HOLE);
                     summons.DespawnEntry(NPC_ALGALON_VOID_ZONE_VISUAL_STALKER);
                     events.CancelEvent(EVENT_SUMMON_COLLAPSING_STAR);
+                    events.CancelEvent(EVENT_SUMMON_CONSTELLATION);
                     std::list<Creature*> stalkers;
                     me->GetCreatureListWithEntryInGrid(stalkers, NPC_ALGALON_STALKER, 200.0f);
                     for (std::list<Creature*>::iterator itr = stalkers.begin(); itr != stalkers.end(); ++itr)
@@ -609,6 +618,11 @@ class boss_algalon_the_observer : public CreatureScript
                             for (uint32 i = 0; i < COLLAPSING_STAR_COUNT; ++i)
                                 me->SummonCreature(NPC_COLLAPSING_STAR, CollapsingStarPos[i], TEMPSUMMON_CORPSE_DESPAWN);
                             events.ScheduleEvent(EVENT_SUMMON_COLLAPSING_STAR, 60000);
+                            break;
+                        case EVENT_SUMMON_CONSTELLATION:
+                            for (uint32 i = 0; i < LIVING_CONSTELLATION_COUNT1; ++i)
+                                me->SummonCreature(NPC_LIVING_CONSTELLATION, ConstellationPos1[i], TEMPSUMMON_CORPSE_DESPAWN);
+                            events.ScheduleEvent(EVENT_SUMMON_CONSTELLATION, 50000);
                             break;
                         case EVENT_BIG_BANG:
                         {
@@ -778,7 +792,7 @@ class npc_living_constellation : public CreatureScript
                     switch (eventId)
                     {
                         case EVENT_ARCANE_BARRAGE:
-                            DoCastAOE(SPELL_ARCANE_BARRAGE);
+                            DoCast(SPELL_ARCANE_BARRAGE);
                             _events.ScheduleEvent(EVENT_ARCANE_BARRAGE, 2500);
                             break;
                         case EVENT_RESUME_UPDATING:
