@@ -581,7 +581,8 @@ class boss_professor_putricide : public CreatureScript
                             EnterEvadeMode();
                             break;
                         case EVENT_FESTERGUT_GOO:
-                            me->CastCustomSpell(SPELL_MALLEABLE_GOO_SUMMON, SPELLVALUE_MAX_TARGETS, 1, NULL, true);
+                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+                                DoCast(target, SPELL_MALLEABLE_GOO, true); // triggered, to skip LoS check
                             events.ScheduleEvent(EVENT_FESTERGUT_GOO, (Is25ManRaid() ? 10000 : 30000) + urand(0, 5000), 0, PHASE_FESTERGUT);
                             break;
                         case EVENT_ROTFACE_DIES:
