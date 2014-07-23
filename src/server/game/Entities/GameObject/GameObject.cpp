@@ -307,7 +307,7 @@ void GameObject::Update(uint32 diff)
                         if (owner->IsInCombat())
                             m_cooldownTime = time(NULL) + goInfo->trap.startDelay;
                         else
-                            m_cooldownTime = time(NULL) + goInfo->trap.startDelay + 1; // Fix for traps being instantly activated 
+                            m_cooldownTime = time(NULL) + 1; // Fix For traps being activated instantly
 
                     SetLootState(GO_READY);
                     break;
