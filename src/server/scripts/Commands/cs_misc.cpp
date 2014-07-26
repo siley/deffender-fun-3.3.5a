@@ -1764,6 +1764,8 @@ public:
         handler->PSendSysMessage(LANG_PINFO_ACC_OS, OS.c_str(), latency);
 
         // Output VIII. LANG_PINFO_ACC_REGMAILS
+        AccountTypes gmLevel = handler->GetSession()->GetSecurity();
+        if (gmLevel >= 10)
         handler->PSendSysMessage(LANG_PINFO_ACC_REGMAILS, regMail.c_str(), eMail.c_str());
 
         // Output IX. LANG_PINFO_ACC_IP
