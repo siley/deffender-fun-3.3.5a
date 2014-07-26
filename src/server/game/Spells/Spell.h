@@ -562,7 +562,6 @@ class Spell
         // Damage and healing in effects need just calculate
         int32 m_damage;           // Damage  in effects count here
         int32 m_healing;          // Healing in effects count here
-        int32 m_resist;           // Resist in effects count here
 
         // ******************************************
         // Spell trigger system
