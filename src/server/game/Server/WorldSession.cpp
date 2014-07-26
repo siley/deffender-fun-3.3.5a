@@ -1396,6 +1396,7 @@ uint32 WorldSession::DosProtection::GetMaxPacketCounterAllowed(uint16 opcode) co
         case CMSG_PLAYER_VEHICLE_ENTER:                 //   0               8
         case CMSG_LEARN_PREVIEW_TALENTS_PET:            // not profiled
         case MSG_MOVE_HEARTBEAT:
+        case CMSG_FORCE_RUN_SPEED_CHANGE_ACK:
         {
             maxPacketCounterAllowed = 200;
             break;
