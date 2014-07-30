@@ -305,11 +305,12 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     /// @todo pets should be summoned from real cast instead of just faking it?
     if (summonSpellId)
     {
-        WorldPacket data(SMSG_SPELL_GO, (8+8+4+4+2));
+        WorldPacket data(SMSG_SPELL_GO, (8 + 8 + 4 + 4 + 2));
         data.append(owner->GetPackGUID());
         data.append(owner->GetPackGUID());
         data << uint8(0);
         data << uint32(summonSpellId);
+        data << uint32(GetUInt32Value(UNIT_CREATED_BY_SPELL));
         data << uint32(256); // CAST_FLAG_UNKNOWN3
         data << uint32(0);
         owner->SendMessageToSet(&data, true);
