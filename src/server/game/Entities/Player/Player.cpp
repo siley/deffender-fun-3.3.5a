@@ -15710,7 +15710,7 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     if (Guild* guild = GetGuild())
     {
         //QuestXP for the Guild
-        guild->GiveXp(20000);
+        guild->GiveXp(10000);
 
         //GuildXP-Bonus
         if (guild->HasLevelForBonus(GUILD_BONUS_XP_1) && !guild->HasLevelForBonus(GUILD_BONUS_EHRE_2))
