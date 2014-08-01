@@ -15710,6 +15710,7 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     if (Guild* guild = GetGuild())
     {
         //QuestXP for the Guild
+        if (!quest->IsRepeatable() || quest->IsDaily())
         guild->GiveXp(10000);
 
         //GuildXP-Bonus
