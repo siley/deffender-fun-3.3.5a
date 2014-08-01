@@ -327,14 +327,14 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         COD = 0;
 
 
-    uint32 senderguildId = 0;
-    uint32 receiverguildId = 0;
+    //uint32 senderguildId = 0;
+    //uint32 receiverguildId = 0;
 
-    senderguildId = player->GetGuildId();
-    receiverguildId = receiver->GetGuildId();
+    //senderguildId = player->GetGuildId();
+    //receiverguildId = receiver->GetGuildId();
     // will delete item or place to receiver mail list
 
-    //Guild-Level-System (Bonus: GUILD MAIL)
+    /*//Guild-Level-System (Bonus: GUILD MAIL)
     if (senderguildId == receiverguildId && player->GetGuild())
     {
         Guild* guild = player->GetGuild();
@@ -359,7 +359,7 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
             .AddCOD(COD)
             .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);
     }
-    else
+    else*/
         draft
         .AddMoney(money)
         .AddCOD(COD)
