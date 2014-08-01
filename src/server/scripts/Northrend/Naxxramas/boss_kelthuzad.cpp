@@ -333,6 +333,8 @@ public:
             _JustDied();
             Talk(SAY_DEATH);
 
+            instance->givexp();
+
             ResetPlayerScale();
         }
 

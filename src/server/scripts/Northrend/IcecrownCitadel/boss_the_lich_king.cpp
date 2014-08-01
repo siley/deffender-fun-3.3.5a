@@ -537,6 +537,7 @@ class boss_the_lich_king : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override
             {
+                instance->givexp();
                 _JustDied();
                 DoCastAOE(SPELL_PLAY_MOVIE, false);
                 me->SetDisableGravity(false);

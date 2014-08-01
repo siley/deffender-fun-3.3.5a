@@ -256,6 +256,8 @@ class boss_sindragosa : public CreatureScript
                 _JustDied();
                 Talk(SAY_DEATH);
 
+                instance->givexp();
+
                 if (Is25ManRaid() && me->HasAura(SPELL_SHADOWS_FATE))
                     DoCastAOE(SPELL_FROST_INFUSION_CREDIT, true);
 

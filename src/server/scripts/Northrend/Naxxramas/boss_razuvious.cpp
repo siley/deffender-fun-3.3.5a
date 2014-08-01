@@ -88,6 +88,8 @@ public:
         void JustDied(Unit* /*killer*/) override
         {
             _JustDied();
+
+            instance->givexp();
             DoPlaySoundToSet(me, SOUND_DEATH);
             me->CastSpell(me, SPELL_HOPELESS, true); /// @todo this may affect other creatures
         }

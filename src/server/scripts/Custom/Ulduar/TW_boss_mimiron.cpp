@@ -301,6 +301,7 @@ class TW_boss_mimiron : public CreatureScript
                         0, 0, 0.7f, 0.7f, 604800);
 
                     instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, NPC_LEVIATHAN_MKII, 1);
+                    instance->givexp();
                 }
 
                 EnterEvadeMode();

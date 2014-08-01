@@ -232,6 +232,7 @@ struct boss_twin_baseAI : public BossAI
                 me->SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
                 pSister->SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
                 _JustDied();
+                instance->givexp();
             }
             else
             {

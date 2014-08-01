@@ -210,6 +210,7 @@ class boss_auriaya : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override
             {
+                instance->givexp();
                 _JustDied();
                 Talk(SAY_DEATH);
             }

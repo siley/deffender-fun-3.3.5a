@@ -367,6 +367,7 @@ class boss_deathbringer_saurfang : public CreatureScript
                     DoCastAOE(SPELL_REMOVE_MARKS_OF_THE_FALLEN_CHAMPION);
                     DoCast(me, SPELL_ACHIEVEMENT, true);
                     Talk(SAY_DEATH);
+                    instance->givexp();
 
                     //instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_MARK_OF_THE_FALLEN_CHAMPION);
                     DoCast(me, SPELL_PERMANENT_FEIGN_DEATH);

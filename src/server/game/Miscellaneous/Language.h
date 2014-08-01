@@ -1225,7 +1225,11 @@ enum TrinityStrings
     LANG_BAN_ACCOUNT_YOUPERMBANNEDMESSAGE_WORLD   = 11007,
 
     LANG_NPCINFO_INHABIT_TYPE                     = 11008,
-    LANG_NPCINFO_FLAGS_EXTRA                      = 11009
+    LANG_NPCINFO_FLAGS_EXTRA                      = 11009,
+
+    //Guild-Level-System
+    LANG_GUILDINFO_LEVEL                          = 13000,
+    LANG_GUILDINFO_XP_INFO                        = 13001,
 
     // NOT RESERVED IDS                   12000-1999999999
     // `db_script_string` table index     2000000000-2000009999 (MIN_DB_SCRIPT_STRING_ID-MAX_DB_SCRIPT_STRING_ID)

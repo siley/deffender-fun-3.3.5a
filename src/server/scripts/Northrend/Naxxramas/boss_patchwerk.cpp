@@ -82,6 +82,8 @@ public:
         void JustDied(Unit* /*killer*/) override
         {
             _JustDied();
+
+            instance->givexp();
             Talk(SAY_DEATH);
         }
 

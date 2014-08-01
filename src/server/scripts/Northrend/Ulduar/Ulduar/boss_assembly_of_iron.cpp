@@ -195,6 +195,7 @@ class boss_steelbreaker : public CreatureScript
 
                 if (instance->GetBossState(BOSS_ASSEMBLY_OF_IRON) == DONE)
                 {
+                    instance->givexp();
                     DoCastAOE(SPELL_KILL_CREDIT, true);
                     Talk(SAY_STEELBREAKER_ENCOUNTER_DEFEATED);
                 }
@@ -335,6 +336,7 @@ class boss_runemaster_molgeim : public CreatureScript
 
                 if (instance->GetBossState(BOSS_ASSEMBLY_OF_IRON) == DONE)
                 {
+                    instance->givexp();
                     instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, NPC_STEELBREAKER, 1, me);
                     DoCastAOE(SPELL_KILL_CREDIT, true);
                     Talk(SAY_MOLGEIM_ENCOUNTER_DEFEATED);
@@ -504,6 +506,7 @@ class boss_stormcaller_brundir : public CreatureScript
 
                 if (instance->GetBossState(BOSS_ASSEMBLY_OF_IRON) == DONE)
                 {
+                    instance->givexp();
                     instance->DoUpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILL_CREATURE, NPC_STEELBREAKER, 1, me);
                     DoCastAOE(SPELL_KILL_CREDIT, true);
                     Talk(SAY_BRUNDIR_ENCOUNTER_DEFEATED);

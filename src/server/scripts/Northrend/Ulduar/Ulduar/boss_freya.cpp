@@ -603,6 +603,7 @@ class boss_freya : public CreatureScript
 
                 me->CastSpell((Unit*)NULL, summonSpell[me->GetMap()->GetDifficulty()][elderCount], true);
 
+                instance->givexp();
                 Talk(SAY_DEATH);
                 me->SetReactState(REACT_PASSIVE);
                 _JustDied();

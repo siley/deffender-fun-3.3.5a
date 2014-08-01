@@ -28,7 +28,7 @@
 #include "DBCStores.h"
 #include "Item.h"
 #include "AccountMgr.h"
-
+#include "Guild.h"
 bool WorldSession::CanOpenMailBox(uint64 guid)
 {
     if (guid == _player->GetGUID())
@@ -326,8 +326,41 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
     if (items_count == 0)
         COD = 0;
 
+
+    uint32 senderguildId = 0;
+    uint32 receiverguildId = 0;
+
+    senderguildId = player->GetGuildId();
+    receiverguildId = receiver->GetGuildId();
     // will delete item or place to receiver mail list
-    draft
+
+    //Guild-Level-System (Bonus: GUILD MAIL)
+    if (senderguildId == receiverguildId && player->GetGuild())
+    {
+        Guild* guild = player->GetGuild();
+        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2))
+        {
+            draft
+            .AddMoney(money)
+            .AddCOD(COD)
+            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay/2);
+        }
+        else
+        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) &&  guild->HasLevelForBonus(GUILD_BONUS_MAIL_1))
+        {
+            draft
+            .AddMoney(money)
+            .AddCOD(COD)
+            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, 0);
+        }
+        else
+        draft
+            .AddMoney(money)
+            .AddCOD(COD)
+            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);
+    }
+    else
+        draft
         .AddMoney(money)
         .AddCOD(COD)
         .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);

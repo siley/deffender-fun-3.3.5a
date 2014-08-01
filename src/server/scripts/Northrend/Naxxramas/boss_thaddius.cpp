@@ -157,6 +157,7 @@ public:
         {
             _JustDied();
             Talk(SAY_DEATH);
+            instance->givexp();
         }
 
         void DoAction(int32 action) override

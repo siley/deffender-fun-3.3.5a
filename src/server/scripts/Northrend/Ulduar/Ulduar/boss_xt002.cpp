@@ -262,6 +262,7 @@ class boss_xt002 : public CreatureScript
             {
                 Talk(SAY_DEATH);
                 _JustDied();
+                instance->givexp();
             }
 
             void DamageTaken(Unit* /*attacker*/, uint32& /*damage*/) override

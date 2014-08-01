@@ -99,6 +99,8 @@ public:
         {
             _JustDied();
             Talk(SAY_DEATH);
+
+            instance->givexp();
         }
 
         void EnterCombat(Unit* /*who*/) override

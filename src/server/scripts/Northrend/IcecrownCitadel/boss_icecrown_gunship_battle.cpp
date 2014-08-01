@@ -767,6 +767,7 @@ class npc_gunship : public CreatureScript
 
                 if (isVictory)
                 {
+                    instance->givexp();
                     if (GameObject* go = HashMapHolder<GameObject>::Find(instance->GetData64(DATA_ICECROWN_GUNSHIP_BATTLE)))
                         if (Transport* otherTransport = go->ToTransport())
                             otherTransport->EnableMovement(true);

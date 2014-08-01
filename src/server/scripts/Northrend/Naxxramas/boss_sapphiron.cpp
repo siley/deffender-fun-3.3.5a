@@ -151,6 +151,8 @@ class boss_sapphiron : public CreatureScript
                 _JustDied();
                 me->CastSpell(me, SPELL_DIES, true);
 
+                instance->givexp();
+
                 CheckPlayersFrostResist();
             }
 

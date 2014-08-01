@@ -226,6 +226,7 @@ class boss_razorscale_controller : public CreatureScript
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
+                instance->givexp();
             }
 
             void DoAction(int32 action) override

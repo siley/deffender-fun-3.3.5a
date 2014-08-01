@@ -303,6 +303,7 @@ public:
             {
                 instance->SetBossState(BOSS_HORSEMEN, DONE);
                 instance->SaveToDB();
+                instance->givexp();
 
                 // Achievements related to the 4-horsemen are given through spell 59450 which does not exist.
                 // There is thus no way it can be given by casting the spell on the players.

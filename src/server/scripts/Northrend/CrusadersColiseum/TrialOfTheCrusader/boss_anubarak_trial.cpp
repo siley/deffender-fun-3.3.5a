@@ -232,6 +232,8 @@ class boss_anubarak_trial : public CreatureScript
                 _JustDied();
                 Talk(SAY_DEATH);
 
+                instance->givexp();
+
                 // despawn frostspheres and Burrowers on death
                 std::list<Creature*> AddList;
                 me->GetCreatureListWithEntryInGrid(AddList, NPC_FROST_SPHERE, 150.0f);

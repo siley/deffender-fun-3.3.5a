@@ -996,6 +996,7 @@ public:
         {
             _JustDied();
             Talk(SAY_DEATH);
+            instance->givexp();
             if (Creature* alexstraszaGiftBoxBunny = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_GIFT_BOX_BUNNY_GUID)))
             {
                 if (GetDifficulty() == RAID_DIFFICULTY_10MAN_NORMAL)

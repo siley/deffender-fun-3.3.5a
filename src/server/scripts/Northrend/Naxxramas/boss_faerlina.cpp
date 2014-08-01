@@ -104,6 +104,7 @@ class boss_faerlina : public CreatureScript
             {
                 _JustDied();
                 Talk(SAY_DEATH);
+                instance->givexp();
             }
 
             void SpellHit(Unit* caster, SpellInfo const* spell) override

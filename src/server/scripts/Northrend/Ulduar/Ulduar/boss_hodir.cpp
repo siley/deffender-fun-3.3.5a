@@ -371,7 +371,8 @@ class boss_hodir : public CreatureScript
                 {
                     damage = 0;
                     Talk(SAY_DEATH);
-                    
+                    instance->givexp();
+
                     if (iCouldSayThatThisCacheWasRare)
                     {
                         instance->DoCompleteAchievement(ACHIEVEMENT_THIS_CACHE_WAS_RARE);

@@ -188,6 +188,8 @@ class boss_blood_queen_lana_thel : public CreatureScript
                 _JustDied();
                 Talk(SAY_DEATH);
 
+                instance->givexp();
+
                 if (Is25ManRaid() && me->HasAura(SPELL_SHADOWS_FATE))
                     DoCastAOE(SPELL_BLOOD_INFUSION_CREDIT, true);
 

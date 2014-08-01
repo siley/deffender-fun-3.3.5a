@@ -134,6 +134,7 @@ class boss_jaraxxus : public CreatureScript
             {
                 _JustDied();
                 Talk(SAY_DEATH);
+                instance->givexp();
             }
 
             void JustSummoned(Creature* summoned) override

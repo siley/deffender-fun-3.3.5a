@@ -247,6 +247,8 @@ class boss_gothik : public CreatureScript
                 _JustDied();
                 Talk(SAY_DEATH);
                 instance->SetData(DATA_GOTHIK_GATE, GO_STATE_ACTIVE);
+
+                instance->givexp();
             }
 
             void DoGothikSummon(uint32 entry)

@@ -278,6 +278,8 @@ class boss_blood_council_controller : public CreatureScript
                         if (me->IsDamageEnoughForLootingAndReward())
                             prince->LowerPlayerDamageReq(prince->GetMaxHealth());
                         killer->Kill(prince);
+
+                        instance->givexp();
                     }
                 }
             }

@@ -295,6 +295,8 @@ class boss_lady_deathwhisper : public CreatureScript
 
             void JustDied(Unit* killer) override
             {
+                instance->givexp();
+
                 Talk(SAY_DEATH);
 
                 std::set<uint32> livingAddEntries;

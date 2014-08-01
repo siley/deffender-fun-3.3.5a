@@ -873,6 +873,7 @@ class boss_icehowl : public CreatureScript
             {
                 _JustDied();
                 instance->SetData(TYPE_NORTHREND_BEASTS, ICEHOWL_DONE);
+                instance->givexp();
             }
 
             void MovementInform(uint32 type, uint32 pointId) override

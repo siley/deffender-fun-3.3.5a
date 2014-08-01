@@ -133,6 +133,8 @@ class boss_festergut : public CreatureScript
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
+                instance->givexp();
+
                 Talk(SAY_DEATH);
                 if (Creature* professor = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_PROFESSOR_PUTRICIDE)))
                     professor->AI()->DoAction(ACTION_FESTERGUT_DEATH);

@@ -610,7 +610,10 @@ struct boss_faction_championsAI : public BossAI
     {
         if (_aiType != AI_PET)
             if (Creature* pChampionController = ObjectAccessor::GetCreature((*me), instance->GetData64(NPC_CHAMPIONS_CONTROLLER)))
+            {
                 pChampionController->AI()->SetData(2, DONE);
+                instance->givexp();
+            }
     }
 
     void EnterCombat(Unit* /*who*/) override

@@ -635,6 +635,7 @@ public:
                             Talk(SAY_END_NORMAL_3);
                             me->DespawnOrUnsummon(10000);
                             _JustDied();
+                            instance->givexp();
                             break;
                         case EVENT_END_HARD_1:
                             Talk(SAY_END_HARD_1);
@@ -656,6 +657,7 @@ public:
                             Talk(SAY_END_HARD_3);
                             me->DespawnOrUnsummon(10000);
                             _JustDied();
+                            instance->givexp();
                             break;
                     }
                 }

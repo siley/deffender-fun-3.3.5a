@@ -606,4 +606,14 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_UPD_CHAR_PET_SLOT_BY_ID, "UPDATE character_pet SET slot = ? WHERE owner = ? AND id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_ID, "DELETE FROM character_pet WHERE id = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_DEL_CHAR_PET_BY_SLOT, "DELETE FROM character_pet WHERE owner = ? AND (slot = ? OR slot > ?)", CONNECTION_ASYNC);
+
+    //Guild-Level-System
+    //Load
+    PrepareStatement(CHAR_SEL_GUILD_BONUS_INFO, "SELECT RequiredGuildLevel FROM guild_bonus_config WHERE BonusId = ?", CONNECTION_SYNCH);
+    PrepareStatement(CHAR_SEL_GUILD_LEVEL_INFO, "SELECT xp, level FROM guild WHERE guildid = ?", CONNECTION_SYNCH);
+    PrepareStatement(CHAR_SEL_GUILD_XP_FOR_NEXT_LEVEL, "SELECT xp_for_next_level FROM guild_xp_for_next_level WHERE level = ?", CONNECTION_SYNCH);
+
+    //Save
+    PrepareStatement(CHAR_UPD_GUILD_LEVEL, "UPDATE guild SET level = ? WHERE guildid = ?", CONNECTION_ASYNC);
+    PrepareStatement(CHAR_UPD_GUILD_XP, "UPDATE guild SET xp = (xp + ?) WHERE guildid = ?", CONNECTION_ASYNC);
 }

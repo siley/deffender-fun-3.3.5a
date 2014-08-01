@@ -150,6 +150,7 @@ class boss_ignis : public CreatureScript
             {
                 _JustDied();
                 Talk(SAY_DEATH);
+                instance->givexp();
             }
 
             uint32 GetData(uint32 type) const override

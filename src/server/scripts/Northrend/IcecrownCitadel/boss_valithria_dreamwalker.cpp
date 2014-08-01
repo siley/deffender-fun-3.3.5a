@@ -339,6 +339,7 @@ class boss_valithria_dreamwalker : public CreatureScript
                 // encounter complete
                 if (me->HealthAbovePctHealed(100, heal) && !_done)
                 {
+                    _instance->givexp();
                     _done = true;
                     Talk(SAY_VALITHRIA_SUCCESS);
                     _instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);

@@ -686,6 +686,9 @@ enum RBACPermissions
     // custom permissions 1000+
     RBAC_PERM_COMMAND_U_MMR                                  = 1001,
     RBAC_PERM_COMMAND_SPEC_LEAVE                             = 1002,
+    RBAC_PERM_COMMAND_GUILD_INFO                             = 1003,
+    RBAC_PERM_COMMAND_GUILD_SET_LEVEL                        = 1004,
+    RBAC_PERM_COMMAND_GUILD_GIVE_XP                          = 1005,
 
     RBAC_PERM_MAX
 };

@@ -23,6 +23,7 @@
 #include "SharedDefines.h"
 #include "ScriptMgr.h"
 #include "Player.h"
+#include "Guild.h"
 
 namespace Trinity
 {
@@ -181,6 +182,16 @@ namespace Trinity
                 }
 
                 gain = uint32(gain * sWorld->getRate(RATE_XP_KILL));
+
+                //Guild-Level-System (Bonus: MonsterKillXp)
+                if (Guild* guild = player->GetGuild())
+                {
+                    //GildenXP-Bonus
+                    if (guild->HasLevelForBonus(GUILD_BONUS_XP_1) && !guild->HasLevelForBonus(GUILD_BONUS_XP_2))
+                        gain += uint32(gain*0.05f);
+                    if (guild->HasLevelForBonus(GUILD_BONUS_XP_2))
+                        gain += uint32(gain*0.1f);
+                }
             }
 
             sScriptMgr->OnGainCalculation(gain, player, u);

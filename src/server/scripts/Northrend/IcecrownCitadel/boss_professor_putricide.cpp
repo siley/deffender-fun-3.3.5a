@@ -291,6 +291,8 @@ class boss_professor_putricide : public CreatureScript
                 _JustDied();
                 Talk(SAY_DEATH);
 
+                instance->givexp();
+
                 if (Is25ManRaid() && me->HasAura(SPELL_SHADOWS_FATE))
                     DoCastAOE(SPELL_UNHOLY_INFUSION_CREDIT, true);
 

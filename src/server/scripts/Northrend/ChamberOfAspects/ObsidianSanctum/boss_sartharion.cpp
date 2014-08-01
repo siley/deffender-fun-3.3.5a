@@ -178,6 +178,8 @@ public:
             Talk(SAY_SARTHARION_DEATH);
             _JustDied();
 
+            instance->givexp();
+
             if (Creature* tenebron = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_TENEBRON)))
                 if (tenebron->IsAlive())
                     tenebron->DisappearAndDie();

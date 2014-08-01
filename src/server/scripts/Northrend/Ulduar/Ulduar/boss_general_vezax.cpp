@@ -225,6 +225,7 @@ class boss_general_vezax : public CreatureScript
             void JustDied(Unit* /*killer*/) override
             {
                 _JustDied();
+                instance->givexp();
                 Talk(SAY_DEATH);
                 instance->DoRemoveAurasDueToSpellOnPlayers(SPELL_AURA_OF_DESPAIR);
             }

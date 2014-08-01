@@ -539,6 +539,7 @@ class boss_algalon_the_observer : public CreatureScript
                     DoCast(me, SPELL_SELF_STUN);
                     events.Reset();
                     summons.DespawnAll();
+                    instance->givexp();
                     events.SetPhase(PHASE_ROLE_PLAY);
                     events.ScheduleEvent(EVENT_OUTRO_START, 1500);
                     events.ScheduleEvent(EVENT_OUTRO_1, 7200);

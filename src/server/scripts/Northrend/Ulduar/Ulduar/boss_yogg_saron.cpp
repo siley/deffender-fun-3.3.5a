@@ -508,6 +508,8 @@ class boss_voice_of_yogg_saron : public CreatureScript
                     summons.Despawn(yogg);
 
                 BossAI::JustDied(killer);
+
+                instance->givexp();
             }
 
             void KilledUnit(Unit* who) override

@@ -165,6 +165,8 @@ class boss_lord_marrowgar : public CreatureScript
                 Talk(SAY_DEATH);
 
                 _JustDied();
+
+                instance->givexp();
             }
 
             void JustReachedHome() override

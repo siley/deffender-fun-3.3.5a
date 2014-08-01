@@ -349,6 +349,9 @@ class boss_halion : public CreatureScript
                 _JustDied();
 
                 Talk(SAY_DEATH);
+
+                instance->givexp();
+
                 instance->SendEncounterUnit(ENCOUNTER_FRAME_DISENGAGE, me);
 
                 if (Creature* twilightHalion = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_TWILIGHT_HALION)))

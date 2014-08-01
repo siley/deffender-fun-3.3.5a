@@ -29,6 +29,7 @@
 #include "Pet.h"
 #include "WorldSession.h"
 #include "Opcodes.h"
+#include "Guild.h"
 
 void InstanceScript::SaveToDB()
 {
@@ -480,4 +481,69 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
                     }
         }
     }
+}
+
+
+void InstanceScript::givexp()
+{
+    Map::PlayerList const &PlayerList = instance->GetPlayers();
+
+    if (!PlayerList.isEmpty())
+        for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
+        if (Player* player = i->GetSource())
+            if(Guild* guild = player->GetGuild())
+            {
+                // Ruby Sanctum
+                if (player->GetZoneId() == 4987 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(8500);
+                if (player->GetZoneId() == 4987 && !player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())  // 10 Heroic
+                    guild->GiveXp(10000);
+                if (player->GetZoneId() == 4987 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(4400);
+                if (player->GetZoneId() == 4987 && player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())   // 25 heroic
+                    guild->GiveXp(5000);
+                // Icecrown Citadel
+                if (player->GetZoneId() == 4812 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(4500);
+                if (player->GetZoneId() == 4812 && !player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())  // 10 Heroic
+                    guild->GiveXp(6000);
+                if (player->GetZoneId() == 4812 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(2800);
+                if (player->GetZoneId() == 4812 && player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())   // 25 heroic
+                    guild->GiveXp(3400);
+                // Trial of Crusader
+                if (player->GetZoneId() == 4722 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(3000);
+                if (player->GetZoneId() == 4722 && !player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())  // 10 Heroic
+                    guild->GiveXp(3600);
+                if (player->GetZoneId() == 4722 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1400);
+                if (player->GetZoneId() == 4722 && player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())   // 25 heroic
+                    guild->GiveXp(1800);
+                // Ulduar
+                if (player->GetZoneId() == 4273 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(2500);
+                if (player->GetZoneId() == 4273 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1200);
+                // Naxxramas
+                if (player->GetZoneId() == 3456 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(2000);
+                if (player->GetZoneId() == 3456 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1000);
+                // Obsidian
+                if (player->GetZoneId() == 4493 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(2000);
+                if (player->GetZoneId() == 4493 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1000);
+                // Obsidian
+                if (player->GetZoneId() == 2159 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(2000);
+                if (player->GetZoneId() == 2159 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1000);
+                // Eye of Eternity
+                if (player->GetZoneId() == 4500 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
+                    guild->GiveXp(2000);
+                if (player->GetZoneId() == 4500 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
+                    guild->GiveXp(1000);
+            }
 }

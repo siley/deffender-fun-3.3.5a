@@ -70,6 +70,7 @@ class boss_thorim : public CreatureScript
             {
                 Talk(SAY_DEATH);
                 _JustDied();
+                instance->givexp();
             }
 
             void EnterCombat(Unit* /*who*/) override

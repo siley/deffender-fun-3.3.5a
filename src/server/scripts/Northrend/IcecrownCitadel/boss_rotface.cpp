@@ -153,6 +153,9 @@ class boss_rotface : public CreatureScript
                 instance->DoRemoveAurasDueToSpellOnPlayers(MUTATED_INFECTION);
                 _JustDied();
                 Talk(SAY_DEATH);
+
+                instance->givexp();
+
                 if (Creature* professor = ObjectAccessor::GetCreature(*me, instance->GetData64(DATA_PROFESSOR_PUTRICIDE)))
                     if (professor->IsAlive())
                         professor->AI()->DoAction(ACTION_ROTFACE_DEATH);

@@ -124,6 +124,8 @@ public:
         {
             _JustDied();
             Talk(SAY_DEATH);
+
+            instance->givexp();
         }
 
         void SummonUndead(uint32 entry, uint32 num)

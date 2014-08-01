@@ -1464,6 +1464,7 @@ void AddSC_npc_icc_buff();
 void AddSC_evento_midsummer();
 void AddSC_ArenaWatcher();
 void AddSC_arena_top_teams();
+void AddSC_npc_guild_vendor();
 #endif
 
 void AddCustomScripts()
@@ -1490,5 +1491,6 @@ void AddCustomScripts()
     AddSC_evento_midsummer();
     AddSC_ArenaWatcher();
     AddSC_arena_top_teams();
+    AddSC_npc_guild_vendor();
 #endif
 }
