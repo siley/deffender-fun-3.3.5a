@@ -15710,8 +15710,9 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     if (Guild* guild = GetGuild())
     {
         //QuestXP for the Guild
-        if (!quest->IsRepeatable() || quest->IsDaily())
-        guild->GiveXp(10000);
+        if (getLevel() <= (GetQuestLevel(quest) + sWorld->getIntConfig(CONFIG_QUEST_LOW_LEVEL_HIDE_DIFF)))
+            if (!quest->IsRepeatable() || quest->IsDaily())
+                guild->GiveXp(10000);
 
         //GuildXP-Bonus
         if (guild->HasLevelForBonus(GUILD_BONUS_XP_1) && !guild->HasLevelForBonus(GUILD_BONUS_EHRE_2))
