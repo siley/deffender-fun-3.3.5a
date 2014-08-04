@@ -3168,17 +3168,20 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 18754: // Improved succubus - problems with apply if target is pet 
                 spellInfo->Effects[0].ApplyAuraName = SPELL_AURA_ADD_FLAT_MODIFIER;     // it's affects duration of seduction, let's minimize affection 
                 spellInfo->Effects[0].BasePoints = -1.5*IN_MILLISECONDS*0.22;           // reduce cast time of seduction by 22%  
-                spellInfo->Effects[0].TargetA = TARGET_UNIT_CASTER; 
+                spellInfo->Effects[0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
+                spellInfo->Effects[1].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_MASTER);
                 break; 
             case 18755: 
                 spellInfo->Effects[0].ApplyAuraName = SPELL_AURA_ADD_FLAT_MODIFIER;     
                 spellInfo->Effects[0].BasePoints = -1.5*IN_MILLISECONDS*0.44;           // reduce cast time of seduction by 44%  
-                spellInfo->Effects[0].TargetA = TARGET_UNIT_CASTER; 
+                spellInfo->Effects[0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
+                spellInfo->Effects[1].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_MASTER);
                 break; 
             case 18756: 
                 spellInfo->Effects[0].ApplyAuraName = SPELL_AURA_ADD_FLAT_MODIFIER;     
                 spellInfo->Effects[0].BasePoints = -1.5*IN_MILLISECONDS*0.66;           // reduce cast time of seduction by 66%  
-                spellInfo->Effects[0].TargetA = TARGET_UNIT_CASTER; 
+                spellInfo->Effects[0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
+                spellInfo->Effects[1].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_MASTER);
                 break;
             // Master Shapeshifter: missing stance data for forms other than bear - bear version has correct data
             // To prevent aura staying on target after talent unlearned
