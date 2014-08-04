@@ -311,6 +311,9 @@ class spell_sha_earth_shield : public SpellScriptLoader
                     amount = caster->SpellHealingBonusDone(GetUnitOwner(), GetSpellInfo(), amount, HEAL);
                     amount = GetUnitOwner()->SpellHealingBonusTaken(caster, GetSpellInfo(), amount, HEAL);
 
+                    if (int32 modifier = GetUnitOwner()->GetMaxNegativeAuraModifier(SPELL_AURA_MOD_HEALING_PCT))
+                        ApplyPct(amount, -10000.0f / float(modifier));
+
                     // Glyph of Earth Shield
                     //! WORKAROUND
                     //! this glyph is a proc
