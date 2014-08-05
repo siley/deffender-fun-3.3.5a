@@ -517,33 +517,33 @@ void InstanceScript::givexp()
                 if (player->GetZoneId() == 4722 && !player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())  // 10 Heroic
                     guild->GiveXp(3600);
                 if (player->GetZoneId() == 4722 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1400);
+                    guild->GiveXp(1000);
                 if (player->GetZoneId() == 4722 && player->GetMap()->Is25ManRaid() && player->GetMap()->IsHeroic())   // 25 heroic
-                    guild->GiveXp(1800);
+                    guild->GiveXp(800);
                 // Ulduar
                 if (player->GetZoneId() == 4273 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
-                    guild->GiveXp(2500);
+                    guild->GiveXp(800);
                 if (player->GetZoneId() == 4273 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1200);
+                    guild->GiveXp(500);
                 // Naxxramas
                 if (player->GetZoneId() == 3456 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
-                    guild->GiveXp(2000);
+                    guild->GiveXp(800);
                 if (player->GetZoneId() == 3456 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1000);
+                    guild->GiveXp(500);
                 // Obsidian
                 if (player->GetZoneId() == 4493 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
-                    guild->GiveXp(2000);
+                    guild->GiveXp(800);
                 if (player->GetZoneId() == 4493 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1000);
-                // Obsidian
+                    guild->GiveXp(500);
+                // Onyxia
                 if (player->GetZoneId() == 2159 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
-                    guild->GiveXp(2000);
+                    guild->GiveXp(800);
                 if (player->GetZoneId() == 2159 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1000);
+                    guild->GiveXp(500);
                 // Eye of Eternity
                 if (player->GetZoneId() == 4500 && !player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic()) // 10 normal
-                    guild->GiveXp(2000);
+                    guild->GiveXp(800);
                 if (player->GetZoneId() == 4500 && player->GetMap()->Is25ManRaid() && !player->GetMap()->IsHeroic())  // 25 normal
-                    guild->GiveXp(1000);
+                    guild->GiveXp(500);
             }
 }
