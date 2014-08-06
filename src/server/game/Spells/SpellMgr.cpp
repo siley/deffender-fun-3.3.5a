@@ -3332,6 +3332,16 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 64936: // Item - Warrior T8 Protection 4P Bonus
                 spellInfo->Effects[EFFECT_0].BasePoints = 100; // 100% chance of procc'ing, not -10% (chance calculated in PrepareTriggersExecutedOnHit)
                 break;
+            case 64077: // Refresh Mount (Argent Tournament)
+                spellInfo->Effects[EFFECT_0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_CASTER);
+                break;
+            case 63825: // Sundering Thrust (Argent Tournament)
+                spellInfo->Effects[EFFECT_0].TargetA = SpellImplicitTargetInfo(TARGET_UNIT_TARGET_ENEMY);
+                break;
+            case 63163: // Apply Enchanted Bridle (Argent Tournament)
+                spellInfo->Effects[EFFECT_0].DieSides = 0;
+                spellInfo->Effects[EFFECT_0].BasePoints = 52391;
+                break;
             case 19970: // Entangling Roots (Rank 6) -- Nature's Grasp Proc
             case 19971: // Entangling Roots (Rank 5) -- Nature's Grasp Proc
             case 19972: // Entangling Roots (Rank 4) -- Nature's Grasp Proc

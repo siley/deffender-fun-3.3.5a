@@ -881,6 +881,9 @@ void AuraEffect::UpdatePeriodic(Unit* caster)
                         return;
                     }
                     break;
+                case 63000: // Trample Scourge
+                    if (caster->isMoving() || (caster->GetTypeId() == TYPEID_PLAYER && caster->ToPlayer()->m_mover->isMoving()))
+                        caster->CastSpell(caster->GetVehicleBase(), 63001, true);
                 default:
                     break;
            }

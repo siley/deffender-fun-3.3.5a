@@ -1307,8 +1307,45 @@ public:
     }
 };
 
+/*######
+## go_mysterious_snow_mound
+######*/
+
+enum
+{
+    SPELL_SUMMON_DEEP_JORMUNGAR     = 66510,
+    SPELL_SUMMON_MOLE_MACHINE       = 66492,
+    SPELL_SUMMON_MARAUDER           = 66491,
+};
+class go_mysterious_snow_mound : public GameObjectScript
+{
+public:
+    go_mysterious_snow_mound() : GameObjectScript("go_mysterious_snow_mound") { }
+
+    bool OnGossipHello(Player* player, GameObject* pGO)
+    {
+        if (urand(0,1))
+        {
+            player->CastSpell(player, SPELL_SUMMON_DEEP_JORMUNGAR, true);
+        }
+        else
+        {
+            // This is basically wrong, but added for support.
+            // Mole machine would summon, along with unknonwn GO (a GO trap?) and then
+            // the npc would summon with base of that location.
+            player->CastSpell(player, SPELL_SUMMON_MOLE_MACHINE, true);
+            player->CastSpell(player, SPELL_SUMMON_MARAUDER, true);
+        }
+    
+        pGO->SetLootState(GO_JUST_DEACTIVATED);
+        return true;
+    }
+};
+
+
 void AddSC_go_scripts()
 {
+    new go_mysterious_snow_mound();
     new go_cat_figurine();
     new go_barov_journal();
     new go_field_repair_bot_74A();
