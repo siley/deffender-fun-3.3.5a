@@ -2997,6 +2997,8 @@ void SpellMgr::LoadSpellInfoCorrections()
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
                 break;
             case 66: // Invisibility
+            case 35009: // Invisibility
+            case 32612: // Invisibility
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
                 break;
