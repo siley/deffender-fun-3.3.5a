@@ -3704,60 +3704,6 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                 case 26465:
                     unitTarget->RemoveAuraFromStack(26464);
                     return;
-                case 62575: // Shield-Breaker (player on tournament mount)
-                    if (m_caster->GetOwner())
-                        m_caster->GetOwner()->CastSpell(unitTarget, 62626, true);
-                    return;
-                case 64595: // Shield-Breaker (player on tournament mount)
-                    if (m_caster->GetOwner())
-                        m_caster->GetOwner()->CastSpell(unitTarget, 64590, true);
-                    return;
-                case 62960: // Charge (player on tournament mount)
-                    m_caster->CastSpell(unitTarget, 68321, true); // only does damage
-                    m_caster->CastSpell(unitTarget, 62977, true); // "Your target dodged your charge!" ... maybe only chance of this?
-                    return;
-                case 62626: // Shield-Breaker (player on tournament mount)
-                case 68321: // Charge (player on tournament mount)
-                case 65147: // Shield-Breaker (argent champion, valiant
-                case 63010: // Charge (argent champion, valiant, Boneguard Lieutenant)
-                case 62709: // Counterattack! (Melee Target)
-                case 63825: // Sundering Thrust (Boneguard Lieutenant)
-                case 64590: // Shield Breaker (player on campaign warhorse)
-                case 63233: // Necrocution (Boneguard Scout)
-                case 63003: // Charge (Black Knight)
-                    if (!unitTarget)
-                        return;
-                    unitTarget->RemoveAuraFromStack(62719); // defend (valiant, champion, dummy)
-                    unitTarget->RemoveAuraFromStack(64100); // defend (dummy)
-                    unitTarget->RemoveAuraFromStack(62552); // defend (player)
-                    return;
-                case 62863: // Duel (mounted)
-                    if (unitTarget)
-                        if (Player* pCaster = m_caster->GetCharmerOrOwnerPlayerOrPlayerItself())
-                            if (Player* target = unitTarget->GetCharmerOrOwnerPlayerOrPlayerItself())
-                                if (target->HasUnitState(UNIT_NPC_FLAG_PLAYER_VEHICLE) && pCaster->HasUnitState(UNIT_NPC_FLAG_PLAYER_VEHICLE))
-                                    pCaster->CastSpell(target, 62875, true);
-                    return;
-                case 66741: // Chum the Water (quest)
-                    if (m_caster->IsInWater() && m_caster->GetZoneId() == 210) // in water and in Icecrown
-                    {
-                        switch (urand(0, 3))
-                        {
-                            case 0: // Summon Angry Kvaldir
-                                m_caster->CastSpell(unitTarget, 66737, true);
-                                break; 
-                            case 1: // Summon North Sea Mako
-                                m_caster->CastSpell(unitTarget, 66738, true);
-                                break; 
-                            case 2: // Summon North Sea Thresher
-                                m_caster->CastSpell(unitTarget, 66739, true);
-                                break; 
-                            case 3: // Summon North Sea Blue Shark
-                                m_caster->CastSpell(unitTarget, 66740, true);
-                                break; 
-                        }
-                    }
-                    return;
                 // Shadow Flame (All script effects, not just end ones to prevent player from dodging the last triggered spell)
                 case 22539:
                 case 22972:
@@ -4198,7 +4144,6 @@ void Spell::EffectSanctuary(SpellEffIndex /*effIndex*/)
         return;
 
     unitTarget->getHostileRefManager().UpdateVisibility();
-    unitTarget->CombatStop();
 
     Unit::AttackerSet const& attackers = unitTarget->getAttackers();
     for (Unit::AttackerSet::const_iterator itr = attackers.begin(); itr != attackers.end();)
