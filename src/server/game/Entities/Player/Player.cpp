@@ -1945,6 +1945,9 @@ void Player::Update(uint32 p_time)
         removeSpell(16059, false, false);
         removeSpell(31700, false, false);*/
     }
+
+    if (MorphFit == 28213)
+        SetObjectScale(0.8);
 }
 
 void Player::setDeathState(DeathState s)
@@ -15711,11 +15714,17 @@ void Player::RewardQuest(Quest const* quest, uint32 reward, Object* questGiver, 
     {
         //QuestXP for the Guild
         if (getLevel() <= (GetQuestLevel(quest) + sWorld->getIntConfig(CONFIG_QUEST_LOW_LEVEL_HIDE_DIFF)))
+        {
             if (!quest->IsRepeatable() || quest->IsDaily())
                 if (getLevel() < 50)
                     guild->GiveXp(3000);
                 else
                     guild->GiveXp(10000);
+        }
+        else
+            if (!quest->IsRepeatable() || quest->IsDaily())
+                guild->GiveXp(2000);
+
 
         //GuildXP-Bonus
         if (guild->HasLevelForBonus(GUILD_BONUS_XP_1) && !guild->HasLevelForBonus(GUILD_BONUS_EHRE_2))
