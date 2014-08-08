@@ -1945,9 +1945,6 @@ void Player::Update(uint32 p_time)
         removeSpell(16059, false, false);
         removeSpell(31700, false, false);*/
     }
-
-    if (MorphFit == 28213)
-        SetObjectScale(0.8);
 }
 
 void Player::setDeathState(DeathState s)
