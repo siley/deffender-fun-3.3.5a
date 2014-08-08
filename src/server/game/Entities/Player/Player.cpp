@@ -2153,18 +2153,24 @@ bool Player::BuildEnumData(PreparedQueryResult result, WorldPacket* data)
     return true;
 }
 
-void Player::ToggleAFK()
+bool Player::ToggleAFK()
 {
     ToggleFlag(PLAYER_FLAGS, PLAYER_FLAGS_AFK);
 
+    bool state = HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_AFK);
+
     // afk player not allowed in battleground
-    if (isAFK() && InBattleground() && !InArena())
+    if (state && InBattleground() && !InArena())
         LeaveBattleground();
+
+    return state;
 }
 
-void Player::ToggleDND()
+bool Player::ToggleDND()
 {
     ToggleFlag(PLAYER_FLAGS, PLAYER_FLAGS_DND);
+
+    return HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_DND);
 }
 
 uint8 Player::GetChatTag() const
@@ -20978,16 +20984,28 @@ void Player::Whisper(const std::string& text, uint32 language, uint64 receiver)
     std::string _text(text);
     sScriptMgr->OnPlayerChat(this, CHAT_MSG_WHISPER, language, _text, rPlayer);
 
-    WorldPacket data;
-    ChatHandler::BuildChatPacket(data, CHAT_MSG_WHISPER, Language(language), this, this, _text);
-    rPlayer->GetSession()->SendPacket(&data);
+    // when player you are whispering to is dnd, he cannot receive your message, unless you are in gm mode
+    if (!rPlayer->isDND() || IsGameMaster())
+    {
+        WorldPacket data(SMSG_MESSAGECHAT, 200);
+        BuildPlayerChat(&data, CHAT_MSG_WHISPER, _text, language);
+        rPlayer->GetSession()->SendPacket(&data);
+
+            // not send confirmation for addon messages
+            if (!isAddonMessage)
+            {
+                data.Initialize(SMSG_MESSAGECHAT, 200);
+                rPlayer->BuildPlayerChat(&data, CHAT_MSG_WHISPER_INFORM, _text, language);
+                GetSession()->SendPacket(&data);
+            }
+    }
+    else if (!isAddonMessage)
+        // announce to player that player he is whispering to is dnd and cannot receive his message
+        ChatHandler(GetSession()).PSendSysMessage(LANG_PLAYER_DND, rPlayer->GetName().c_str(), rPlayer->dndMsg.c_str());
 
     // rest stuff shouldn't happen in case of addon message
     if (isAddonMessage)
         return;
-
-    ChatHandler::BuildChatPacket(data, CHAT_MSG_WHISPER_INFORM, Language(language), rPlayer, rPlayer, _text);
-    GetSession()->SendPacket(&data);
 
     if (!isAcceptWhispers() && !IsGameMaster() && !rPlayer->IsGameMaster())
     {
@@ -20995,11 +21013,12 @@ void Player::Whisper(const std::string& text, uint32 language, uint64 receiver)
         ChatHandler(GetSession()).SendSysMessage(LANG_COMMAND_WHISPERON);
     }
 
-    // announce afk or dnd message
+    // announce to player that player he is whispering to is afk
     if (rPlayer->isAFK())
-        ChatHandler(GetSession()).PSendSysMessage(LANG_PLAYER_AFK, rPlayer->GetName().c_str(), rPlayer->autoReplyMsg.c_str());
-    else if (rPlayer->isDND())
-        ChatHandler(GetSession()).PSendSysMessage(LANG_PLAYER_DND, rPlayer->GetName().c_str(), rPlayer->autoReplyMsg.c_str());
+        ChatHandler(GetSession()).PSendSysMessage(LANG_PLAYER_AFK, rPlayer->GetName().c_str(), rPlayer->afkMsg.c_str());
+        // if player whisper someone, auto turn of dnd to be able to receive an answer
+        if (isDND() && !rPlayer->IsGameMaster())
+            ToggleDND();
 }
 
 Item* Player::GetMItem(uint32 id)
