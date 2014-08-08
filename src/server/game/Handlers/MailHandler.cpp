@@ -326,44 +326,26 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
     if (items_count == 0)
         COD = 0;
 
+    //Guild-Level-System (Bonus: GUILD MAIL)
+    uint32 sender = 0;
+    uint32 receiver1 = 0;
 
-    //uint32 senderguildId = 0;
-    //uint32 receiverguildId = 0;
+    sender = player->GetGuildId();
+    receiver1 = receiver->GetGuildId();
+    Guild* guild = player->GetGuild();
+    
+    if (sender != 0)
+        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) && sender == receiver1)
+            deliver_delay = deliver_delay / 2;
 
-    //senderguildId = player->GetGuildId();
-    //receiverguildId = receiver->GetGuildId();
-    // will delete item or place to receiver mail list
+    if (sender != 0)
+        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) && guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && sender == receiver1)
+            deliver_delay = 0;
 
-    /*//Guild-Level-System (Bonus: GUILD MAIL)
-    if (senderguildId == receiverguildId && player->GetGuild())
-    {
-        Guild* guild = player->GetGuild();
-        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2))
-        {
-            draft
-            .AddMoney(money)
-            .AddCOD(COD)
-            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay/2);
-        }
-        else
-        if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) &&  guild->HasLevelForBonus(GUILD_BONUS_MAIL_1))
-        {
-            draft
-            .AddMoney(money)
-            .AddCOD(COD)
-            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, 0);
-        }
-        else
-        draft
-            .AddMoney(money)
-            .AddCOD(COD)
-            .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);
-    }
-    else*/
-        draft
-        .AddMoney(money)
-        .AddCOD(COD)
-        .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);
+    draft
+    .AddMoney(money)
+    .AddCOD(COD)
+    .SendMailTo(trans, MailReceiver(receiver, GUID_LOPART(receiverGuid)), MailSender(player), body.empty() ? MAIL_CHECK_MASK_COPIED : MAIL_CHECK_MASK_HAS_BODY, deliver_delay);
 
     player->SaveInventoryAndGoldToDB(trans);
     CharacterDatabase.CommitTransaction(trans);
