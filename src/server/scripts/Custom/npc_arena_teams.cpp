@@ -167,9 +167,9 @@ private:
         if (!player)
             return "Offline";
         if (player->isAFK())
-            return "Online, <AFK> " + player->autoReplyMsg;
+            return "Online, <AFK> " + player->afkMsg;
         if (player->isDND())
-            return "Online, <Busy> " + player->autoReplyMsg;
+            return "Online, <Busy> " + player->dndMsg;
         return "Online";
     }
 
