@@ -329,10 +329,10 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
     //Guild-Level-System (Bonus: GUILD MAIL)
     Guild* guild = player->GetGuild();
 
-    if ((guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2)) && player->GetGuildId() == receiver->GetGuildId())
+    if ((guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2)) && (player->GetGuildId() == receiver->GetGuildId()))
             deliver_delay = deliver_delay / 2;
 
-    if ((guild->HasLevelForBonus(GUILD_BONUS_MAIL_2)) && player->GetGuildId() == receiver->GetGuildId())
+    if ((guild->HasLevelForBonus(GUILD_BONUS_MAIL_2)) && (player->GetGuildId() == receiver->GetGuildId()))
             deliver_delay = 0;
 
     draft
