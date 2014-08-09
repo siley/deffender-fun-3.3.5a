@@ -327,13 +327,13 @@ void WorldSession::HandleSendMail(WorldPacket& recvData)
         COD = 0;
 
     //Guild-Level-System (Bonus: GUILD MAIL)
-    Guild* guild = player->GetGuild();
+    /*Guild* guild = player->GetGuild();
 
     if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_1) && !guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) && player->GetGuildId() == receiver->GetGuildId())
             deliver_delay = deliver_delay / 2;
 
     if (guild->HasLevelForBonus(GUILD_BONUS_MAIL_2) && player->GetGuildId() == receiver->GetGuildId())
-            deliver_delay = 0;
+            deliver_delay = 0;*/
 
     draft
     .AddMoney(money)
