@@ -3001,6 +3001,7 @@ void SpellMgr::LoadSpellInfoCorrections()
             case 32612: // Invisibility
             case 5171: // Slice and Dice
             case 6774: // Slice and Dice
+            case 14183: // Premediation (Rogue Talent)
                 spellInfo->AttributesEx3 |= SPELL_ATTR3_NO_INITIAL_AGGRO;
                 spellInfo->AttributesCu |= SPELL_ATTR0_CU_NO_INITIAL_THREAT;
                 break;
