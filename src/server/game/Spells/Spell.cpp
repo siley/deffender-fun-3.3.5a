@@ -4654,13 +4654,17 @@ void Spell::HandleEffects(Unit* pUnitTarget, Item* pItemTarget, GameObject* pGOT
 
 SpellCastResult Spell::CheckCast(bool strict)
 {
-        if ((m_spellInfo->Id == 53271) && (!m_caster->ToPlayer()->GetPet()->IsAlive()))
-            return SPELL_FAILED_NO_PET;
+    // Master's Call LoS +Dead pet checker
+    if ((m_spellInfo->Id == 53271) && (!m_caster->ToPlayer()->GetPet()->IsAlive()))
+        return SPELL_FAILED_NO_PET;
 
-        Unit* target = m_targets.GetUnitTarget();
-        if (m_spellInfo->Id == 53271 && !m_caster->ToPlayer()->GetPet()->IsWithinLOSInMap(target))
-                return SPELL_FAILED_LINE_OF_SIGHT;
-        
+    Unit* target = m_targets.GetUnitTarget();
+    if (m_spellInfo->Id == 53271 && !m_caster->ToPlayer()->GetPet()->IsWithinLOSInMap(target))
+        return SPELL_FAILED_LINE_OF_SIGHT;
+    
+    // Ghoul - Claw. Pet should have min 40 energy
+    if ((m_spellInfo->Id == 47468) && (m_caster->GetPower(POWER_ENERGY) < 70))
+        return SPELL_FAILED_NO_POWER;
 
     // check death state
     if (!m_caster->IsAlive() && !(m_spellInfo->Attributes & SPELL_ATTR0_PASSIVE) && !((m_spellInfo->Attributes & SPELL_ATTR0_CASTABLE_WHILE_DEAD) || (IsTriggered() && !m_triggeredByAuraSpell)))
