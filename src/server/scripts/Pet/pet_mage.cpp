@@ -52,6 +52,64 @@ class npc_pet_mage_mirror_image : public CreatureScript
                 // here should be auras (not present in client dbc): 35657, 35658, 35659, 35660 selfcast by mirror images (stats related?)
                 // Clone Me!
                 owner->CastSpell(me, SPELL_MAGE_CLONE_ME, false);
+
+                if (owner->ToPlayer() && owner->ToPlayer()->GetSelectedUnit())
+                    me->AI()->AttackStart(owner->ToPlayer()->GetSelectedUnit());
+            }
+
+            void EnterCombat(Unit* who)
+            {
+                if (spells.empty())
+                    return;
+
+                for (SpellVct::iterator itr = spells.begin(); itr != spells.end(); ++itr)
+                {
+                    if (AISpellInfo[*itr].condition == AICOND_AGGRO)
+                        me->CastSpell(who, *itr, false);
+                    else
+                    if (AISpellInfo[*itr].condition == AICOND_COMBAT)
+                    {
+                        uint32 cooldown = GetAISpellInfo(*itr)->realCooldown;
+                        events.ScheduleEvent(*itr, cooldown);
+                    }
+                }
+            }
+
+            void UpdateAI(uint32 diff) override
+            {
+                if (!UpdateVictim())
+                    return;
+
+                events.Update(diff);
+
+                bool hasCC = false;
+                if (me->GetCharmerOrOwnerGUID() && me->GetVictim())
+                    hasCC = me->GetVictim()->HasAuraType(SPELL_AURA_MOD_CONFUSE);
+
+                if (hasCC)
+                {
+                    if (me->HasUnitState(UNIT_STATE_CASTING))
+                        me->CastStop();
+                    me->AI()->EnterEvadeMode();
+                    return;
+                }
+
+                if (me->HasUnitState(UNIT_STATE_CASTING))
+                    return;
+
+                if (uint32 spellId = events.ExecuteEvent())
+                {
+                    if (hasCC)
+                    {
+                        events.ScheduleEvent(spellId, 500);
+                        return;
+                    }
+
+                    DoCast(spellId);
+                    uint32 casttime = me->GetCurrentSpellCastTime(spellId);
+                    events.ScheduleEvent(spellId, (casttime ? casttime : 500) + GetAISpellInfo(spellId)->realCooldown);
+
+                }
             }
 
             // Do not reload Creature templates on evade mode enter - prevent visual lost
