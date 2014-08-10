@@ -304,10 +304,7 @@ void GameObject::Update(uint32 diff)
                         // Hardcoded tooltip value
                         m_cooldownTime = time(NULL) + 10;
                     else if (Unit* owner = GetOwner())
-                        if (owner->IsInCombat())
-                            m_cooldownTime = time(NULL) + 1;
-                        else
-                            m_cooldownTime = time(NULL) + goInfo->trap.startDelay + 1; // Fix for traps being instantly activated 
+                        m_cooldownTime = time(NULL);
 
                     SetLootState(GO_READY);
                     break;
@@ -451,7 +448,7 @@ void GameObject::Update(uint32 diff)
                 GameObjectTemplate const* goInfo = GetGOInfo();
                 if (goInfo->type == GAMEOBJECT_TYPE_TRAP)
                 {
-                    if (m_cooldownTime >= time(NULL))
+                    if (m_cooldownTime > time(NULL))
                         break;
 
                     // Type 2 (bomb) does not need to be triggered by a unit and despawns after casting its spell.
