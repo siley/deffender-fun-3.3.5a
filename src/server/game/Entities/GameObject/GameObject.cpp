@@ -448,7 +448,7 @@ void GameObject::Update(uint32 diff)
                 GameObjectTemplate const* goInfo = GetGOInfo();
                 if (goInfo->type == GAMEOBJECT_TYPE_TRAP)
                 {
-                    if (m_cooldownTime > time(NULL))
+                    if (m_cooldownTime >= time(NULL))
                         break;
 
                     // Type 2 (bomb) does not need to be triggered by a unit and despawns after casting its spell.
@@ -470,7 +470,7 @@ void GameObject::Update(uint32 diff)
                         radius = 3.f;
                     }
                     else
-                        radius = goInfo->trap.diameter / 3*2.f;
+                        radius = goInfo->trap.diameter / 2.f;
 
                     // Pointer to appropriate target if found any
                     Unit* target = NULL;
