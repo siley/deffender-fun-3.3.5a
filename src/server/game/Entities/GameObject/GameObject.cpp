@@ -304,7 +304,10 @@ void GameObject::Update(uint32 diff)
                         // Hardcoded tooltip value
                         m_cooldownTime = time(NULL) + 10;
                     else if (Unit* owner = GetOwner())
-                        m_cooldownTime = time(NULL);
+                        if (owner->IsInCombat())
+                            m_cooldownTime = time(NULL) + 0.8;
+                        else
+                            m_cooldownTime = time(NULL); // Fix for traps being instantly activated 
 
                     SetLootState(GO_READY);
                     break;
@@ -470,7 +473,7 @@ void GameObject::Update(uint32 diff)
                         radius = 3.f;
                     }
                     else
-                        radius = goInfo->trap.diameter / 2.f;
+                        radius = goInfo->trap.diameter / 3*2.f;
 
                     // Pointer to appropriate target if found any
                     Unit* target = NULL;
