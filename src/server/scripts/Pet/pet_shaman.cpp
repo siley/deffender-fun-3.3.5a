@@ -22,6 +22,7 @@
 
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
+#include "TotemAI.h"
 
 enum ShamanSpells
 {
@@ -39,6 +40,26 @@ enum ShamanEvents
     EVENT_SHAMAN_FIRENOVA       = 1,
     EVENT_SHAMAN_FIRESHIELD     = 2,
     EVENT_SHAMAN_FIREBLAST      = 3
+};
+
+class npc_grounding_totem : public CreatureScript
+{
+public:
+    npc_grounding_totem() : CreatureScript("npc_grounding_totem") { }
+    struct npc_grounding_totemAI : public NullCreatureAI
+    {
+        //void EnterCombat(Unit*) { }
+        npc_grounding_totemAI(Creature* c) : NullCreatureAI(c) { }
+        void SpellHit(Unit*, const SpellInfo* spell) override
+        {
+            if (!spell->IsPositive())
+                me->DealDamage(me, me->GetMaxHealth());
+        }
+    };
+    CreatureAI* GetAI(Creature* c) const override
+    {
+        return new npc_grounding_totemAI(c);
+    }
 };
 
 class npc_pet_shaman_earth_elemental : public CreatureScript
@@ -148,6 +169,7 @@ class npc_pet_shaman_fire_elemental : public CreatureScript
 
 void AddSC_shaman_pet_scripts()
 {
+    new npc_grounding_totem();
     new npc_pet_shaman_earth_elemental();
     new npc_pet_shaman_fire_elemental();
 }

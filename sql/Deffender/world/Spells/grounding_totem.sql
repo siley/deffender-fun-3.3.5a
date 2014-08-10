@@ -1,0 +1,1 @@
+UPDATE `creature_template` SET `ScriptName`='npc_grounding_totem' WHERE (`entry`='5925');
