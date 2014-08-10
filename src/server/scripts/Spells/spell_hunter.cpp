@@ -435,6 +435,8 @@ class spell_hun_masters_call : public SpellScriptLoader
                             TriggerCastFlags castMask = TriggerCastFlags(TRIGGERED_FULL_MASK & ~TRIGGERED_IGNORE_CASTER_AURASTATE);
                             target->CastSpell(ally, GetEffectValue(), castMask);
                             target->CastSpell(ally, GetSpellInfo()->Effects[EFFECT_0].CalcValue(), castMask);
+                            target->RemoveMovementImpairingAuras(); // remove already applied root and snare from pet
+                            caster->RemoveMovementImpairingAuras(); // remove already applied root and snare from pet's owner
                         }
             }
 
