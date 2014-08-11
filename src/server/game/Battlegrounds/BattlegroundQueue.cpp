@@ -925,33 +925,33 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
         // Dynamic MMR
         if (dynamicMMRindex == 1)
         {
-            arenaMinRating -= 100;
-            arenaMaxRating += 100;
-        }
-        else if (dynamicMMRindex == 2)
-        {
             arenaMinRating -= 200;
             arenaMaxRating += 200;
         }
-        else if (dynamicMMRindex == 3)
+        else if (dynamicMMRindex == 2)
         {
             arenaMinRating -= 300;
             arenaMaxRating += 300;
         }
+        else if (dynamicMMRindex == 3)
+        {
+            arenaMinRating -= 450;
+            arenaMaxRating += 450;
+        }
         else if (dynamicMMRindex == 4)
         {
-            arenaMinRating -= 400;
-            arenaMaxRating += 400;
+            arenaMinRating -= 550;
+            arenaMaxRating += 550;
         }
         else if (dynamicMMRindex == 5)
         {
-            arenaMinRating -= 500;
-            arenaMaxRating += 500;
+            arenaMinRating -= 650;
+            arenaMaxRating += 650;
         }
         else if (dynamicMMRindex == 6)
         {
-            arenaMinRating -= 600;
-            arenaMaxRating += 600;
+            arenaMinRating -= 1000;
+            arenaMaxRating += 1000;
         }
 
         // if max rating difference is set and the time past since server startup is greater than the rating discard time
