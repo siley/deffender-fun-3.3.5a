@@ -1071,7 +1071,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (600 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (600 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (1000 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (1000 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
@@ -1091,7 +1091,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (500 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (500 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (650 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (650 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
@@ -1111,7 +1111,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (400 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (400 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (550 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (550 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
@@ -1131,7 +1131,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (300 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (300 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (450 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (450 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
@@ -1151,7 +1151,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (200 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (200 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (300 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (300 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
@@ -1171,7 +1171,7 @@ void BattlegroundMgr::DynamicMMR(uint32 diff)
                                         {
                                             if (Player* plr = sObjectAccessor->FindPlayer(iter->Guid))
                                             {
-                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (100 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (100 + GetMaxRatingDifference()));
+                                                ChatHandler(plr->GetSession()).PSendSysMessage("Vas MMR Range byl zvetsen. Muzete dostat teamy od %u MMR do %u MMR", (*itr)->ArenaMatchmakerRating - (200 + GetMaxRatingDifference()), (*itr)->ArenaMatchmakerRating + (200 + GetMaxRatingDifference()));
                                             }
                                         }
                                     }
