@@ -10428,6 +10428,11 @@ uint32 Unit::SpellDamageBonusTaken(Unit* caster, SpellInfo const* spellProto, ui
         }
     }
 
+    if (pdamage > 0)
+        if (HasAura(45182))
+            if (GetTypeId() == TYPEID_PLAYER)
+                pdamage = int32(float(pdamage) / 100 * 10);
+
     // Spells with SPELL_ATTR4_FIXED_DAMAGE should only benefit from mechanic damage mod auras.
     if (!(spellProto->AttributesEx4 & SPELL_ATTR4_FIXED_DAMAGE))
     {
@@ -11563,6 +11568,11 @@ uint32 Unit::MeleeDamageBonusTaken(Unit* attacker, uint32 pdamage, WeaponAttackT
                 break;
         }
     }
+
+    if (pdamage > 0)
+        if (HasAura(45182))
+            if (GetTypeId() == TYPEID_PLAYER)
+                pdamage = int32(float(pdamage) / 100 * 10);
 
     // .. taken pct: class scripts
     //*AuraEffectList const& mclassScritAuras = GetAuraEffectsByType(SPELL_AURA_OVERRIDE_CLASS_SCRIPTS);
