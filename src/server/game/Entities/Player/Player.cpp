@@ -7520,9 +7520,9 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
     if (Guild* guild = GetGuild())
     {
         if (guild->HasLevelForBonus(GUILD_BONUS_EHRE_1) && !guild->HasLevelForBonus(GUILD_BONUS_EHRE_2))
-            honor_f *= 0.05f;
+            honor_f *= 1.05f;
         if (guild->HasLevelForBonus(GUILD_BONUS_EHRE_2))
-            honor_f *= 0.1f;
+            honor_f *= 1.1f;
     }
 
     // Back to int now
