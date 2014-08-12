@@ -3854,6 +3854,51 @@ class spell_item_sylvanas_music_box : public SpellScriptLoader
         }
 };
 
+enum LandmineKnockbackAchievement
+{
+    SPELL_LANDMINE_KNOCKBACK_ACHIEMENT  = 57064,
+};
+
+class spell_gen_landmine_knockback_achievement_aura : public SpellScriptLoader
+{
+    public:
+        spell_gen_landmine_knockback_achievement_aura() : SpellScriptLoader("spell_gen_landmine_knockback_achievement_aura") { }
+
+        class spell_gen_landmine_knockback_achievement_aura_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_gen_landmine_knockback_achievement_aura_SpellScript);
+
+            bool Validate(SpellInfo const* /*spell*/)
+            {
+                if (!sSpellMgr->GetSpellInfo(SPELL_LANDMINE_KNOCKBACK_ACHIEMENT))
+                    return false;
+                return true;
+            }
+
+            void HandleScript(SpellEffIndex /*effIndex*/)
+            {
+                if (Player* target = GetHitPlayer())
+                {
+                    Aura const* aura = target->GetAura(GetSpellInfo()->Id);
+                    if (!(aura && aura->GetStackAmount() == 10))
+                        return;
+
+                    target->CastSpell(target, SPELL_LANDMINE_KNOCKBACK_ACHIEMENT, true);
+                }
+            }
+
+            void Register()
+            {
+                OnEffectHitTarget += SpellEffectFn(spell_gen_landmine_knockback_achievement_aura_SpellScript::HandleScript, EFFECT_1, SPELL_EFFECT_APPLY_AURA);
+            }
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_gen_landmine_knockback_achievement_aura_SpellScript();
+        }
+};
+
 void AddSC_generic_spell_scripts()
 {
     new spell_shadowmeld();
@@ -3939,4 +3984,5 @@ void AddSC_generic_spell_scripts()
     new spell_gen_whisper_gulch_yogg_saron_whisper();
     new spell_gen_eject_all_passengers();
     new spell_item_sylvanas_music_box();
+    new spell_gen_landmine_knockback_achievement_aura();
 }
