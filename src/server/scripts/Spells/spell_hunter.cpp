@@ -450,6 +450,21 @@ class spell_hun_masters_call : public SpellScriptLoader
                 }
             }
 
+            SpellCastResult CheckCast()
+            {
+                // Master's Call LoS +Dead pet checker
+                Pet* pet = GetCaster()->ToPlayer()->GetPet();
+                Unit* target = GetHitUnit();
+
+                if (pet)
+                    if (!pet->IsAlive())
+                        return SPELL_FAILED_NO_PET;
+
+                if (pet->IsWithinLOSInMap(target))
+                    return SPELL_FAILED_LINE_OF_SIGHT;
+
+            return SPELL_CAST_OK;
+        }
             void Register() override
             {
                 OnEffectHitTarget += SpellEffectFn(spell_hun_masters_call_SpellScript::HandleDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
