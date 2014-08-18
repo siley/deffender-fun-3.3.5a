@@ -3372,6 +3372,9 @@ void SpellMgr::LoadSpellInfoCorrections()
             case  50452: // Bloodworm summon
                 spellInfo->Effects[EFFECT_0].DieSides = 3;
                 break;
+            case 44535: // Spirit Heal, abilities also have no cost
+                spellInfo->Effects[EFFECT_0].MiscValue = 127;
+                break;
             // ULDUAR SPELLS
             //
             case 62374: // Pursued (Flame Leviathan)
