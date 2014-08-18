@@ -537,6 +537,14 @@ class boss_the_lich_king : public CreatureScript
 
             void JustDied(Unit* /*killer*/) override
             {
+                //Kill credit for achievement hack fix
+                if (instance)
+                {
+                    Map::PlayerList const &PlayerList = instance->instance->GetPlayers();
+                    for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
+                    if (Player* player = i->GetSource())
+                        player->KilledMonsterCredit(36597, 0);
+                }
                 instance->givexp();
                 _JustDied();
                 DoCastAOE(SPELL_PLAY_MOVIE, false);
