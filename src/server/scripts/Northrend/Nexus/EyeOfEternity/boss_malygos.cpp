@@ -228,6 +228,8 @@ enum Texts
     EMOTE_POWER_SPARK_SUMMONED          = 0
 };
 
+#define MALYGOS_ACHIEVEMENT RAID_MODE<uint32>(1391,1394)
+
 #define MAX_SUMMONS_PHASE_TWO_10MAN       6
 #define MAX_SUMMONS_PHASE_TWO_25MAN       12
 
@@ -994,6 +996,8 @@ public:
 
         void JustDied(Unit* /*killer*/) override
         {
+
+            instance->DoCompleteAchievement(MALYGOS_ACHIEVEMENT);
             _JustDied();
             Talk(SAY_DEATH);
             instance->givexp();
