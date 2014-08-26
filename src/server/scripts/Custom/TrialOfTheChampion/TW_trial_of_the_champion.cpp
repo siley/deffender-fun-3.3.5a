@@ -298,7 +298,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                         }
 
                         for(std::list<uint64>::const_iterator itr = TempList.begin(); itr != TempList.end(); ++itr)
-                            if (Creature* summon = ObjectAccessor::GetCreature(*me, *itr))
+                        if (Creature* summon = ObjectAccessor::GetCreature(*me, *itr))
                                 AggroAllPlayers(summon);
                     } else if (uiLesserChampions == 9)
                         StartGrandChampionsAttack();
@@ -480,13 +480,13 @@ class TW_npc_herald_toc5 : public CreatureScript
                         switch (i)
                         {
                             case 0:
-                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, M_PI);
+                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, float(M_PI));
                                 break;
                             case 1:
-                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, M_PI / 2);
+                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, float(M_PI) / 2);
                                 break;
                             case 2:
-                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, M_PI / 2 + M_PI);
+                                pAdd->GetMotionMaster()->MoveFollow(pBoss, 2.5f, float(M_PI) / 2 + float(M_PI));
                                 break;
                         }
                     }
@@ -720,7 +720,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                                 thrall->AI()->Talk(H_SAY_INTRO_HERALD_3);
                         }
                         else
-                            if (Creature* varian = ObjectAccessor::GetCreature(*me, varianGUID))
+                        if (Creature* varian = ObjectAccessor::GetCreature(*me, varianGUID))
                                 varian->AI()->Talk(A_SAY_INTRO_HERALD_3);
                         events.ScheduleEvent(EVENT_INTRO_4, 4000, 0, PHASE_INTRO);
                         break;
@@ -731,7 +731,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                                 garrosh->AI()->Talk(H_SAY_INTRO_HERALD_4);
                         }
                         else
-                            if (Creature* proudmoore = ObjectAccessor::GetCreature(*me, proudmooreGUID))
+                        if (Creature* proudmoore = ObjectAccessor::GetCreature(*me, proudmooreGUID))
                                 proudmoore->AI()->Talk(A_SAY_INTRO_HERALD_4);
                         events.ScheduleEvent(EVENT_INTRO_5, 4000, 0, PHASE_INTRO);
                         break;
@@ -742,7 +742,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                                 varian->AI()->Talk(SAY_INTRO_HERALD_5);
                         }
                         else
-                            if (Creature* garrosh = ObjectAccessor::GetCreature(*me, garroshGUID))
+                        if (Creature* garrosh = ObjectAccessor::GetCreature(*me, garroshGUID))
                                 garrosh->AI()->Talk(SAY_INTRO_HERALD_5);
                         events.ScheduleEvent(EVENT_INTRO_6, 6000, 0, PHASE_INTRO);
                         break;
@@ -753,7 +753,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                                 proudmoore->AI()->Talk(H_SAY_INTRO_HERALD_6);
                         }
                         else
-                            if (Creature* thrall = ObjectAccessor::GetCreature(*me, thrallGUID))
+                        if (Creature* thrall = ObjectAccessor::GetCreature(*me, thrallGUID))
                                 thrall->AI()->Talk(A_SAY_INTRO_HERALD_6);
                         events.ScheduleEvent(EVENT_INTRO_7, 6000, 0, PHASE_INTRO);
                         break;
@@ -777,7 +777,7 @@ class TW_npc_herald_toc5 : public CreatureScript
                         if (!Champion1List.empty())
                         {
                             for(std::list<uint64>::const_iterator itr = Champion1List.begin(); itr != Champion1List.end(); ++itr)
-                                if (Creature* summon = ObjectAccessor::GetCreature(*me, *itr))
+                            if (Creature* summon = ObjectAccessor::GetCreature(*me, *itr))
                                     AggroAllPlayers(summon);
                         }
                         break;

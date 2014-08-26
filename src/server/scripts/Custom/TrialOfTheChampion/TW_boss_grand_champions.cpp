@@ -274,7 +274,7 @@ class TW_generic_vehicleAI_toc5 : public CreatureScript
             }
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             hasBeenInCombat = true;
             DoCastSpellDefend();
@@ -501,7 +501,7 @@ class TW_boss_warrior_toc5 : public CreatureScript
             bHome = false;
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             _EnterCombat();
             hasBeenInCombat = true;
@@ -524,7 +524,7 @@ class TW_boss_warrior_toc5 : public CreatureScript
             {
                 bDone = true;
                 Talk(WARNING_WEAPONS);
-                me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect    
+                me->RemoveAura(64723); // [DND] ReadyJoust Pose Effect	
 
                 if (me->GetGUID() == instance->GetData64(DATA_GRAND_CHAMPION_1))
                     me->SetHomePosition(739.678f, 662.541f, 413.395f, 4.49f);
@@ -660,7 +660,7 @@ class TW_boss_mage_toc5 : public CreatureScript
             bHome = false;
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             _EnterCombat();
             hasBeenInCombat = true;
@@ -792,7 +792,7 @@ class TW_boss_shaman_toc5 : public CreatureScript
         bool bHome;
         bool hasBeenInCombat;
         bool bCredit;
-        bool bChance;
+        uint8 chance;
 
         void Reset() override
         {
@@ -870,8 +870,8 @@ class TW_boss_shaman_toc5 : public CreatureScript
                         events.ScheduleEvent(EVENT_CHAIN_LIGHTNING, 23000, 0, PHASE_COMBAT);
                         break;
                     case EVENT_HEALING_WAVE:
-                        bChance = urand(0,1);
-                        if (!bChance)
+                        chance = urand(0,1);
+                        if (chance == 0)
                         {
                             if (Unit* pFriend = DoSelectLowestHpFriendly(40))
                                 DoCast(pFriend,DUNGEON_MODE(SPELL_HEALING_WAVE, SPELL_HEALING_WAVE_H));
@@ -996,7 +996,7 @@ class TW_boss_hunter_toc5 : public CreatureScript
             bHome = false;
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             _EnterCombat();
             hasBeenInCombat = true;
@@ -1053,7 +1053,7 @@ class TW_boss_hunter_toc5 : public CreatureScript
                         if (bShoot)
                         {
                             me->InterruptNonMeleeSpells(true);
-                            Unit* target = ObjectAccessor::GetCreature(*me, uiTargetGUID);
+                            Unit* target = ObjectAccessor::GetUnit(*me, uiTargetGUID);
 
                             if (target && me->IsInRange(target, 5.0f, 30.0f, false))
                                 DoCast(target, SPELL_MULTI_SHOT);
@@ -1197,7 +1197,7 @@ class TW_boss_rogue_toc5 : public CreatureScript
             bHome = false;
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             _EnterCombat();
             hasBeenInCombat = true;
@@ -1309,7 +1309,7 @@ class TW_achievement_toc5_grand_champions : public AchievementCriteriaScript
             creature_entry = original_entry;
         }
 
-        bool OnCheck(Player* source, Unit* target) override
+        bool OnCheck(Player* /*source*/, Unit* target) override
         {
             if (!target)
                 return false;

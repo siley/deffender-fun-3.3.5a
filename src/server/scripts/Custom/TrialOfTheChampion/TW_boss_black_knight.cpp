@@ -311,6 +311,7 @@ public:
                 return;
 
             if (bEventInProgress)
+            {
                 if (uiResurrectTimer <= uiDiff)
                 {
                     me->SetFullHealth();
@@ -332,7 +333,10 @@ public:
                     uiResurrectTimer = 3000;
                     bEventInProgress = false;
                     me->ClearUnitState(UNIT_STATE_ROOT | UNIT_STATE_STUNNED);
-                } else uiResurrectTimer -= uiDiff;
+                }
+                else 
+                    uiResurrectTimer -= uiDiff;
+            }
 
 
             switch (uiPhase)
@@ -369,13 +373,16 @@ public:
                     }
 
                     if (!bDeathArmyDone)
+                    {
                         if (uiDeathArmyCheckTimer <= uiDiff)
                         {
                             me->ClearUnitState(UNIT_STATE_ROOT | UNIT_STATE_STUNNED);
                             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                             uiDeathArmyCheckTimer = 0;
                             bDeathArmyDone = true;
-                        } else uiDeathArmyCheckTimer -= uiDiff;
+                        }
+                        else uiDeathArmyCheckTimer -= uiDiff;
+                    }
                     
                     if (uiDesecrationTimer <= uiDiff)
                     {
@@ -472,7 +479,7 @@ public:
                 DoMeleeAttackIfReady();
         }
 
-        void EnterCombat(Unit* who) override
+        void EnterCombat(Unit* /*who*/) override
         {
             bEventInBattle = true;
             Talk(SAY_AGGRO);
@@ -545,7 +552,7 @@ public:
         void SetData(uint32 uiType, uint32 uiData) override
         {
             if (uiType == DATA_IVE_HAD_WORSE)
-                iveHadWorse = uiData;
+                iveHadWorse = uiData == 1;
         }
 
         void JustDied(Unit* /*killer*/) override

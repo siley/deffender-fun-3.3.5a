@@ -223,13 +223,13 @@ class TW_boss_eadric : public CreatureScript
             }
         }
 
-        void MovementInform(uint32 MovementType, uint32 Data)
+        void MovementInform(uint32 MovementType, uint32 /*Data*/)
         {
             if (MovementType != POINT_MOTION_TYPE)
                 return;
         }
 
-        void EnterCombat(Unit* pWho)
+        void EnterCombat(Unit* /*who*/)
         {
             events.ScheduleEvent(EVENT_RADIANCE, 16000);
             events.ScheduleEvent(EVENT_VENGEANCE, 10000);
@@ -376,7 +376,7 @@ class TW_boss_paletress : public CreatureScript
             }
         }
 
-        void EnterCombat(Unit* pWho)
+        void EnterCombat(Unit* /*who*/)
         {
             events.ScheduleEvent(EVENT_HOLY_FIRE, urand(9000, 12000));
             events.ScheduleEvent(EVENT_SMITE, urand(5000, 7000));
@@ -389,7 +389,7 @@ class TW_boss_paletress : public CreatureScript
             Talk(SAY_PALETRESS_AGGRO);
         }
 
-        void SetData(uint32 uiId, uint32 uiValue)
+        void SetData(uint32 uiId, uint32 /*uiValue*/)
         {
             if (uiId == 1)
                 me->RemoveAura(SPELL_SHIELD);
@@ -398,17 +398,6 @@ class TW_boss_paletress : public CreatureScript
 
         void DamageTaken(Unit* /*who*/, uint32& damage)
         {
-            if (!_hasSummonedMemory && me->HealthBelowPct(25))
-            {
-                Talk(SAY_PALETRESS_SUMMON_MEMORY);
-                me->InterruptNonMeleeSpells(true);
-                DoCastAOE(SPELL_HOLY_NOVA, false);
-                DoCast(me, SPELL_SHIELD);
-                DoCastAOE(SPELL_CONFESS, false);
-                DoCast(SPELL_SUMMON_MEMORY);
-                _hasSummonedMemory = true;
-            }
-
             if (damage >= me->GetHealth())
             {
                 damage = 0;
@@ -430,7 +419,7 @@ class TW_boss_paletress : public CreatureScript
             }
         }
 
-        void MovementInform(uint32 MovementType, uint32 Data)
+        void MovementInform(uint32 MovementType, uint32 /*Data*/)
         {
             if (MovementType != POINT_MOTION_TYPE)
                 return;
@@ -497,6 +486,17 @@ class TW_boss_paletress : public CreatureScript
             }
 
             DoMeleeAttackIfReady();
+
+            if (!_hasSummonedMemory && me->HealthBelowPct(25))
+            {
+                Talk(SAY_PALETRESS_SUMMON_MEMORY);
+                me->InterruptNonMeleeSpells(true);
+                DoCastAOE(SPELL_HOLY_NOVA, false);
+                DoCast(me, SPELL_SHIELD);
+                DoCastAOE(SPELL_CONFESS, false);
+                DoCast(SPELL_SUMMON_MEMORY);
+                _hasSummonedMemory = true;
+            }
         }
 
         void JustSummoned(Creature* summon) override
@@ -575,7 +575,7 @@ class TW_npc_memory : public CreatureScript
             DoMeleeAttackIfReady();
         }
 
-        void JustDied(Unit* killer) override
+        void JustDied(Unit* /*killer*/) override
         {
             if (me->IsSummon())
             {
@@ -641,7 +641,7 @@ class TW_npc_argent_soldier : public CreatureScript
             uiMindTimer = 70000;
             uiSsmiteTimer = 6000;
             uiLightTimer = 3000;
-               uiFlurryTimer = 6000;
+   	        uiFlurryTimer = 6000;
             uiFinalTimer = 30000;
             uiDivineTimer = 70000;
             
@@ -691,7 +691,7 @@ class TW_npc_argent_soldier : public CreatureScript
             }  
         }
 
-        void SetData(uint32 uiType, uint32 uiData) override
+        void SetData(uint32 uiType, uint32 /*uiData*/) override
         {
             switch(me->GetEntry())
             {
@@ -768,14 +768,14 @@ class TW_npc_argent_soldier : public CreatureScript
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM,0))
                     DoCast(target,SPELL_CLEAVE);
                 uiStrikeTimer = 25000;
-            } else uiStrikeTimer -= uiDiff;    
+            } else uiStrikeTimer -= uiDiff;	
 
             if (uiPummelTimer <= uiDiff)
             {
                 if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM,0))
                     DoCast(target,SPELL_PUMMEL);
                 uiPummelTimer = 35000;
-            } else uiPummelTimer -= uiDiff;    
+            } else uiPummelTimer -= uiDiff;	
 
             if (uiPainTimer <= uiDiff)
             {
@@ -825,7 +825,7 @@ class TW_npc_argent_soldier : public CreatureScript
             DoMeleeAttackIfReady();
         }
 
-        void JustDied(Unit* killer) override
+        void JustDied(Unit* /*killer*/) override
         {
             pInstance->SetData(DATA_ARGENT_SOLDIER_DEFEATED,pInstance->GetData(DATA_ARGENT_SOLDIER_DEFEATED) + 1);
         }
@@ -893,7 +893,7 @@ class TW_achievement_toc5_argent_challenge : public AchievementCriteriaScript
             creature_entry = original_entry;
         }
 
-        bool OnCheck(Player* source, Unit* target) override
+        bool OnCheck(Player* /*source*/, Unit* target) override
         {
             if (!target)
                 return false;
@@ -916,7 +916,7 @@ class TW_achievement_toc5_argent_confessor : public AchievementCriteriaScript
             creature_entry = original_entry;
         }
 
-        bool OnCheck(Player* source, Unit* target) override
+        bool OnCheck(Player* /*source*/, Unit* target) override
         {
             if (!target)
                 return false;
@@ -937,7 +937,7 @@ class TW_achievement_toc5_the_faceroller : public AchievementCriteriaScript
         bool OnCheck(Player* /*source*/, Unit* target) override
         {
             if (target && target->GetMap()->ToInstanceMap()->IsHeroic())
-                return target->GetAI()->GetData(DATA_THE_FACEROLLER);
+                return target->GetAI()->GetData(DATA_THE_FACEROLLER) == 1;
 
             return false;
         }
