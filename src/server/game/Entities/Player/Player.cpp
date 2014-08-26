@@ -13554,13 +13554,7 @@ void Player::SwapItem(uint16 src, uint16 dst)
 
     // SRC checks
 
-    if (pSrcItem->m_lootGenerated)                           // prevent swap looting item
-    {
-        //best error message found for attempting to swap while looting
-        SendEquipError(EQUIP_ERR_CANT_DO_RIGHT_NOW, pSrcItem, NULL);
-        return;
-    }
-
+    
     // check unequip potability for equipped items and bank bags
     if (IsEquipmentPos(src) || IsBagPos(src))
     {
@@ -13591,12 +13585,7 @@ void Player::SwapItem(uint16 src, uint16 dst)
 
     if (pDstItem)
     {
-        if (pDstItem->m_lootGenerated)                       // prevent swap looting item
-        {
-            //best error message found for attempting to swap while looting
-            SendEquipError(EQUIP_ERR_CANT_DO_RIGHT_NOW, pDstItem, NULL);
-            return;
-        }
+  
 
         // check unequip potability for equipped items and bank bags
         if (IsEquipmentPos(dst) || IsBagPos(dst))
