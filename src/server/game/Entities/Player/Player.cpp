@@ -2200,6 +2200,12 @@ void Player::SendTeleportAckPacket()
 
 bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientation, uint32 options)
 {
+    if (HasUnitState(UNIT_STATE_LOST_CONTROL))
+    {
+        StopMoving();
+        GetMotionMaster()->Clear();
+    }
+
     if (!MapManager::IsValidMapCoord(mapid, x, y, z, orientation))
     {
         TC_LOG_ERROR("maps", "TeleportTo: invalid map (%d) or invalid coordinates (X: %f, Y: %f, Z: %f, O: %f) given when teleporting player (GUID: %u, name: %s, map: %d, X: %f, Y: %f, Z: %f, O: %f).",
