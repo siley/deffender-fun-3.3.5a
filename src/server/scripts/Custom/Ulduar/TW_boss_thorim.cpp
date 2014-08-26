@@ -405,7 +405,7 @@ public:
 
             // Respawn Mini Bosses
             for (uint8 i = DATA_RUNIC_COLOSSUS; i <= DATA_RUNE_GIANT; ++i)
-                if (Creature* MiniBoss = ObjectAccessor::GetCreature(*me, instance->GetData64(i)))
+            if (Creature* MiniBoss = ObjectAccessor::GetCreature(*me, instance->GetData64(i)))
                     MiniBoss->Respawn(true);
 
             // Spawn Pre-Phase Adds
@@ -635,7 +635,6 @@ public:
                             Talk(SAY_END_NORMAL_3);
                             me->DespawnOrUnsummon(10000);
                             _JustDied();
-                            instance->givexp();
                             break;
                         case EVENT_END_HARD_1:
                             Talk(SAY_END_HARD_1);
@@ -657,7 +656,6 @@ public:
                             Talk(SAY_END_HARD_3);
                             me->DespawnOrUnsummon(10000);
                             _JustDied();
-                            instance->givexp();
                             break;
                     }
                 }
@@ -1518,7 +1516,7 @@ class TW_go_thorim_lever : public GameObjectScript
     public:
        TW_go_thorim_lever() : GameObjectScript("TW_go_thorim_lever") { }
 
-       bool OnGossipHello(Player* player, GameObject* go) override
+       bool OnGossipHello(Player* /*player*/, GameObject* go) override
        {
            if (GameObject* porticullis = go->FindNearestGameObject(GO_THORIM_DARK_IRON_PROTCULLIS, 50.0f))
                go->GetInstanceScript()->DoUseDoorOrButton(porticullis->GetGUID());
