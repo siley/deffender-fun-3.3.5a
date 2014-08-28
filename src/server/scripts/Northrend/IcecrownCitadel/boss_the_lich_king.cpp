@@ -1374,6 +1374,9 @@ class npc_shambling_horror_icc : public CreatureScript
                 if (!UpdateVictim())
                     return;
 
+				if (me->GetVictim()->IsPet() || me->GetVictim()->IsTotem())
+					return;
+
                 _events.Update(diff);
 
                 if (me->HasUnitState(UNIT_STATE_CASTING))
