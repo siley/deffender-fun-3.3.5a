@@ -1601,6 +1601,16 @@ SpellCastResult SpellInfo::CheckTarget(Unit const* caster, WorldObject const* ta
             return SPELL_FAILED_BAD_TARGETS;
     }
 
+	// Check LoS for Bladestorm, Totems, etc..
+	if ((Effects[0].TargetA.GetTarget() == TARGET_SRC_CASTER) && (Effects[0].TargetB.GetTarget() == TARGET_UNIT_SRC_AREA_ENEMY))
+	if (!caster->IsWithinLOSInMap(target) && !AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS)
+		return SPELL_FAILED_BAD_TARGETS;
+
+	//	Check LoS for Typhon, etc..
+	if (Effects[0].TargetA.GetTarget() == TARGET_UNIT_CONE_ENEMY_104)
+	if (!caster->IsWithinLOSInMap(target) && !AttributesEx2 & SPELL_ATTR2_CAN_TARGET_NOT_IN_LOS)
+		return SPELL_FAILED_LINE_OF_SIGHT;
+
     // check GM mode and GM invisibility - only for player casts (npc casts are controlled by AI) and negative spells
     if (unitTarget != caster && (caster->IsControlledByPlayer() || !IsPositive()) && unitTarget->GetTypeId() == TYPEID_PLAYER)
     {

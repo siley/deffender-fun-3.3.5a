@@ -7577,6 +7577,7 @@ bool Unit::HandleAuraProc(Unit* victim, uint32 damage, Aura* triggeredByAura, Sp
                     *handled = true;
                 break;
         }
+
         case SPELLFAMILY_MAGE:
         {
             // Combustion
@@ -9702,12 +9703,14 @@ Unit* Unit::GetMagicHitRedirectTarget(Unit* victim, SpellInfo const* spellInfo)
     for (Unit::AuraEffectList::const_iterator itr = magnetAuras.begin(); itr != magnetAuras.end(); ++itr)
     {
         if (Unit* magnet = (*itr)->GetBase()->GetCaster())
-		{
-			if (magnet->IsAlive())
-			{
-				return magnet;
-			}
-		}
+        if (spellInfo->CheckExplicitTarget(this, magnet) == SPELL_CAST_OK
+            && spellInfo->CheckTarget(this, magnet, false) == SPELL_CAST_OK
+            && _IsValidAttackTarget(magnet, spellInfo))
+        {
+            /// @todo handle this charge drop by proc in cast phase on explicit target
+            (*itr)->GetBase()->DropCharge(AURA_REMOVE_BY_EXPIRE);
+            return magnet;
+        }
     }
     return victim;
 }
